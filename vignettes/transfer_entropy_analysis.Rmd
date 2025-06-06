@@ -550,7 +550,6 @@ return(te_evolution)
 
 
 ### 2. Conditional Transfer Entropy
-
 Conditional TE controlling for third variables
 conditional_te <- function(x, y, z) {
 
