@@ -25,13 +25,10 @@ message = FALSE
 This vignette provides a comprehensive guide to ManyIVsNets' implementation of transfer entropy analysis for causal discovery in Environmental Phillips Curve research. Our analysis reveals important causal relationships with network density of 0.095 and 4 significant causal links among EPC variables.
 
 ## What is Transfer Entropy?
-
 Transfer entropy is an information-theoretic measure that quantifies the amount of information transferred from one time series to another, providing a non-parametric approach to causal discovery. Unlike Granger causality, transfer entropy can capture non-linear relationships and does not assume specific functional forms.
-
 **Mathematical Foundation:**
 Transfer entropy from Y to X is defined as:
 TE(Y→X) = H(X_{t+1}|X_t) - H(X_{t+1}|X_t, Y_t)
-
 Where H denotes entropy, measuring the reduction in uncertainty about X_{t+1} when we know both X_t and Y_t compared to knowing only X_t.
 
 ## Why Transfer Entropy for Environmental Economics?
