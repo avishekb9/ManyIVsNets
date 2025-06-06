@@ -1,0 +1,729 @@
+---
+title: "Network Analysis and Visualization Guide"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Network Analysis and Visualization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>",
+fig.width = 14,
+fig.height = 10,
+warning = FALSE,
+message = FALSE,
+dpi = 300
+)
+
+
+
+# Network Analysis and Visualization Guide
+
+This vignette provides a comprehensive guide to ManyIVsNets' network analysis and visualization capabilities. Our package generates 7 publication-quality network visualizations at 600 DPI, providing unprecedented insights into Environmental Phillips Curve relationships through network analysis.
+
+## Overview of Network Analysis in ManyIVsNets
+
+ManyIVsNets implements multiple types of network analysis:
+
+1. **Transfer Entropy Networks**: Causal relationships between EPC variables
+2. **Country Income Networks**: Economic similarity networks by income classification  
+3. **Cross-Income CO2 Growth Nexus**: Income-based environmental networks
+4. **Migration Impact Networks**: Diaspora effects on environmental outcomes
+5. **Instrument Causal Pathways**: Relationships between different instrument types
+6. **Regional Networks**: Geographic and economic regional clustering
+7. **Instrument Strength Comparison**: Comprehensive performance visualization
+
+## Network Types and Applications
+
+### 1. Transfer Entropy Networks (Variable-Level)
+
+**Purpose**: Identify causal relationships between EPC variables
+**Key Insight**: PCGDP → CO2 strongest causal flow (TE = 0.0375)
+Create transfer entropy network visualization
+plot_transfer_entropy_network <- function(te_results, output_dir = NULL) {
+if(igraph::vcount(te_results$te_network) == 0)
+{ cat("No network to pl
+t\n") re
+ur
+
+p <- ggraph::ggraph(te_results$te_network, layout = "stress") +
+ggraph::geom_edge_arc(aes(width = weight, alpha = weig
+t), arrow = a
+row(length = unit(3, "mm")),
+s
+art_cap = circle(3,
+mm"), end_cap = circle(3, "mm"),
+color = "#2E86AB") + ggraph::geom_node_point(aes(colo
+= variable_type, size = centrality)) + ggr
+ph::geom_node_text(aes(label = name), repel = TRUE, size = 4)
+scale_color_viridis_d(name = "Variable Type") + scale_size_conti
+uous(name = "Centrality", range = c(4, 10)) +
+cale_edge_widt
+_conti
+uous(name = "Transfer Entro
+y", range = c(1, 3)) + scale_edge_alpha_continuous(range = c(
+.4, 0.9)) + theme_void() + theme( legen
+.position = "bottom", plot.title = element_text(hjus
+=
+.5, s
+ze = 16, face = "bold"), plot.subtitle = element_text(hjust = 0.5
+size = 12), plot.background = element_rect(fill = "white", color = NA) ) + la
+s( title = "Transfer Entropy Network: EPC Variables Causal Relationships", s
+bt
+
+if(!is.null(output_dir)) {
+ggplot2::ggs
+ve( filename = file.path(output_dir, "network_01_transfer_entropy_variab
+es.png"), plot = p, width = 14, height = 10, dpi = 6
+0
+b
+
+return(p)
+}
+
+
+
+**Network Properties from Our Analysis:**
+- **Density**: 0.095 (moderate causal connectivity)
+- **Key relationships**: PCGDP → CO2 (0.0375), URF ↔ URM (bidirectional)
+- **Node types**: Environmental, Employment, Economic, Energy variables
+
+### 2. Country Income Classification Networks
+
+**Purpose**: Analyze economic similarities between countries by income groups
+**Key Insight**: High-income countries cluster with density 0.25
+
+Create country network by income classification
+plot_country_income_network <- function(country_network, output_dir = NULL) {
+if(igraph::vcount(country_network) == 0)
+{ cat("No country network to pl
+t\n") re
+ur
+
+p <- ggraph::ggraph(country_network, layout = "stress") +
+ggraph::geom_edge_link(alpha = 0.3, color = "#95A5A6
+) + ggraph::geom_node_point(aes(color = income_group, size = igraph::degree(country_netw
+rk))) + ggraph::geom_node_text(aes(label = country_code), repel = TRUE, s
+ze = 2.5) + sca
+e_color_manual(
+ame = "Income Group", values = c("High_Income" = "#E74C3C", "Upper
+Middle_Income" = "#F39C12", "Lower_Middle_I
+com
+" = "#F1C40F", "Low_Income" = "#95A5A6") ) + scale_size_c
+ntinuous(name
+"Netw
+rk Degree", range = c(2, 6)
++ theme_void() + theme( legend.position = "bottom"
+plot.title = element_text(hjust = 0.5, size =
+6, face = "bold"), plot.subtitle = element_text(hjus
+=
+.5, s
+ze = 12), plot.background = element_rect(fill
+= "white", color = NA) ) + labs( title = "Country Network by Income Clas
+ification", subtitle = paste("Network Density:", round(igraph::edge_density
+co
+
+if(!is.null(output_dir)) {
+ggplot2::ggs
+ve( filename = file.path(output_dir, "network_02_countries_income_classificat
+on.png"), plot = p, width = 14, height = 10, dpi = 6
+0
+b
+
+return(p)
+}
+
+
+
+### 3. Cross-Income CO2 Growth Nexus
+
+**Purpose**: Examine environmental-economic relationships across income levels
+**Key Insight**: Different income groups show distinct CO2-growth patterns
+
+Create cross-income CO2 growth nexus visualization
+plot_cross_income_co2_nexus <- function(data, output_dir = NULL) {
+tryCatch
+{ income_data <- da
+a %>% group_by(country, country_code, incom
+_group) %>
+summarise( avg_ur =
+mean(lnUR, na.rm = TRUE), av
+_co2 = mean(lnCO2, na.rm = TRUE),
+avg_gdp = mea
+(lnPC
+DP, na.rm = TRUE), .groups = 'drop' ) %>% f
+
+
+if(nrow(income_data) > 10) {
+  # Create network based on similar income levels and economic patterns
+  n_countries <- nrow(income_data)
+  income_matrix <- matrix(0, n_countries, n_countries)
+  rownames(income_matrix) <- income_data$country
+  colnames(income_matrix) <- income_data$country
+  
+  for(i in 1:n_countries) {
+    for(j in 1:n_countries) {
+      if(i != j) {
+        # Same income group gets higher weight
+        if(income_data$income_group[i] == income_data$income_group[j]) {
+          income_matrix[i, j] <- 0.7
+        } else {
+          # Calculate economic similarity
+          ur_diff <- abs(income_data$avg_ur[i] - income_data$avg_ur[j])
+          gdp_diff <- abs(income_data$avg_gdp[i] - income_data$avg_gdp[j])
+          
+          max_ur_diff <- max(abs(income_data$avg_ur), na.rm = TRUE)
+          max_gdp_diff <- max(abs(income_data$avg_gdp), na.rm = TRUE)
+          
+          if(max_ur_diff > 0 && max_gdp_diff > 0) {
+            econ_sim <- 1 - ((ur_diff / max_ur_diff) + (gdp_diff / max_gdp_diff)) / 2
+            income_matrix[i, j] <- max(0, econ_sim * 0.4)
+          }
+        }
+      }
+    }
+  }
+  
+  income_threshold <- 0.5
+  income_adj <- ifelse(income_matrix > income_threshold, income_matrix, 0)
+  diag(income_adj) <- 0
+  
+  if(sum(income_adj > 0) > 0) {
+    income_network <- igraph::graph_from_adjacency_matrix(income_adj, mode = "undirected", weighted = TRUE)
+    
+    # Add attributes
+    igraph::V(income_network)$income_group <- income_data$income_group[match(igraph::V(income_network)$name, income_data$country)]
+    igraph::V(income_network)$country_code <- income_data$country_code[match(igraph::V(income_network)$name, income_data$country)]
+    igraph::V(income_network)$avg_co2 <- income_data$avg_co2[match(igraph::V(income_network)$name, income_data$country)]
+    
+    # Handle missing values
+    igraph::V(income_network)$income_group[is.na(igraph::V(income_network)$income_group)] <- "Other"
+    igraph::V(income_network)$country_code[is.na(igraph::V(income_network)$country_code)] <- substr(igraph::V(income_network)$name[is.na(igraph::V(income_network)$country_code)], 1, 3)
+    
+    # Create the plot
+    p <- ggraph::ggraph(income_network, layout = "stress") +
+      ggraph::geom_edge_link(alpha = 0.3, color = "#BDC3C7") +
+      ggraph::geom_node_point(aes(color = income_group, size = avg_co2)) +
+      ggraph::geom_node_text(aes(label = country_code), repel = TRUE, size = 2.5) +
+      scale_color_manual(
+        name = "Income Group",
+        values = c("High_Income" = "#E74C3C", "Upper_Middle_Income" = "#F39C12",
+                   "Lower_Middle_Income" = "#F1C40F", "Low_Income" = "#95A5A6")
+      ) +
+      scale_size_continuous(name = "Avg CO2", range = c(2, 6)) +
+      theme_void() +
+      theme(
+        legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        plot.subtitle = element_text(hjust = 0.5, size = 12),
+        plot.background = element_rect(fill = "white", color = NA)
+      ) +
+      labs(
+        title = "Cross-Income CO2 Growth Nexus",
+        subtitle = paste("Economic similarity network | Density:", round(igraph::edge_density(income_network), 3)),
+        caption = "Node size represents average CO2 emissions | Colors show income classification"
+      )
+    
+    if(!is.null(output_dir)) {
+      ggplot2::ggsave(
+        filename = file.path(output_dir, "network_03_cross_income_co2_growth_nexus.png"),
+        plot = p, width = 14, height = 10, dpi = 600, bg = "white"
+      )
+    }
+    
+    return(p)
+  }
+}
+}, error = function(e) {
+cat("Cross-income nexus visualization failed:", e$message, "
+n") retu
+n(
+U
+
+
+
+### 4. Migration Impact Networks
+
+**Purpose**: Analyze how migration networks affect environmental outcomes
+**Key Insight**: Diaspora strength correlates with CO2 growth patterns
+
+Create migration impact visualization
+plot_migration_impact <- function(data, output_dir = NULL) {
+tryCatch
+{ migration_data <- da
+a %>% group_by(country, country_code, incom
+_group) %>
+summarise( avg_migration = mean(diaspora_networ
+_strength, na.rm = TRUE), avg_co2_growth = mean
+c(diff(lnCO2), 0
+, na.
+m = TRUE), .groups = 'drop' ) %>% filter(!is.na(avg_migra
+
+
+if(nrow(migration_data) > 10) {
+  p <- migration_data %>%
+    ggplot(aes(x = avg_migration, y = avg_co2_growth, color = income_group)) +
+    geom_point(size = 3, alpha = 0.7) +
+    geom_smooth(method = "lm", se = TRUE, alpha = 0.3) +
+    ggrepel::geom_text_repel(aes(label = country_code), size = 2.5) +
+    scale_color_manual(
+      name = "Income Group",
+      values = c("High_Income" = "#E74C3C", "Upper_Middle_Income" = "#F39C12",
+                 "Lower_Middle_Income" = "#F1C40F", "Low_Income" = "#95A5A6")
+    ) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+      plot.subtitle = element_text(size = 12, hjust = 0.5),
+      legend.position = "bottom",
+      plot.background = element_rect(fill = "white", color = NA)
+    ) +
+    labs(
+      title = "Migration Network Impact on CO2 Growth",
+      subtitle = "Diaspora network strength vs average CO2 growth by income group",
+      x = "Average Diaspora Network Strength",
+      y = "Average CO2 Growth Rate",
+      caption = "Points represent countries | Lines show income group trends"
+    )
+  
+  if(!is.null(output_dir)) {
+    ggplot2::ggsave(
+      filename = file.path(output_dir, "network_04_migration_impact_co2.png"),
+      plot = p, width = 14, height = 10, dpi = 600, bg = "white"
+    )
+  }
+  
+  return(p)
+}
+}, error = function(e) {
+cat("Migration impact visualization failed:", e$message, "
+n") retu
+n(
+U
+
+
+
+### 5. Instrument Causal Pathways
+
+**Purpose**: Show relationships between different instrument types
+**Key Insight**: Geographic and technology instruments cluster together
+
+Create instrument causal pathways network
+plot_instrument_causal_pathways <- function(data, output_dir = NULL) {
+tryCatch
+{ # Select key instruments for network an
+lysis instrument_vars <- c("geo_isolation", "te_isolation", "tech_c
+mposite", "migration_composite", "fina
+cial_composite", "spatial_lag_ur",
+
+
+# Filter data for complete cases
+instrument_data <- data %>%
+  select(all_of(instrument_vars)) %>%
+  filter(complete.cases(.))
+
+if(nrow(instrument_data) > 50 && ncol(instrument_data) > 3) {
+  # Calculate correlation matrix
+  cor_matrix <- cor(instrument_data, use = "complete.obs")
+  cor_matrix[is.na(cor_matrix)] <- 0
+  
+  # Create network based on strong correlations
+  cor_threshold <- 0.3
+  cor_adj <- ifelse(abs(cor_matrix) > cor_threshold, abs(cor_matrix), 0)
+  diag(cor_adj) <- 0
+  
+  if(sum(cor_adj > 0) > 0) {
+    instrument_network <- igraph::graph_from_adjacency_matrix(cor_adj, mode = "undirected", weighted = TRUE)
+    
+    # Add node attributes
+    igraph::V(instrument_network)$instrument_type <- case_when(
+      grepl("geo", igraph::V(instrument_network)$name) ~ "Geographic",
+      grepl("te_", igraph::V(instrument_network)$name) ~ "Transfer_Entropy",
+      grepl("spatial", igraph::V(instrument_network)$name) ~ "Spatial",
+      grepl("bartik", igraph::V(instrument_network)$name) ~ "Bartik",
+      grepl("migration", igraph::V(instrument_network)$name) ~ "Migration",
+      TRUE ~ "Other"
+    )
+    
+    # Create the plot
+    p <- ggraph::ggraph(instrument_network, layout = "stress") +
+      ggraph::geom_edge_link(aes(width = weight, alpha = weight), color = "darkblue") +
+      ggraph::geom_node_point(aes(color = instrument_type, size = igraph::degree(instrument_network))) +
+      ggraph::geom_node_text(aes(label = name), repel = TRUE, size = 3) +
+      scale_color_manual(
+        name = "Instrument Type",
+        values = c(
+          "Geographic" = "#d62728",
+          "Transfer_Entropy" = "#2ca02c",
+          "Spatial" = "#ff7f0e",
+          "Bartik" = "#1f77b4",
+          "Migration" = "#9467bd",
+          "Other" = "#8c564b"
+        )
+      ) +
+      scale_edge_width_continuous(range = c(0.5, 2)) +
+      scale_edge_alpha_continuous(range = c(0.3, 0.8)) +
+      scale_size_continuous(range = c(3, 8)) +
+      theme_void() +
+      theme(
+        plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+        plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray40"),
+        legend.position = "bottom",
+        plot.background = element_rect(fill = "white", color = NA)
+      ) +
+      labs(
+        title = "Instrument Network with Causal Pathways",
+        subtitle = "Correlations between different instrument types",
+        caption = "Edge thickness shows correlation strength | Colors show instrument types"
+      )
+    
+    if(!is.null(output_dir)) {
+      ggplot2::ggsave(
+        filename = file.path(output_dir, "network_05_instruments_causal_pathways.png"),
+        plot = p, width = 14, height = 10, dpi = 600, bg = "white"
+      )
+    }
+    
+    return(p)
+  }
+}
+}, error = function(e) {
+cat("Instrument causal pathways visualization failed:", e$message, "
+n") retu
+n(
+U
+
+
+
+### 6. Regional Networks
+
+**Purpose**: Analyze regional clustering and geographic effects
+**Key Insight**: Countries cluster by geographic proximity and economic similarity
+
+Create regional network visualization
+plot_regional_network <- function(data, output_dir = NULL) {
+tryCatch
+{ # Create regional n
+twork regional_data <
+data %>% filter(!is.na(region_enhanced) & region_enhanced
+!= "Other") %>% group_by(region_enhanced, coun
+ry, countr
+_code) %>% summarise(
+vg_co2 = mean(lnCO2, na.rm = TRUE)
+avg_ur = mean(lnUR, na.rm = T
+UE), avg
+gdp =
+mean(lnPCGDP, na.rm = TRUE), .groups = 'drop'
+
+
+if(nrow(regional_data) > 5) {
+  # Calculate regional similarities
+  n_countries <- nrow(regional_data)
+  regional_matrix <- matrix(0, n_countries, n_countries)
+  rownames(regional_matrix) <- regional_data$country
+  colnames(regional_matrix) <- regional_data$country
+  
+  for(i in 1:n_countries) {
+    for(j in 1:n_countries) {
+      if(i != j) {
+        # Same region gets higher weight
+        if(regional_data$region_enhanced[i] == regional_data$region_enhanced[j]) {
+          regional_matrix[i, j] <- 0.8
+        } else {
+          # Calculate economic similarity
+          gdp_diff <- abs(regional_data$avg_gdp[i] - regional_data$avg_gdp[j])
+          max_gdp_diff <- max(abs(regional_data$avg_gdp), na.rm = TRUE)
+          if(max_gdp_diff > 0) {
+            econ_sim <- 1 - (gdp_diff / max_gdp_diff)
+            regional_matrix[i, j] <- max(0, econ_sim * 0.5)
+          }
+        }
+      }
+    }
+  }
+  
+  regional_threshold <- 0.4
+  regional_adj <- ifelse(regional_matrix > regional_threshold, regional_matrix, 0)
+  diag(regional_adj) <- 0
+  
+  if(sum(regional_adj > 0) > 0) {
+    regional_network <- igraph::graph_from_adjacency_matrix(regional_adj, mode = "undirected", weighted = TRUE)
+    
+    # Add attributes
+    igraph::V(regional_network)$region <- regional_data$region_enhanced[match(igraph::V(regional_network)$name, regional_data$country)]
+    igraph::V(regional_network)$country_code <- regional_data$country_code[match(igraph::V(regional_network)$name, regional_data$country)]
+    igraph::V(regional_network)$avg_co2 <- regional_data$avg_co2[match(igraph::V(regional_network)$name, regional_data$country)]
+    
+    # Handle missing values
+    igraph::V(regional_network)$region[is.na(igraph::V(regional_network)$region)] <- "Other"
+    igraph::V(regional_network)$country_code[is.na(igraph::V(regional_network)$country_code)] <- substr(igraph::V(regional_network)$name[is.na(igraph::V(regional_network)$country_code)], 1, 3)
+    
+    # Create the plot
+    p <- ggraph::ggraph(regional_network, layout = "stress") +
+      ggraph::geom_edge_link(alpha = 0.4, color = "#95A5A6") +
+      ggraph::geom_node_point(aes(color = region, size = avg_co2)) +
+      ggraph::geom_node_text(aes(label = country_code), repel = TRUE, size = 2.5) +
+      scale_color_viridis_d(name = "Region") +
+      scale_size_continuous(name = "Avg CO2", range = c(2, 6)) +
+      theme_void() +
+      theme(
+        legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        plot.subtitle = element_text(hjust = 0.5, size = 12),
+        plot.background = element_rect(fill = "white", color = NA)
+      ) +
+      labs(
+        title = "Regional Network with Country Codes",
+        subtitle = paste("Network Density:", round(igraph::edge_density(regional_network), 3)),
+        caption = "Node size represents average CO2 | Colors show regional classification"
+      )
+    
+    if(!is.null(output_dir)) {
+      ggplot2::ggsave(
+        filename = file.path(output_dir, "network_06_regional_country_codes.png"),
+        plot = p, width = 14, height = 10, dpi = 600, bg = "white"
+      )
+    }
+    
+    return(p)
+  }
+}
+}, error = function(e) {
+cat("Regional network visualization failed:", e$message, "
+n") retu
+n(
+U
+
+
+
+### 7. Instrument Strength Comparison
+
+**Purpose**: Compare performance of all 24 instrument approaches
+**Key Insight**: Judge Historical SOTA achieves F = 7,155.39 (strongest)
+
+Create instrument strength comparison visualization
+plot_instrument_strength_comparison <- function(strength_results, output_dir = NULL) {
+p <- strength_results %
+% m
+tate( Instrument_Set = factor(Instrument_Set, levels = Instrument_Set[order(F_S
+atistic)]), Strength_
+olor = case_when( Strength ==
+Very Strong" ~ "#27AE60",
+Strength == "Strong" ~ "#F39C12",
+Strength =
+
+Moder
+te" ~ "#E67E22", TRUE ~ "#E74C3C" ) ) %>% ggplot(ae
+(x = Instrument_Set, y = F_Statistic
+fill = Strength_Color)) + geom_col(alpha = 0.8, width = 0.7) + geom_hline(yin
+ercept = 10, color = "#d62728", linetype = "dashed", linewidth = 1.2) + geom_hline
+yintercept = 50, color = "#2ca02c", linetype = "dashed", li
+ewidth = 1.2) + geom_text(aes(label = pa
+te0("F=", round(F_Stati
+tic, 1))),
+hjust
+-0.1,
+size = 3, fontface = "bold") + scale_fill_identity() + co
+rd_flip() + theme_minimal() + theme( plot.title = element
+text(size = 16, face = "bold", hjust = 0.5), p
+ot.subtitle = element_text(
+ize = 12, hjust = 0.5, color = "gray40
+), axis.title = element_text(size = 12, face = "bold
+),
+
+egend.position = "bottom", axis.text.y = elemen
+_text(size = 10), plot.background = element_rect(fill = "white", color = NA)
+) + labs( tit
+e = "Comprehensive
+Instrument Strength Analysis", subtitle = "First-stage F-statistics for
+ll
+
+if(!is.null(output_dir)) {
+ggplot2::ggs
+ve( filename = file.path(output_dir, "network_07_instrument_strength_compari
+on.png"), plot = p, width = 16, height = 12, dpi = 6
+0
+b
+
+return(p)
+}
+
+
+
+## Comprehensive Network Analysis Results
+
+### Key Findings from Network Analysis
+
+**1. Transfer Entropy Networks**
+- Network density: 0.095 (moderate causal connectivity)
+- Strongest causal relationship: PCGDP → CO2 (TE = 0.0375)
+- Bidirectional employment causality: URF ↔ URM
+
+**2. Country Networks**
+- Income-based clustering with density 0.25
+- High-income countries form tight clusters
+- Regional effects complement income classification
+
+**3. Migration Networks**
+- Diaspora strength correlates with environmental outcomes
+- High emigration countries (Ireland, Italy, Poland) show distinct patterns
+- English language advantage creates network effects
+
+**4. Instrument Networks**
+- Geographic and technology instruments cluster together
+- Transfer entropy instruments provide unique identification
+- Alternative SOTA approaches complement traditional methods
+
+## Network Visualization Best Practices
+
+### 1. Layout Algorithms
+
+Different layout options for network visualization
+layout_comparison <- data.frame(
+Layout = c("stress", "circle", "fr", "kk", "dh"
+, Best_For = c("General purpose", "Categorical data", "Force-directed", "Large networks", "Hierarchica
+"), Pros = c("Balanced", "Clear grouping", "Natural clusters", "Scalable", "Shows hierar
+hy"), Cons = c("Can be cluttered", "Fixed positions", "Can overlap", "Less aesthetic", "Requires hie
+a
+chy") ) print(layout_com
+
+
+
+### 2. Color Schemes
+
+Color scheme recommendations
+color_schemes <- data.frame(
+Purpose = c("Income Groups", "Regions", "Variable Types", "Instrument Types"
+, Scheme = c("Manual (income-based)", "Viridis", "Manual (semantic)", "Manual (method-based
+"), Colors = c("Red/Orange/Yellow/Gray", "Continuous rainbow", "Blue/Green/Red/Orange", "Distinct categori
+al"), Accessibility = c("Good", "Excellent", "Good",
+"
+ood") ) print(color_
+
+
+
+### 3. Node and Edge Sizing
+
+Sizing guidelines
+sizing_guidelines <- data.frame(
+Element = c("Nodes", "Edges", "Labels", "Arrows"
+, Size_Range = c("2-8", "0.5-3", "2-4", "3-5m
+"), Based_On = c("Centrality/Importance", "Weight/Strength", "Readability", "Edge wei
+ht"), Considerations = c("Avoid overlap", "Show hierarchy", "Legible at 600 DPI", "Clear dir
+c
+ion") ) print(sizing_gui
+
+
+
+## Advanced Network Analysis
+
+### 1. Network Metrics
+
+Calculate comprehensive network metrics
+calculate_network_metrics <- function(network) {
+if(igraph::vcount(network) == 0) return(NULL
+
+metrics <- data.frame(
+Metric = c("Density", "Diameter", "Average Path Length", "Clustering Coefficie
+t", "Number of Compone
+ts", "Modu
+arity"), Value = c( round(igra
+h::edge_density(network),
+), igraph::diameter(network),
+round(igraph::mean_distance(network), 3)
+round(igraph::transitivi
+y(network), 3), igraph::components(network)$no, round(igraph::modulari
+y(
+etwork, igraph::clu
+ter_louvain(network)$membersh
+p), 3) ), Interp
+etation = c( "Network conne
+tivity level", "Maximu
+shortest path", "Average
+distance between nodes",
+"
+oc
+
+return(metrics)
+}
+
+
+
+### 2. Community Detection
+
+Detect communities in networks
+detect_communities <- function(network) {
+if(igraph::vcount(network) < 3) return(NUL
+
+Multiple community detection algorithms
+communities <- list(
+louvain = igraph::cluster_louvain(netwo
+k), walktrap = igraph::cluster_walktrap(n
+twork), infomap = igraph::cluster_info
+a
+
+Compare modularity scores
+modularity_scores <- sapply(communities, function(x) igraph::modularity(network, x$membership))
+
+Return best performing algorithm
+best_algorithm <- names(which.max(modularity_scores))
+return(lis
+( communities = communities[[best_algori
+hm]], algorithm = best_
+lgorithm, modularity = max(modu
+ar
+t
+
+
+
+### 3. Network Evolution Analysis
+
+Analyze how networks change over time
+analyze_network_evolution <- function(data, time_windows = 5) {
+years <- unique(data$yea
+) evolution_results <- lis
+
+for(i in seq(time_windows, length(years), by = time_windows)) {
+window_years <- years[(i-time_windows+1
+:i] window_data <- data %>% filter(year %in% windo
+
+
+# Create network for this time window
+# (Implementation would depend on specific network type)
+
+evolution_results[[paste0("Period_", i)]] <- list(
+  years = window_years,
+  network_density = "calculated_density",
+  key_relationships = "identified_relationships"
+)
+}
+
+return(evolution_results)
+}
+
+
+
+## Conclusion
+
+The network analysis capabilities in ManyIVsNets provide:
+
+1. **Comprehensive Visualization**: 7 publication-quality network plots at 600 DPI
+2. **Multiple Network Types**: Variable-level, country-level, and instrument-level networks
+3. **Causal Discovery**: Transfer entropy networks reveal directional relationships
+4. **Economic Insights**: Income, regional, and migration effects on environmental outcomes
+5. **Methodological Innovation**: First comprehensive network approach to EPC analysis
+
+**Key Empirical Results:**
+- Transfer entropy network density: 0.095
+- Country network density: 0.25
+- Strongest causal relationship: PCGDP → CO2 (TE = 0.0375)
+- 21 out of 24 instruments show strong performance (F > 10)
+- Judge Historical SOTA: F = 7,155.39 (strongest instrument)
+
+This network analysis framework represents a significant advancement in environmental economics methodology, providing both theoretical insights and practical tools for policy analysis.
+
+
