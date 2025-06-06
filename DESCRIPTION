@@ -1,0 +1,64 @@
+Package: ManyIVsNets
+Type: Package
+Title: Environmental Phillips Curve Analysis with Multiple Instrumental Variables and Networks
+Version: 0.1.0
+Date: 2025-06-06
+Authors@R: c(
+    person("Avishek", "Bhandari", 
+           email = "bavisek@gmail.com", 
+           role = c("author", "maintainer"),
+           comment = c(web = "avishekb9.github.io/econstellar"))
+)
+Description: Comprehensive toolkit for Environmental Phillips Curve (EPC) analysis 
+    featuring multidimensional instrumental variable creation, transfer entropy 
+    causal discovery, network analysis, and state-of-the-art econometric methods.
+    Implements geographic, technological, migration, geopolitical, financial, 
+    and natural risk instruments with robust diagnostics and visualization.
+    Creates all instruments from scratch using economic and geographic data patterns,
+    eliminating CSV file dependencies. Includes transfer entropy causal discovery,
+    alternative state-of-the-art instruments (Spatial, Bartik, Migration, Shift-Share, 
+    Gravity), and comprehensive network visualizations for publication-ready outputs.
+License: MIT + file LICENSE
+URL: https://github.com/avishekb9/ManyIVsNets
+BugReports: https://github.com/avishekb9/ManyIVsNets/issues
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Depends: 
+    R (>= 4.0.0)
+Imports:
+    dplyr (>= 1.0.0),
+    tidyr (>= 1.1.0),
+    readr (>= 2.0.0),
+    data.table (>= 1.14.0),
+    igraph (>= 1.3.0),
+    ggraph (>= 2.0.0),
+    tidygraph (>= 1.2.0),
+    RTransferEntropy (>= 0.2.0),
+    entropy (>= 1.3.0),
+    AER (>= 1.2.0),
+    lmtest (>= 0.9.0),
+    sandwich (>= 3.0.0),
+    stargazer (>= 5.2.0),
+    broom (>= 0.7.0),
+    car (>= 3.0.0),
+    ggplot2 (>= 3.3.0),
+    viridis (>= 0.6.0),
+    RColorBrewer (>= 1.1.0),
+    ggrepel (>= 0.9.0),
+    patchwork (>= 1.1.0),
+    corrplot (>= 0.9.0),
+    tseries (>= 0.10.0),
+    urca (>= 1.3.0),
+    forecast (>= 8.15.0),
+    countrycode (>= 1.4.0),
+    scales (>= 1.1.0),
+    gridExtra (>= 2.3.0),
+    knitr (>= 1.33.0),
+    moments (>= 0.14.0)
+Suggests:
+    testthat (>= 3.0.0),
+    rmarkdown (>= 2.10.0),
+    pkgdown (>= 1.6.0),
+    covr (>= 3.5.0)
+VignetteBuilder: knitr
