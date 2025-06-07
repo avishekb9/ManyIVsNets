@@ -12,23 +12,30 @@ ManyIVsNets is a comprehensive R package for Environmental Phillips Curve (EPC) 
 - **Network density**: Transfer entropy (0.095), Country network (0.25)
 
 ## Installation
-**Install from GitHub**
+```r
+
+  #Install from GitHub
   devtools::install_github("avishekb9/ManyIVsNets")
+
+```
 
 
 ## Quick Start
 
+```r
+
 library(ManyIVsNets)
 
-Run complete analysis pipeline 
+#Run complete analysis pipeline 
 results <- run_complete_epc_analysis(
 data_file = "epc_data_new_ar5_indicators.csv", # Your data file
 output_dir = "epc_analysis_results"
 )
 
-View instrument strength results
+#View instrument strength results
 print(results$strength_results)
 
+```
 
 ## Features 
 
@@ -38,9 +45,10 @@ print(results$strength_results)
 - **Comprehensive network analysis** with country codes
 
 ## Citation
+If you use this package in your research, please cite:
 
-If you use ManyIVsNets, please cite:
+**APA Style:**
+Bhandari, A. (2025). *ManyIVsNets: Environmental Phillips Curve Analysis with Multiple Instrumental Variables and Networks* [Computer software]. GitHub. https://github.com/avishekb9/ManyIVsNets
 
-Bhandari, Avishek (2025). ManyIVsNets: Environmental Phillips Curve Analysis
-with Multiple Instrumental Variables and Networks.
-R package version 0.1.0. https://github.com/avishekb9/ManyIVsNets
+**Chicago Style:**
+Bhandari, Avishek. "ManyIVsNets: Environmental Phillips Curve Analysis with Multiple Instrumental Variables and Networks." GitHub, 2025. https://github.com/avishekb9/ManyIVsNets.
