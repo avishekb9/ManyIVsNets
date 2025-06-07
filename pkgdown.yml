@@ -1,0 +1,9 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  instrument_creation: instrument_creation.html
+  introduction: introduction.html
+  network_visualization: network_visualization.html
+  transfer_entropy_analysis: transfer_entropy_analysis.html
+last_built: 2025-06-07T06:03Z
