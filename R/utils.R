@@ -37,11 +37,15 @@ run_complete_epc_analysis <- function(data_file = NULL, output_dir = "epc_analys
   
   cat("=== RUNNING COMPLETE EPC ANALYSIS PIPELINE ===\n")
   
-  # Load data
+  # Load data - FIXED
   if(is.null(data_file)) {
-    # Use sample data if no file provided
-    data("sample_epc_data", package = "ManyIVsNets")
-    epc_data <- sample_epc_data
+    # Use sample data if no file provided - PROPER WAY
+    if(exists("sample_epc_data", envir = asNamespace("ManyIVsNets"))) {
+      epc_data <- get("sample_epc_data", envir = asNamespace("ManyIVsNets"))
+    } else {
+      # Fallback: create minimal sample data
+      epc_data <- create_test_epc_data()
+    }
   } else {
     epc_data <- load_epc_data_corrected(data_file)
   }
