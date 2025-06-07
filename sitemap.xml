@@ -9,6 +9,7 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
+<url><loc>/reference/ManyIVsNets-package.html</loc></url>
 <url><loc>/reference/calculate_instrument_strength.html</loc></url>
 <url><loc>/reference/conduct_transfer_entropy_analysis.html</loc></url>
 <url><loc>/reference/create_alternative_sota_instruments.html</loc></url>
@@ -36,5 +37,6 @@
 <url><loc>/reference/run_comprehensive_epc_models.html</loc></url>
 <url><loc>/reference/run_comprehensive_iv_diagnostics.html</loc></url>
 <url><loc>/reference/safe_load_packages.html</loc></url>
+<url><loc>/reference/sample_epc_data.html</loc></url>
 </urlset>
 
