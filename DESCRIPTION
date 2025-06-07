@@ -30,7 +30,8 @@ Imports:
     AER,
     lmtest,
     sandwich,
-    viridis
+    viridis,
+    magrittr
 Suggests:
     testthat (>= 3.0.0),
     rmarkdown,
