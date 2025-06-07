@@ -6,18 +6,19 @@
 \alias{ManyIVsNets-package}
 \title{ManyIVsNets: Environmental Phillips Curve Analysis with Multiple Instrumental Variables and Networks}
 \description{
-Comprehensive toolkit for Environmental Phillips Curve (EPC) analysis featuring multidimensional instrumental variable creation, transfer entropy causal discovery, network analysis, and state-of-the-art econometric methods. Implements geographic, technological, migration, geopolitical, financial, and natural risk instruments with robust diagnostics and visualization.
+Comprehensive toolkit for Environmental Phillips Curve (EPC) analysis featuring multidimensional instrumental variable creation, transfer entropy causal discovery, network analysis, and state-of-the-art econometric methods. Implements geographic, technological, migration, geopolitical, financial, and natural risk instruments with robust diagnostics and visualization. Provides 24 different instrumental variable approaches with empirical validation.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://github.com/avishekb9/ManyIVsNets}
+  \item \url{https://avishekb9.github.io/ManyIVsNets/}
   \item Report bugs at \url{https://github.com/avishekb9/ManyIVsNets/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Avishek Bhandari \email{bavisek@gmail.com}
+\strong{Maintainer}: Avishek Bhandari \email{bavisek@gmail.com} [copyright holder]
 
 }
 \keyword{internal}
