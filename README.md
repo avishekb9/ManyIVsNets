@@ -12,8 +12,8 @@ ManyIVsNets is a comprehensive R package for Environmental Phillips Curve (EPC) 
 - **Network density**: Transfer entropy (0.095), Country network (0.25)
 
 ## Installation
-Install from GitHub
-devtools::install_github("yourusername/ManyIVsNets")
+**Install from GitHub**
+  devtools::install_github("avishekb9/ManyIVsNets")
 
 
 ## Quick Start
