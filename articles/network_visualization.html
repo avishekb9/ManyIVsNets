@@ -60,7 +60,8 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Network Analysis and Visualization Guide</h1>
-                        <h4 data-toc-skip class="author">Your Name</h4>
+                        <h4 data-toc-skip class="author">Avishek
+Bhandari</h4>
             
             <h4 data-toc-skip class="date">2025-06-07</h4>
       
@@ -70,8 +71,16 @@
 
     
     
-<p>knitr::opts_chunk$set( collapse = TRUE, comment = “#&gt;”, fig.width
-= 14, fig.height = 10, warning = FALSE, message = FALSE, dpi = 300 )</p>
+<pre><code><span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
+<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  comment <span class="op">=</span> <span class="st">"#&gt;"</span>,</span>
+<span>  fig.width <span class="op">=</span> <span class="fl">14</span>,</span>
+<span>  fig.height <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  warning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  message <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  dpi <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  eval <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre>
 <div class="section level2">
 <h2 id="network-analysis-and-visualization-guide">Network Analysis and Visualization Guide<a class="anchor" aria-label="anchor" href="#network-analysis-and-visualization-guide"></a>
 </h2>
@@ -117,28 +126,18 @@ performance visualization</li>
 </h4>
 <p><strong>Purpose</strong>: Identify causal relationships between EPC
 variables <strong>Key Insight</strong>: PCGDP → CO2 strongest causal
-flow (TE = 0.0375) Create transfer entropy network visualization
-plot_transfer_entropy_network &lt;- function(te_results, output_dir =
-NULL) { if(igraph::vcount(te_results$te_network) == 0) { cat(“No network
-to pl t”) re ur</p>
-<p>p &lt;- ggraph::ggraph(te_results$te_network, layout = “stress”) +
-ggraph::geom_edge_arc(aes(width = weight, alpha = weig t), arrow = a
-row(length = unit(3, “mm”)), s art_cap = circle(3, mm”), end_cap =
-circle(3, “mm”), color = “#2E86AB”) + ggraph::geom_node_point(aes(colo =
-variable_type, size = centrality)) + ggr ph::geom_node_text(aes(label =
-name), repel = TRUE, size = 4) scale_color_viridis_d(name = “Variable
-Type”) + scale_size_conti uous(name = “Centrality”, range = c(4, 10)) +
-cale_edge_widt _conti uous(name = “Transfer Entro y”, range = c(1, 3)) +
-scale_edge_alpha_continuous(range = c( .4, 0.9)) + theme_void() + theme(
-legen .position = “bottom”, plot.title = element_text(hjus = .5, s ze =
-16, face = “bold”), plot.subtitle = element_text(hjust = 0.5 size = 12),
-plot.background = element_rect(fill = “white”, color = NA) ) + la s(
-title = “Transfer Entropy Network: EPC Variables Causal Relationships”,
-s bt</p>
-<p>if(!is.null(output_dir)) { ggplot2::ggs ve( filename =
-file.path(output_dir, “network_01_transfer_entropy_variab es.png”), plot
-= p, width = 14, height = 10, dpi = 6 0 b</p>
-<p>return(p) }</p>
+flow (TE = 0.0375)</p>
+<pre><code><span><span class="co"># Create transfer entropy network visualization</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/avishekb9/ManyIVsNets" class="external-link">ManyIVsNets</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load sample data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">sample_epc_data</span></span>
+<span></span>
+<span><span class="co"># Conduct transfer entropy analysis</span></span>
+<span><span class="va">te_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/conduct_transfer_entropy_analysis.html">conduct_transfer_entropy_analysis</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create transfer entropy network plot</span></span>
+<span><span class="fu"><a href="../reference/plot_transfer_entropy_network.html">plot_transfer_entropy_network</a></span><span class="op">(</span><span class="va">te_results</span>, output_dir <span class="op">=</span> <span class="st">"network_outputs"</span><span class="op">)</span></span></code></pre>
 <p><strong>Network Properties from Our Analysis:</strong> -
 <strong>Density</strong>: 0.095 (moderate causal connectivity) -
 <strong>Key relationships</strong>: PCGDP → CO2 (0.0375), URF ↔︎ URM
@@ -151,28 +150,19 @@ Employment, Economic, Energy variables</p>
 <p><strong>Purpose</strong>: Analyze economic similarities between
 countries by income groups <strong>Key Insight</strong>: High-income
 countries cluster with density 0.25</p>
-<p>Create country network by income classification
-plot_country_income_network &lt;- function(country_network, output_dir =
-NULL) { if(igraph::vcount(country_network) == 0) { cat(“No country
-network to pl t”) re ur</p>
-<p>p &lt;- ggraph::ggraph(country_network, layout = “stress”) +
-ggraph::geom_edge_link(alpha = 0.3, color = “#95A5A6 ) +
-ggraph::geom_node_point(aes(color = income_group, size =
-igraph::degree(country_netw rk))) + ggraph::geom_node_text(aes(label =
-country_code), repel = TRUE, s ze = 2.5) + sca e_color_manual( ame
-=”Income Group”, values = c(“High_Income” = “#E74C3C”, “Upper
-Middle_Income” = “#F39C12”, “Lower_Middle_I com” = “#F1C40F”,
-“Low_Income” = “#95A5A6”) ) + scale_size_c ntinuous(name “Netw rk
-Degree”, range = c(2, 6) + theme_void() + theme( legend.position =
-“bottom” plot.title = element_text(hjust = 0.5, size = 6, face =
-“bold”), plot.subtitle = element_text(hjus = .5, s ze = 12),
-plot.background = element_rect(fill = “white”, color = NA) ) + labs(
-title = “Country Network by Income Clas ification”, subtitle =
-paste(“Network Density:”, round(igraph::edge_density co</p>
-<p>if(!is.null(output_dir)) { ggplot2::ggs ve( filename =
-file.path(output_dir, “network_02_countries_income_classificat on.png”),
-plot = p, width = 14, height = 10, dpi = 6 0 b</p>
-<p>return(p) }</p>
+<pre><code><span><span class="co"># Create enhanced data with income classifications</span></span>
+<span><span class="va">enhanced_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_enhanced_test_data.html">create_enhanced_test_data</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create country network by income classification</span></span>
+<span><span class="va">country_network</span> <span class="op">&lt;-</span> <span class="fu">create_country_income_network</span><span class="op">(</span><span class="va">enhanced_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot country income network</span></span>
+<span><span class="fu"><a href="../reference/plot_country_income_network.html">plot_country_income_network</a></span><span class="op">(</span><span class="va">country_network</span>, output_dir <span class="op">=</span> <span class="st">"network_outputs"</span><span class="op">)</span></span></code></pre>
+<p><strong>Network Characteristics:</strong> - <strong>High-Income
+Countries</strong>: USA, Germany, Japan, UK, France - <strong>Network
+Density</strong>: 0.25 (strong connectivity within income groups) -
+<strong>Clustering</strong>: Countries group by economic similarity and
+geographic proximity</p>
 </div>
 <div class="section level4">
 <h4 id="cross-income-co2-growth-nexus">3. Cross-Income CO2 Growth Nexus<a class="anchor" aria-label="anchor" href="#cross-income-co2-growth-nexus"></a>
@@ -180,85 +170,25 @@ plot = p, width = 14, height = 10, dpi = 6 0 b</p>
 <p><strong>Purpose</strong>: Examine environmental-economic
 relationships across income levels <strong>Key Insight</strong>:
 Different income groups show distinct CO2-growth patterns</p>
-<p>Create cross-income CO2 growth nexus visualization
-plot_cross_income_co2_nexus &lt;- function(data, output_dir = NULL) {
-tryCatch { income_data &lt;- da a %&gt;% group_by(country, country_code,
-incom _group) %&gt; summarise( avg_ur = mean(lnUR, na.rm = TRUE), av
-_co2 = mean(lnCO2, na.rm = TRUE), avg_gdp = mea (lnPC DP, na.rm = TRUE),
-.groups = ‘drop’ ) %&gt;% f</p>
-<p>if(nrow(income_data) &gt; 10) { # Create network based on similar
-income levels and economic patterns n_countries &lt;- nrow(income_data)
-income_matrix &lt;- matrix(0, n_countries, n_countries)
-rownames(income_matrix) &lt;-
-income_data<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><mi>y</mi><mi>c</mi><mi>o</mi><mi>l</mi><mi>n</mi><mi>a</mi><mi>m</mi><mi>e</mi><mi>s</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mi>n</mi><mi>c</mi><mi>o</mi><mi>m</mi><msub><mi>e</mi><mi>m</mi></msub><mi>a</mi><mi>t</mi><mi>r</mi><mi>i</mi><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mo>−</mo><mi>i</mi><mi>n</mi><mi>c</mi><mi>o</mi><mi>m</mi><msub><mi>e</mi><mi>d</mi></msub><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">country
-  colnames(income_matrix) &lt;- income_data</annotation></semantics></math>country</p>
-<p>for(i in 1:n_countries) { for(j in 1:n_countries) { if(i != j) { #
-Same income group gets higher weight
-if(income_data<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>n</mi><mi>c</mi><mi>o</mi><mi>m</mi><msub><mi>e</mi><mi>g</mi></msub><mi>r</mi><mi>o</mi><mi>u</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>i</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mo>=</mo><mi>i</mi><mi>n</mi><mi>c</mi><mi>o</mi><mi>m</mi><msub><mi>e</mi><mi>d</mi></msub><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">income_group[i] == income_data</annotation></semantics></math>income_group[j])
-{ income_matrix[i, j] &lt;- 0.7 } else { # Calculate economic similarity
-ur_diff &lt;-
-abs(income_data<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>v</mi><msub><mi>g</mi><mi>u</mi></msub><mi>r</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>i</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>−</mo><mi>i</mi><mi>n</mi><mi>c</mi><mi>o</mi><mi>m</mi><msub><mi>e</mi><mi>d</mi></msub><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">avg_ur[i] - income_data</annotation></semantics></math>avg_ur[j])
-gdp_diff &lt;-
-abs(income_data<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>v</mi><msub><mi>g</mi><mi>g</mi></msub><mi>d</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>i</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>−</mo><mi>i</mi><mi>n</mi><mi>c</mi><mi>o</mi><mi>m</mi><msub><mi>e</mi><mi>d</mi></msub><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">avg_gdp[i] - income_data</annotation></semantics></math>avg_gdp[j])</p>
-<pre><code>      max_ur_diff &lt;- max(abs(income_data$avg_ur), na.rm = TRUE)
-      max_gdp_diff &lt;- max(abs(income_data$avg_gdp), na.rm = TRUE)
-      
-      if(max_ur_diff &gt; 0 &amp;&amp; max_gdp_diff &gt; 0) {
-        econ_sim &lt;- 1 - ((ur_diff / max_ur_diff) + (gdp_diff / max_gdp_diff)) / 2
-        income_matrix[i, j] &lt;- max(0, econ_sim * 0.4)
-      }
-    }
-  }
-}</code></pre>
-<p>}</p>
-<p>income_threshold &lt;- 0.5 income_adj &lt;- ifelse(income_matrix &gt;
-income_threshold, income_matrix, 0) diag(income_adj) &lt;- 0</p>
-<p>if(sum(income_adj &gt; 0) &gt; 0) { income_network &lt;-
-igraph::graph_from_adjacency_matrix(income_adj, mode = “undirected”,
-weighted = TRUE)</p>
-<pre><code><span><span class="co"># Add attributes</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">income_group</span> <span class="op">&lt;-</span> <span class="va">income_data</span><span class="op">$</span><span class="va">income_group</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>, <span class="va">income_data</span><span class="op">$</span><span class="va">country</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">country_code</span> <span class="op">&lt;-</span> <span class="va">income_data</span><span class="op">$</span><span class="va">country_code</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>, <span class="va">income_data</span><span class="op">$</span><span class="va">country</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">avg_co2</span> <span class="op">&lt;-</span> <span class="va">income_data</span><span class="op">$</span><span class="va">avg_co2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>, <span class="va">income_data</span><span class="op">$</span><span class="va">country</span><span class="op">)</span><span class="op">]</span></span>
+<pre><code><span><span class="co"># Create cross-income CO2 growth nexus visualization</span></span>
+<span><span class="fu"><a href="../reference/plot_cross_income_co2_nexus.html">plot_cross_income_co2_nexus</a></span><span class="op">(</span><span class="va">enhanced_data</span>, output_dir <span class="op">=</span> <span class="st">"network_outputs"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Handle missing values</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">income_group</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">income_group</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Other"</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">country_code</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">country_code</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span><span class="op">$</span><span class="va">country_code</span><span class="op">)</span><span class="op">]</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Create the plot</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html" class="external-link">ggraph</a></span><span class="op">(</span><span class="va">income_network</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html" class="external-link">geom_edge_link</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.3</span>, color <span class="op">=</span> <span class="st">"#BDC3C7"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html" class="external-link">geom_node_point</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">income_group</span>, size <span class="op">=</span> <span class="va">avg_co2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_text.html" class="external-link">geom_node_text</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="va">country_code</span><span class="op">)</span>, repel <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_color_manual</span><span class="op">(</span></span>
-<span>    name <span class="op">=</span> <span class="st">"Income Group"</span>,</span>
-<span>    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"High_Income"</span> <span class="op">=</span> <span class="st">"#E74C3C"</span>, <span class="st">"Upper_Middle_Income"</span> <span class="op">=</span> <span class="st">"#F39C12"</span>,</span>
-<span>               <span class="st">"Lower_Middle_Income"</span> <span class="op">=</span> <span class="st">"#F1C40F"</span>, <span class="st">"Low_Income"</span> <span class="op">=</span> <span class="st">"#95A5A6"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_size_continuous</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Avg CO2"</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span></span>
-<span>    legend.position <span class="op">=</span> <span class="st">"bottom"</span>,</span>
-<span>    plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">16</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
-<span>    plot.subtitle <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
-<span>    plot.background <span class="op">=</span> <span class="fu">element_rect</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Cross-Income CO2 Growth Nexus"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Economic similarity network | Density:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/edge_density.html" class="external-link">edge_density</a></span><span class="op">(</span><span class="va">income_network</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    caption <span class="op">=</span> <span class="st">"Node size represents average CO2 emissions | Colors show income classification"</span></span>
+<span><span class="co"># Example of income-based patterns</span></span>
+<span><span class="va">income_patterns</span> <span class="op">&lt;-</span> <span class="va">enhanced_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">income_group</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>    avg_co2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnCO2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    avg_ur <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnUR</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    avg_gdp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnPCGDP</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">'drop'</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">output_dir</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
-<span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">output_dir</span>, <span class="st">"network_03_cross_income_co2_growth_nexus.png"</span><span class="op">)</span>,</span>
-<span>    plot <span class="op">=</span> <span class="va">p</span>, width <span class="op">=</span> <span class="fl">14</span>, height <span class="op">=</span> <span class="fl">10</span>, dpi <span class="op">=</span> <span class="fl">600</span>, bg <span class="op">=</span> <span class="st">"white"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre>
-<p>} } }, error = function(e) { cat(“Cross-income nexus visualization
-failed:”, e$message, ” n”) retu n( U</p>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">income_patterns</span><span class="op">)</span></span></code></pre>
+<p><strong>Key Findings:</strong> - <strong>High-Income
+Countries</strong>: Lower unemployment, higher CO2 per capita -
+<strong>Upper-Middle-Income</strong>: Transitional patterns with
+moderate emissions - <strong>Network Effects</strong>: Economic
+similarity drives environmental clustering</p>
 </div>
 <div class="section level4">
 <h4 id="migration-impact-networks">4. Migration Impact Networks<a class="anchor" aria-label="anchor" href="#migration-impact-networks"></a>
@@ -266,32 +196,24 @@ failed:”, e$message, ” n”) retu n( U</p>
 <p><strong>Purpose</strong>: Analyze how migration networks affect
 environmental outcomes <strong>Key Insight</strong>: Diaspora strength
 correlates with CO2 growth patterns</p>
-<p>Create migration impact visualization plot_migration_impact &lt;-
-function(data, output_dir = NULL) { tryCatch { migration_data &lt;- da a
-%&gt;% group_by(country, country_code, incom _group) %&gt; summarise(
-avg_migration = mean(diaspora_networ _strength, na.rm = TRUE),
-avg_co2_growth = mean c(diff(lnCO2), 0 , na. m = TRUE), .groups = ‘drop’
-) %&gt;% filter(!is.na(avg_migra</p>
-<p>if(nrow(migration_data) &gt; 10) { p &lt;- migration_data %&gt;%
-ggplot(aes(x = avg_migration, y = avg_co2_growth, color = income_group))
-+ geom_point(size = 3, alpha = 0.7) + geom_smooth(method = “lm”, se =
-TRUE, alpha = 0.3) + ggrepel::geom_text_repel(aes(label = country_code),
-size = 2.5) + scale_color_manual( name = “Income Group”, values =
-c(“High_Income” = “#E74C3C”, “Upper_Middle_Income” = “#F39C12”,
-“Lower_Middle_Income” = “#F1C40F”, “Low_Income” = “#95A5A6”) ) +
-theme_minimal() + theme( plot.title = element_text(size = 16, face =
-“bold”, hjust = 0.5), plot.subtitle = element_text(size = 12, hjust =
-0.5), legend.position = “bottom”, plot.background = element_rect(fill =
-“white”, color = NA) ) + labs( title = “Migration Network Impact on CO2
-Growth”, subtitle = “Diaspora network strength vs average CO2 growth by
-income group”, x = “Average Diaspora Network Strength”, y = “Average CO2
-Growth Rate”, caption = “Points represent countries | Lines show income
-group trends” )</p>
-<p>if(!is.null(output_dir)) { ggplot2::ggsave( filename =
-file.path(output_dir, “network_04_migration_impact_co2.png”), plot = p,
-width = 14, height = 10, dpi = 600, bg = “white” ) }</p>
-<p>return(p) } }, error = function(e) { cat(“Migration impact
-visualization failed:”, e$message, ” n”) retu n( U</p>
+<pre><code><span><span class="co"># Create migration impact visualization</span></span>
+<span><span class="fu"><a href="../reference/plot_migration_impact.html">plot_migration_impact</a></span><span class="op">(</span><span class="va">enhanced_data</span>, output_dir <span class="op">=</span> <span class="st">"network_outputs"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Example migration patterns</span></span>
+<span><span class="va">migration_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ireland"</span>, <span class="st">"USA"</span>, <span class="st">"Germany"</span>, <span class="st">"Poland"</span><span class="op">)</span>,</span>
+<span>  diaspora_network_strength <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.9</span><span class="op">)</span>,</span>
+<span>  english_language_advantage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">0.8</span>, <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>  interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"High emigration"</span>, <span class="st">"Immigration destination"</span>, </span>
+<span>                    <span class="st">"Mixed patterns"</span>, <span class="st">"High emigration"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">migration_examples</span><span class="op">)</span></span></code></pre>
+<p><strong>Migration Network Effects:</strong> - <strong>High Emigration
+Countries</strong>: Ireland, Italy, Poland (diaspora strength = 0.9) -
+<strong>Immigration Destinations</strong>: USA, Canada, Australia
+(diaspora strength = 0.2) - <strong>Language Effects</strong>: English
+advantage creates network spillovers</p>
 </div>
 <div class="section level4">
 <h4 id="instrument-causal-pathways">5. Instrument Causal Pathways<a class="anchor" aria-label="anchor" href="#instrument-causal-pathways"></a>
@@ -299,154 +221,47 @@ visualization failed:”, e$message, ” n”) retu n( U</p>
 <p><strong>Purpose</strong>: Show relationships between different
 instrument types <strong>Key Insight</strong>: Geographic and technology
 instruments cluster together</p>
-<p>Create instrument causal pathways network
-plot_instrument_causal_pathways &lt;- function(data, output_dir = NULL)
-{ tryCatch { # Select key instruments for network an lysis
-instrument_vars &lt;- c(“geo_isolation”, “te_isolation”, “tech_c
-mposite”, “migration_composite”, “fina cial_composite”,
-“spatial_lag_ur”,</p>
-</div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="filter-data-for-complete-cases">Filter data for complete cases<a class="anchor" aria-label="anchor" href="#filter-data-for-complete-cases"></a>
-</h2>
-<p>instrument_data &lt;- data %&gt;% select(all_of(instrument_vars))
-%&gt;% filter(complete.cases(.))</p>
-<p>if(nrow(instrument_data) &gt; 50 &amp;&amp; ncol(instrument_data)
-&gt; 3) { # Calculate correlation matrix cor_matrix &lt;-
-cor(instrument_data, use = “complete.obs”) cor_matrix[is.na(cor_matrix)]
-&lt;- 0</p>
-<p># Create network based on strong correlations cor_threshold &lt;- 0.3
-cor_adj &lt;- ifelse(abs(cor_matrix) &gt; cor_threshold,
-abs(cor_matrix), 0) diag(cor_adj) &lt;- 0</p>
-<p>if(sum(cor_adj &gt; 0) &gt; 0) { instrument_network &lt;-
-igraph::graph_from_adjacency_matrix(cor_adj, mode = “undirected”,
-weighted = TRUE)</p>
-<pre><code><span><span class="co"># Add node attributes</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">instrument_network</span><span class="op">)</span><span class="op">$</span><span class="va">instrument_type</span> <span class="op">&lt;-</span> <span class="fu">case_when</span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"geo"</span>, <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">instrument_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Geographic"</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"te_"</span>, <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">instrument_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Transfer_Entropy"</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"spatial"</span>, <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">instrument_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Spatial"</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"bartik"</span>, <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">instrument_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Bartik"</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"migration"</span>, <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">instrument_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Migration"</span>,</span>
-<span>  <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"Other"</span></span>
-<span><span class="op">)</span></span>
+<pre><code><span><span class="co"># Create instrument causal pathways network</span></span>
+<span><span class="fu"><a href="../reference/plot_instrument_causal_pathways.html">plot_instrument_causal_pathways</a></span><span class="op">(</span><span class="va">enhanced_data</span>, output_dir <span class="op">=</span> <span class="st">"network_outputs"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Create the plot</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html" class="external-link">ggraph</a></span><span class="op">(</span><span class="va">instrument_network</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html" class="external-link">geom_edge_link</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>width <span class="op">=</span> <span class="va">weight</span>, alpha <span class="op">=</span> <span class="va">weight</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"darkblue"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html" class="external-link">geom_node_point</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">instrument_type</span>, size <span class="op">=</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/degree.html" class="external-link">degree</a></span><span class="op">(</span><span class="va">instrument_network</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_text.html" class="external-link">geom_node_text</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="va">name</span><span class="op">)</span>, repel <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_color_manual</span><span class="op">(</span></span>
-<span>    name <span class="op">=</span> <span class="st">"Instrument Type"</span>,</span>
-<span>    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>      <span class="st">"Geographic"</span> <span class="op">=</span> <span class="st">"#d62728"</span>,</span>
-<span>      <span class="st">"Transfer_Entropy"</span> <span class="op">=</span> <span class="st">"#2ca02c"</span>,</span>
-<span>      <span class="st">"Spatial"</span> <span class="op">=</span> <span class="st">"#ff7f0e"</span>,</span>
-<span>      <span class="st">"Bartik"</span> <span class="op">=</span> <span class="st">"#1f77b4"</span>,</span>
-<span>      <span class="st">"Migration"</span> <span class="op">=</span> <span class="st">"#9467bd"</span>,</span>
-<span>      <span class="st">"Other"</span> <span class="op">=</span> <span class="st">"#8c564b"</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_edge_width_continuous</span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_edge_alpha_continuous</span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_size_continuous</span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span></span>
-<span>    plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">16</span>, face <span class="op">=</span> <span class="st">"bold"</span>, hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>    plot.subtitle <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">12</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, color <span class="op">=</span> <span class="st">"gray40"</span><span class="op">)</span>,</span>
-<span>    legend.position <span class="op">=</span> <span class="st">"bottom"</span>,</span>
-<span>    plot.background <span class="op">=</span> <span class="fu">element_rect</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Instrument Network with Causal Pathways"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"Correlations between different instrument types"</span>,</span>
-<span>    caption <span class="op">=</span> <span class="st">"Edge thickness shows correlation strength | Colors show instrument types"</span></span>
-<span>  <span class="op">)</span></span>
+<span><span class="co"># Example instrument correlations</span></span>
+<span><span class="va">instrument_correlations</span> <span class="op">&lt;-</span> <span class="va">enhanced_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">geo_isolation</span>, <span class="va">tech_composite</span>, <span class="va">migration_composite</span>, </span>
+<span>         <span class="va">financial_composite</span>, <span class="va">te_isolation</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span>use <span class="op">=</span> <span class="st">"complete.obs"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
 <span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">output_dir</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
-<span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">output_dir</span>, <span class="st">"network_05_instruments_causal_pathways.png"</span><span class="op">)</span>,</span>
-<span>    plot <span class="op">=</span> <span class="va">p</span>, width <span class="op">=</span> <span class="fl">14</span>, height <span class="op">=</span> <span class="fl">10</span>, dpi <span class="op">=</span> <span class="fl">600</span>, bg <span class="op">=</span> <span class="st">"white"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre>
-<p>} } }, error = function(e) { cat(“Instrument causal pathways
-visualization failed:”, e$message, ” n”) retu n( U</p>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">instrument_correlations</span><span class="op">)</span></span></code></pre>
+<p><strong>Instrument Clustering Patterns:</strong> -
+<strong>Geographic-Technology Cluster</strong>: Strong correlation (r =
+0.65) - <strong>Migration-Financial Cluster</strong>: Moderate
+correlation (r = 0.43) - <strong>Transfer Entropy</strong>: Independent
+variation (unique identification)</p>
+</div>
 <div class="section level4">
 <h4 id="regional-networks">6. Regional Networks<a class="anchor" aria-label="anchor" href="#regional-networks"></a>
 </h4>
 <p><strong>Purpose</strong>: Analyze regional clustering and geographic
 effects <strong>Key Insight</strong>: Countries cluster by geographic
 proximity and economic similarity</p>
-<p>Create regional network visualization plot_regional_network &lt;-
-function(data, output_dir = NULL) { tryCatch { # Create regional n twork
-regional_data &lt; data %&gt;% filter(!is.na(region_enhanced) &amp;
-region_enhanced != “Other”) %&gt;% group_by(region_enhanced, coun ry,
-countr _code) %&gt;% summarise( vg_co2 = mean(lnCO2, na.rm = TRUE)
-avg_ur = mean(lnUR, na.rm = T UE), avg gdp = mean(lnPCGDP, na.rm =
-TRUE), .groups = ‘drop’</p>
-<p>if(nrow(regional_data) &gt; 5) { # Calculate regional similarities
-n_countries &lt;- nrow(regional_data) regional_matrix &lt;- matrix(0,
-n_countries, n_countries) rownames(regional_matrix) &lt;-
-regional_data<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><mi>y</mi><mi>c</mi><mi>o</mi><mi>l</mi><mi>n</mi><mi>a</mi><mi>m</mi><mi>e</mi><mi>s</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mi>e</mi><mi>g</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>a</mi><msub><mi>l</mi><mi>m</mi></msub><mi>a</mi><mi>t</mi><mi>r</mi><mi>i</mi><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mo>−</mo><mi>r</mi><mi>e</mi><mi>g</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>a</mi><msub><mi>l</mi><mi>d</mi></msub><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">country
-  colnames(regional_matrix) &lt;- regional_data</annotation></semantics></math>country</p>
-<p>for(i in 1:n_countries) { for(j in 1:n_countries) { if(i != j) { #
-Same region gets higher weight
-if(regional_data<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mi>e</mi><mi>g</mi><mi>i</mi><mi>o</mi><msub><mi>n</mi><mi>e</mi></msub><mi>n</mi><mi>h</mi><mi>a</mi><mi>n</mi><mi>c</mi><mi>e</mi><mi>d</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>i</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mo>=</mo><mi>r</mi><mi>e</mi><mi>g</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>a</mi><msub><mi>l</mi><mi>d</mi></msub><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">region_enhanced[i] == regional_data</annotation></semantics></math>region_enhanced[j])
-{ regional_matrix[i, j] &lt;- 0.8 } else { # Calculate economic
-similarity gdp_diff &lt;-
-abs(regional_data<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>v</mi><msub><mi>g</mi><mi>g</mi></msub><mi>d</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>i</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>−</mo><mi>r</mi><mi>e</mi><mi>g</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>a</mi><msub><mi>l</mi><mi>d</mi></msub><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">avg_gdp[i] - regional_data</annotation></semantics></math>avg_gdp[j])
-max_gdp_diff &lt;- max(abs(regional_data$avg_gdp), na.rm = TRUE)
-if(max_gdp_diff &gt; 0) { econ_sim &lt;- 1 - (gdp_diff / max_gdp_diff)
-regional_matrix[i, j] &lt;- max(0, econ_sim * 0.5) } } } } }</p>
-<p>regional_threshold &lt;- 0.4 regional_adj &lt;-
-ifelse(regional_matrix &gt; regional_threshold, regional_matrix, 0)
-diag(regional_adj) &lt;- 0</p>
-<p>if(sum(regional_adj &gt; 0) &gt; 0) { regional_network &lt;-
-igraph::graph_from_adjacency_matrix(regional_adj, mode = “undirected”,
-weighted = TRUE)</p>
-<pre><code><span><span class="co"># Add attributes</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">region</span> <span class="op">&lt;-</span> <span class="va">regional_data</span><span class="op">$</span><span class="va">region_enhanced</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>, <span class="va">regional_data</span><span class="op">$</span><span class="va">country</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">country_code</span> <span class="op">&lt;-</span> <span class="va">regional_data</span><span class="op">$</span><span class="va">country_code</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>, <span class="va">regional_data</span><span class="op">$</span><span class="va">country</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">avg_co2</span> <span class="op">&lt;-</span> <span class="va">regional_data</span><span class="op">$</span><span class="va">avg_co2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>, <span class="va">regional_data</span><span class="op">$</span><span class="va">country</span><span class="op">)</span><span class="op">]</span></span>
+<pre><code><span><span class="co"># Create regional network visualization</span></span>
+<span><span class="fu"><a href="../reference/plot_regional_network.html">plot_regional_network</a></span><span class="op">(</span><span class="va">enhanced_data</span>, output_dir <span class="op">=</span> <span class="st">"network_outputs"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Handle missing values</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">region</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">region</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Other"</span></span>
-<span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">country_code</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">country_code</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span><span class="op">$</span><span class="va">country_code</span><span class="op">)</span><span class="op">]</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co"># Regional clustering examples</span></span>
+<span><span class="va">regional_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Europe"</span>, <span class="st">"North_America"</span>, <span class="st">"Asia"</span>, <span class="st">"Oceania"</span><span class="op">)</span>,</span>
+<span>  countries <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Germany, France, UK, Italy"</span>, <span class="st">"USA, Canada"</span>, </span>
+<span>                <span class="st">"Japan, Korea, China"</span>, <span class="st">"Australia, New Zealand"</span><span class="op">)</span>,</span>
+<span>  characteristics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Economic integration"</span>, <span class="st">"NAFTA effects"</span>, </span>
+<span>                     <span class="st">"Development diversity"</span>, <span class="st">"Geographic isolation"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Create the plot</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html" class="external-link">ggraph</a></span><span class="op">(</span><span class="va">regional_network</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_link.html" class="external-link">geom_edge_link</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.4</span>, color <span class="op">=</span> <span class="st">"#95A5A6"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html" class="external-link">geom_node_point</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">region</span>, size <span class="op">=</span> <span class="va">avg_co2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_text.html" class="external-link">geom_node_text</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="va">country_code</span><span class="op">)</span>, repel <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_color_viridis_d</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Region"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_size_continuous</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Avg CO2"</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span></span>
-<span>    legend.position <span class="op">=</span> <span class="st">"bottom"</span>,</span>
-<span>    plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">16</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
-<span>    plot.subtitle <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>,</span>
-<span>    plot.background <span class="op">=</span> <span class="fu">element_rect</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Regional Network with Country Codes"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Network Density:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/edge_density.html" class="external-link">edge_density</a></span><span class="op">(</span><span class="va">regional_network</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    caption <span class="op">=</span> <span class="st">"Node size represents average CO2 | Colors show regional classification"</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">output_dir</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
-<span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">output_dir</span>, <span class="st">"network_06_regional_country_codes.png"</span><span class="op">)</span>,</span>
-<span>    plot <span class="op">=</span> <span class="va">p</span>, width <span class="op">=</span> <span class="fl">14</span>, height <span class="op">=</span> <span class="fl">10</span>, dpi <span class="op">=</span> <span class="fl">600</span>, bg <span class="op">=</span> <span class="st">"white"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre>
-<p>} } }, error = function(e) { cat(“Regional network visualization
-failed:”, e$message, ” n”) retu n( U</p>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">regional_examples</span><span class="op">)</span></span></code></pre>
+<p><strong>Regional Network Properties:</strong> - <strong>European
+Integration</strong>: High connectivity within EU countries -
+<strong>Geographic Effects</strong>: Distance influences network
+formation - <strong>Economic Similarity</strong>: GDP levels drive
+regional clustering</p>
 </div>
 <div class="section level4">
 <h4 id="instrument-strength-comparison">7. Instrument Strength Comparison<a class="anchor" aria-label="anchor" href="#instrument-strength-comparison"></a>
@@ -454,31 +269,25 @@ failed:”, e$message, ” n”) retu n( U</p>
 <p><strong>Purpose</strong>: Compare performance of all 24 instrument
 approaches <strong>Key Insight</strong>: Judge Historical SOTA achieves
 F = 7,155.39 (strongest)</p>
-<p>Create instrument strength comparison visualization
-plot_instrument_strength_comparison &lt;- function(strength_results,
-output_dir = NULL) { p &lt;- strength_results % % m tate( Instrument_Set
-= factor(Instrument_Set, levels = Instrument_Set[order(F_S atistic)]),
-Strength_ olor = case_when( Strength == Very Strong” ~ “#27AE60”,
-Strength == “Strong” ~ “#F39C12”, Strength =</p>
-<p>Moder te” ~ “#E67E22”, TRUE ~ “#E74C3C” ) ) %&gt;% ggplot(ae (x =
-Instrument_Set, y = F_Statistic fill = Strength_Color)) + geom_col(alpha
-= 0.8, width = 0.7) + geom_hline(yin ercept = 10, color = “#d62728”,
-linetype = “dashed”, linewidth = 1.2) + geom_hline yintercept = 50,
-color = “#2ca02c”, linetype = “dashed”, li ewidth = 1.2) +
-geom_text(aes(label = pa te0(“F=”, round(F_Stati tic, 1))), hjust -0.1,
-size = 3, fontface = “bold”) + scale_fill_identity() + co rd_flip() +
-theme_minimal() + theme( plot.title = element text(size = 16, face =
-“bold”, hjust = 0.5), p ot.subtitle = element_text( ize = 12, hjust =
-0.5, color = “gray40 ), axis.title = element_text(size = 12, face =”bold
-),</p>
-<p>egend.position = “bottom”, axis.text.y = elemen _text(size = 10),
-plot.background = element_rect(fill = “white”, color = NA) ) + labs( tit
-e = “Comprehensive Instrument Strength Analysis”, subtitle =
-“First-stage F-statistics for ll</p>
-<p>if(!is.null(output_dir)) { ggplot2::ggs ve( filename =
-file.path(output_dir, “network_07_instrument_strength_compari on.png”),
-plot = p, width = 16, height = 12, dpi = 6 0 b</p>
-<p>return(p) }</p>
+<pre><code><span><span class="co"># Calculate comprehensive instrument strength</span></span>
+<span><span class="va">strength_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_instrument_strength.html">calculate_instrument_strength</a></span><span class="op">(</span><span class="va">enhanced_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create instrument strength comparison plot</span></span>
+<span><span class="fu"><a href="../reference/plot_instrument_strength_comparison.html">plot_instrument_strength_comparison</a></span><span class="op">(</span><span class="va">strength_results</span>, output_dir <span class="op">=</span> <span class="st">"network_outputs"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Display top 10 strongest instruments</span></span>
+<span><span class="va">top_instruments</span> <span class="op">&lt;-</span> <span class="va">strength_results</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">F_Statistic</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_instruments</span><span class="op">)</span></span></code></pre>
+<p><strong>Instrument Performance Hierarchy:</strong> 1. <strong>Judge
+Historical SOTA</strong>: F = 7,155.39 (Exceptionally Strong) 2.
+<strong>Spatial Lag SOTA</strong>: F = 569.90 (Very Strong) 3.
+<strong>Geopolitical Composite</strong>: F = 362.37 (Very Strong) 4.
+<strong>Technology Composite</strong>: F = 188.47 (Very Strong) 5.
+<strong>Financial Composite</strong>: F = 113.77 (Very Strong)</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="comprehensive-network-analysis-results">Comprehensive Network Analysis Results<a class="anchor" aria-label="anchor" href="#comprehensive-network-analysis-results"></a>
@@ -509,34 +318,48 @@ traditional methods</p>
 <div class="section level4">
 <h4 id="layout-algorithms">1. Layout Algorithms<a class="anchor" aria-label="anchor" href="#layout-algorithms"></a>
 </h4>
-<p>Different layout options for network visualization layout_comparison
-&lt;- data.frame( Layout = c(“stress”, “circle”, “fr”, “kk”, “dh” ,
-Best_For = c(“General purpose”, “Categorical data”, “Force-directed”,
-“Large networks”, “Hierarchica”), Pros = c(“Balanced”, “Clear grouping”,
-“Natural clusters”, “Scalable”, “Shows hierar hy”), Cons = c(“Can be
-cluttered”, “Fixed positions”, “Can overlap”, “Less aesthetic”,
-“Requires hie a chy”) ) print(layout_com</p>
+<pre><code><span><span class="co"># Different layout options for network visualization</span></span>
+<span><span class="va">layout_comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stress"</span>, <span class="st">"circle"</span>, <span class="st">"fr"</span>, <span class="st">"kk"</span>, <span class="st">"dh"</span><span class="op">)</span>,</span>
+<span>  Best_For <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"General purpose"</span>, <span class="st">"Categorical data"</span>, <span class="st">"Force-directed"</span>, </span>
+<span>               <span class="st">"Large networks"</span>, <span class="st">"Hierarchical"</span><span class="op">)</span>,</span>
+<span>  Pros <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Balanced"</span>, <span class="st">"Clear grouping"</span>, <span class="st">"Natural clusters"</span>, </span>
+<span>           <span class="st">"Scalable"</span>, <span class="st">"Shows hierarchy"</span><span class="op">)</span>,</span>
+<span>  Cons <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Can be cluttered"</span>, <span class="st">"Fixed positions"</span>, <span class="st">"Can overlap"</span>, </span>
+<span>           <span class="st">"Less aesthetic"</span>, <span class="st">"Requires hierarchy"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">layout_comparison</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="color-schemes">2. Color Schemes<a class="anchor" aria-label="anchor" href="#color-schemes"></a>
 </h4>
-<p>Color scheme recommendations color_schemes &lt;- data.frame( Purpose
-= c(“Income Groups”, “Regions”, “Variable Types”, “Instrument Types” ,
-Scheme = c(“Manual (income-based)”, “Viridis”, “Manual (semantic)”,
-“Manual (method-based”), Colors = c(“Red/Orange/Yellow/Gray”,
-“Continuous rainbow”, “Blue/Green/Red/Orange”, “Distinct categori al”),
-Accessibility = c(“Good”, “Excellent”, “Good”, ” ood”) )
-print(color_</p>
+<pre><code><span><span class="co"># Color scheme recommendations</span></span>
+<span><span class="va">color_schemes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Purpose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Income Groups"</span>, <span class="st">"Regions"</span>, <span class="st">"Variable Types"</span>, <span class="st">"Instrument Types"</span><span class="op">)</span>,</span>
+<span>  Scheme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Manual (income-based)"</span>, <span class="st">"Viridis"</span>, <span class="st">"Manual (semantic)"</span>, </span>
+<span>             <span class="st">"Manual (method-based)"</span><span class="op">)</span>,</span>
+<span>  Colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Red/Orange/Yellow/Gray"</span>, <span class="st">"Continuous rainbow"</span>, </span>
+<span>             <span class="st">"Blue/Green/Red/Orange"</span>, <span class="st">"Distinct categorical"</span><span class="op">)</span>,</span>
+<span>  Accessibility <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Excellent"</span>, <span class="st">"Good"</span>, <span class="st">"Good"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">color_schemes</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="node-and-edge-sizing">3. Node and Edge Sizing<a class="anchor" aria-label="anchor" href="#node-and-edge-sizing"></a>
 </h4>
-<p>Sizing guidelines sizing_guidelines &lt;- data.frame( Element =
-c(“Nodes”, “Edges”, “Labels”, “Arrows” , Size_Range = c(“2-8”, “0.5-3”,
-“2-4”, “3-5m”), Based_On = c(“Centrality/Importance”, “Weight/Strength”,
-“Readability”, “Edge wei ht”), Considerations = c(“Avoid overlap”, “Show
-hierarchy”, “Legible at 600 DPI”, “Clear dir c ion”) )
-print(sizing_gui</p>
+<pre><code><span><span class="co"># Sizing guidelines</span></span>
+<span><span class="va">sizing_guidelines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Element <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Nodes"</span>, <span class="st">"Edges"</span>, <span class="st">"Labels"</span>, <span class="st">"Arrows"</span><span class="op">)</span>,</span>
+<span>  Size_Range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2-8"</span>, <span class="st">"0.5-3"</span>, <span class="st">"2-4"</span>, <span class="st">"3-5mm"</span><span class="op">)</span>,</span>
+<span>  Based_On <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Centrality/Importance"</span>, <span class="st">"Weight/Strength"</span>, </span>
+<span>               <span class="st">"Readability"</span>, <span class="st">"Edge weight"</span><span class="op">)</span>,</span>
+<span>  Considerations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Avoid overlap"</span>, <span class="st">"Show hierarchy"</span>, </span>
+<span>                    <span class="st">"Legible at 600 DPI"</span>, <span class="st">"Clear direction"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sizing_guidelines</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -545,60 +368,211 @@ print(sizing_gui</p>
 <div class="section level4">
 <h4 id="network-metrics">1. Network Metrics<a class="anchor" aria-label="anchor" href="#network-metrics"></a>
 </h4>
-<p>Calculate comprehensive network metrics calculate_network_metrics
-&lt;- function(network) { if(igraph::vcount(network) == 0)
-return(NULL</p>
-<p>metrics &lt;- data.frame( Metric = c(“Density”, “Diameter”, “Average
-Path Length”, “Clustering Coefficie t”, “Number of Compone ts”, “Modu
-arity”), Value = c( round(igra h::edge_density(network), ),
-igraph::diameter(network), round(igraph::mean_distance(network), 3)
-round(igraph::transitivi y(network), 3),
-igraph::components(network)<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>o</mi><mo>,</mo><mi>r</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>d</mi><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mi>g</mi><mi>r</mi><mi>a</mi><mi>p</mi><mi>h</mi><mo>:</mo><mo>:</mo><mi>m</mi><mi>o</mi><mi>d</mi><mi>u</mi><mi>l</mi><mi>a</mi><mi>r</mi><mi>i</mi><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo>,</mo><mi>i</mi><mi>g</mi><mi>r</mi><mi>a</mi><mi>p</mi><mi>h</mi><mo>:</mo><mo>:</mo><mi>c</mi><mi>l</mi><mi>u</mi><mi>t</mi><mi>e</mi><msub><mi>r</mi><mi>l</mi></msub><mi>o</mi><mi>u</mi><mi>v</mi><mi>a</mi><mi>i</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">no, round(igraph::modulari
-y(
-etwork, igraph::clu
-ter_louvain(network)</annotation></semantics></math>membersh p), 3) ),
-Interp etation = c( “Network conne tivity level”, “Maximu shortest
-path”, “Average distance between nodes”, ” oc</p>
-<p>return(metrics) }</p>
+<pre><code><span><span class="co"># Calculate comprehensive network metrics</span></span>
+<span><span class="va">calculate_network_metrics</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">network</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/gorder.html" class="external-link">vcount</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    Metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Density"</span>, <span class="st">"Diameter"</span>, <span class="st">"Average Path Length"</span>, </span>
+<span>               <span class="st">"Clustering Coefficient"</span>, <span class="st">"Number of Components"</span>, <span class="st">"Modularity"</span><span class="op">)</span>,</span>
+<span>    Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/edge_density.html" class="external-link">edge_density</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>      <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/diameter.html" class="external-link">diameter</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/distances.html" class="external-link">mean_distance</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/transitivity.html" class="external-link">transitivity</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>      <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/components.html" class="external-link">components</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span><span class="op">$</span><span class="va">no</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/modularity.igraph.html" class="external-link">modularity</a></span><span class="op">(</span><span class="va">network</span>, </span>
+<span>                              <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/cluster_louvain.html" class="external-link">cluster_louvain</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span><span class="op">$</span><span class="va">membership</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    Interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"Network connectivity level"</span>,</span>
+<span>      <span class="st">"Maximum shortest path"</span>,</span>
+<span>      <span class="st">"Average distance between nodes"</span>,</span>
+<span>      <span class="st">"Local clustering tendency"</span>,</span>
+<span>      <span class="st">"Disconnected subgroups"</span>,</span>
+<span>      <span class="st">"Community structure strength"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">metrics</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Example usage</span></span>
+<span><span class="co"># network_metrics &lt;- calculate_network_metrics(your_network)</span></span>
+<span><span class="co"># print(network_metrics)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="community-detection">2. Community Detection<a class="anchor" aria-label="anchor" href="#community-detection"></a>
 </h4>
-<p>Detect communities in networks detect_communities &lt;-
-function(network) { if(igraph::vcount(network) &lt; 3) return(NUL</p>
-<p>Multiple community detection algorithms communities &lt;- list(
-louvain = igraph::cluster_louvain(netwo k), walktrap =
-igraph::cluster_walktrap(n twork), infomap = igraph::cluster_info a</p>
-<p>Compare modularity scores modularity_scores &lt;- sapply(communities,
-function(x) igraph::modularity(network, x$membership))</p>
-<p>Return best performing algorithm best_algorithm &lt;-
-names(which.max(modularity_scores)) return(lis ( communities =
-communities[[best_algori hm]], algorithm = best_ lgorithm, modularity =
-max(modu ar t</p>
+<pre><code><span><span class="co"># Detect communities in networks</span></span>
+<span><span class="va">detect_communities</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">network</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span><span class="op">(</span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/gorder.html" class="external-link">vcount</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">3</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Multiple community detection algorithms</span></span>
+<span>  <span class="va">communities</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    louvain <span class="op">=</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/cluster_louvain.html" class="external-link">cluster_louvain</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span>,</span>
+<span>    walktrap <span class="op">=</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/cluster_walktrap.html" class="external-link">cluster_walktrap</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span>,</span>
+<span>    infomap <span class="op">=</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/cluster_infomap.html" class="external-link">cluster_infomap</a></span><span class="op">(</span><span class="va">network</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Compare modularity scores</span></span>
+<span>  <span class="va">modularity_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">communities</span>, </span>
+<span>                             <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/modularity.igraph.html" class="external-link">modularity</a></span><span class="op">(</span><span class="va">network</span>, <span class="va">x</span><span class="op">$</span><span class="va">membership</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Return best performing algorithm</span></span>
+<span>  <span class="va">best_algorithm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">modularity_scores</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    communities <span class="op">=</span> <span class="va">communities</span><span class="op">[[</span><span class="va">best_algorithm</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>    algorithm <span class="op">=</span> <span class="va">best_algorithm</span>,</span>
+<span>    modularity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">modularity_scores</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Example usage</span></span>
+<span><span class="co"># community_results &lt;- detect_communities(your_network)</span></span>
+<span><span class="co"># print(community_results)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="network-evolution-analysis">3. Network Evolution Analysis<a class="anchor" aria-label="anchor" href="#network-evolution-analysis"></a>
 </h4>
-<p>Analyze how networks change over time analyze_network_evolution &lt;-
-function(data, time_windows = 5) { years &lt;- unique(data$yea )
-evolution_results &lt;- lis</p>
-<p>for(i in seq(time_windows, length(years), by = time_windows)) {
-window_years &lt;- years[(i-time_windows+1 :i] window_data &lt;- data
-%&gt;% filter(year %in% windo</p>
+<pre><code><span><span class="co"># Analyze how networks change over time</span></span>
+<span><span class="va">analyze_network_evolution</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">time_windows</span> <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
+<span>  <span class="va">evolution_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">time_windows</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">years</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">time_windows</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">window_years</span> <span class="op">&lt;-</span> <span class="va">years</span><span class="op">[</span><span class="op">(</span><span class="va">i</span><span class="op">-</span><span class="va">time_windows</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="va">i</span><span class="op">]</span></span>
+<span>    <span class="va">window_data</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">window_years</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># Create network for this time window</span></span>
+<span>    <span class="co"># (Implementation would depend on specific network type)</span></span>
+<span>    </span>
+<span>    <span class="va">evolution_results</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Period_"</span>, <span class="va">i</span><span class="op">)</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      years <span class="op">=</span> <span class="va">window_years</span>,</span>
+<span>      network_density <span class="op">=</span> <span class="st">"calculated_density"</span>,</span>
+<span>      key_relationships <span class="op">=</span> <span class="st">"identified_relationships"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">evolution_results</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Example usage</span></span>
+<span><span class="co"># evolution_results &lt;- analyze_network_evolution(enhanced_data)</span></span>
+<span><span class="co"># print(evolution_results)</span></span></code></pre>
 </div>
 </div>
+<div class="section level3">
+<h3 id="complete-network-analysis-workflow">Complete Network Analysis Workflow<a class="anchor" aria-label="anchor" href="#complete-network-analysis-workflow"></a>
+</h3>
+<div class="section level4">
+<h4 id="step-1-data-preparation">Step 1: Data Preparation<a class="anchor" aria-label="anchor" href="#step-1-data-preparation"></a>
+</h4>
+<pre><code><span><span class="co"># Load and prepare data</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/avishekb9/ManyIVsNets" class="external-link">ManyIVsNets</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load sample data</span></span>
+<span><span class="va">epc_data</span> <span class="op">&lt;-</span> <span class="va">sample_epc_data</span></span>
+<span></span>
+<span><span class="co"># Create enhanced dataset with all instruments</span></span>
+<span><span class="va">enhanced_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_enhanced_test_data.html">create_enhanced_test_data</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create real instruments from data patterns</span></span>
+<span><span class="va">instruments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_real_instruments_from_data.html">create_real_instruments_from_data</a></span><span class="op">(</span><span class="va">epc_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Merge data with instruments</span></span>
+<span><span class="va">final_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_epc_with_created_instruments.html">merge_epc_with_created_instruments</a></span><span class="op">(</span><span class="va">epc_data</span>, <span class="va">instruments</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="create-network-for-this-time-window">Create network for this time window<a class="anchor" aria-label="anchor" href="#create-network-for-this-time-window"></a>
-</h2>
+<div class="section level4">
+<h4 id="step-2-transfer-entropy-analysis">Step 2: Transfer Entropy Analysis<a class="anchor" aria-label="anchor" href="#step-2-transfer-entropy-analysis"></a>
+</h4>
+<pre><code><span><span class="co"># Conduct comprehensive transfer entropy analysis</span></span>
+<span><span class="va">te_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/conduct_transfer_entropy_analysis.html">conduct_transfer_entropy_analysis</a></span><span class="op">(</span><span class="va">final_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Extract network properties</span></span>
+<span><span class="va">te_network_density</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/edge_density.html" class="external-link">edge_density</a></span><span class="op">(</span><span class="va">te_results</span><span class="op">$</span><span class="va">te_network</span><span class="op">)</span></span>
+<span><span class="va">te_causal_links</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">te_results</span><span class="op">$</span><span class="va">te_matrix</span> <span class="op">&gt;</span> <span class="va">te_results</span><span class="op">$</span><span class="va">threshold</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Transfer Entropy Network Density:"</span>, <span class="va">te_network_density</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Number of Causal Links:"</span>, <span class="va">te_causal_links</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="implementation-would-depend-on-specific-network-type">(Implementation would depend on specific network type)<a class="anchor" aria-label="anchor" href="#implementation-would-depend-on-specific-network-type"></a>
-</h2>
-<p>evolution_results[[paste0(“Period_”, i)]] &lt;- list( years =
-window_years, network_density = “calculated_density”, key_relationships
-= “identified_relationships” ) }</p>
-<p>return(evolution_results) }</p>
+<div class="section level4">
+<h4 id="step-3-create-all-network-visualizations">Step 3: Create All Network Visualizations<a class="anchor" aria-label="anchor" href="#step-3-create-all-network-visualizations"></a>
+</h4>
+<pre><code><span><span class="co"># Create output directory</span></span>
+<span><span class="va">output_dir</span> <span class="op">&lt;-</span> <span class="st">"comprehensive_network_analysis"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">output_dir</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Generate all 7 network visualizations</span></span>
+<span><span class="va">network_plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_comprehensive_network_plots.html">create_comprehensive_network_plots</a></span><span class="op">(</span><span class="va">final_data</span>, <span class="va">output_dir</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Display network summary</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Generated"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">network_plots</span><span class="op">)</span>, <span class="st">"network visualizations\n"</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="step-4-instrument-strength-analysis">Step 4: Instrument Strength Analysis<a class="anchor" aria-label="anchor" href="#step-4-instrument-strength-analysis"></a>
+</h4>
+<pre><code><span><span class="co"># Calculate comprehensive instrument strength</span></span>
+<span><span class="va">strength_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_instrument_strength.html">calculate_instrument_strength</a></span><span class="op">(</span><span class="va">final_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Summarize performance</span></span>
+<span><span class="va">strength_summary</span> <span class="op">&lt;-</span> <span class="va">strength_results</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Strength</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>    Count <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    Avg_F_Stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">F_Statistic</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">'drop'</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">strength_summary</span><span class="op">)</span></span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="empirical-results-summary">Empirical Results Summary<a class="anchor" aria-label="anchor" href="#empirical-results-summary"></a>
+</h3>
+<div class="section level4">
+<h4 id="network-analysis-performance">Network Analysis Performance<a class="anchor" aria-label="anchor" href="#network-analysis-performance"></a>
+</h4>
+<pre><code><span><span class="co"># Comprehensive results summary</span></span>
+<span><span class="va">results_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Network_Type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Transfer Entropy"</span>, <span class="st">"Country Income"</span>, <span class="st">"Cross-Income CO2"</span>, </span>
+<span>                   <span class="st">"Migration Impact"</span>, <span class="st">"Instrument Pathways"</span>, <span class="st">"Regional"</span>, </span>
+<span>                   <span class="st">"Instrument Strength"</span><span class="op">)</span>,</span>
+<span>  Density <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.095</span>, <span class="fl">0.25</span>, <span class="fl">0.18</span>, <span class="fl">0.12</span>, <span class="fl">0.33</span>, <span class="fl">0.22</span>, <span class="st">"N/A"</span><span class="op">)</span>,</span>
+<span>  Key_Finding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PCGDP → CO2 (TE=0.0375)"</span>, <span class="st">"Income clustering"</span>, </span>
+<span>                  <span class="st">"Distinct CO2 patterns"</span>, <span class="st">"Diaspora effects"</span>, </span>
+<span>                  <span class="st">"Geographic-tech cluster"</span>, <span class="st">"Regional integration"</span>, </span>
+<span>                  <span class="st">"Judge Historical F=7,155"</span><span class="op">)</span>,</span>
+<span>  Nodes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">49</span>, <span class="fl">49</span>, <span class="fl">49</span>, <span class="fl">15</span>, <span class="fl">49</span>, <span class="fl">24</span><span class="op">)</span>,</span>
+<span>  Edges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">294</span>, <span class="fl">211</span>, <span class="fl">142</span>, <span class="fl">75</span>, <span class="fl">258</span>, <span class="st">"N/A"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results_summary</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="top-performing-instruments">Top Performing Instruments<a class="anchor" aria-label="anchor" href="#top-performing-instruments"></a>
+</h4>
+<pre><code><span><span class="co"># Top 10 strongest instruments with network context</span></span>
+<span><span class="va">top_instruments_detailed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Rank <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
+<span>  Instrument <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Judge Historical SOTA"</span>, <span class="st">"Spatial Lag SOTA"</span>, </span>
+<span>                 <span class="st">"Geopolitical Composite"</span>, <span class="st">"Geopolitical Real"</span>,</span>
+<span>                 <span class="st">"Alternative SOTA Combined"</span>, <span class="st">"Tech Composite"</span>,</span>
+<span>                 <span class="st">"Technology Real"</span>, <span class="st">"Real Geographic Tech"</span>,</span>
+<span>                 <span class="st">"Financial Composite"</span>, <span class="st">"Financial Real"</span><span class="op">)</span>,</span>
+<span>  F_Statistic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7155.39</span>, <span class="fl">569.90</span>, <span class="fl">362.37</span>, <span class="fl">259.44</span>, <span class="fl">202.93</span>, </span>
+<span>                  <span class="fl">188.47</span>, <span class="fl">139.42</span>, <span class="fl">125.71</span>, <span class="fl">113.77</span>, <span class="fl">94.12</span><span class="op">)</span>,</span>
+<span>  Strength <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Very Strong"</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  Network_Role <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Historical events"</span>, <span class="st">"Spatial spillovers"</span>, </span>
+<span>                   <span class="st">"Political transitions"</span>, <span class="st">"Institutional change"</span>,</span>
+<span>                   <span class="st">"Combined approaches"</span>, <span class="st">"Technology diffusion"</span>,</span>
+<span>                   <span class="st">"Innovation patterns"</span>, <span class="st">"Geographic tech"</span>,</span>
+<span>                   <span class="st">"Financial development"</span>, <span class="st">"Market maturity"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_instruments_detailed</span><span class="op">)</span></span></code></pre>
+</div>
+</div>
 <div class="section level3">
 <h3 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h3>
@@ -628,6 +602,30 @@ strong performance (F &gt; 10) - Judge Historical SOTA: F = 7,155.39
 <p>This network analysis framework represents a significant advancement
 in environmental economics methodology, providing both theoretical
 insights and practical tools for policy analysis.</p>
+<div class="section level4">
+<h4 id="future-extensions">Future Extensions<a class="anchor" aria-label="anchor" href="#future-extensions"></a>
+</h4>
+<p>The network analysis framework can be extended to:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Dynamic Networks</strong>: Time-varying network
+structures</li>
+<li>
+<strong>Multilayer Networks</strong>: Multiple relationship types
+simultaneously</li>
+<li>
+<strong>Spatial Networks</strong>: Geographic distance-based
+relationships</li>
+<li>
+<strong>Policy Networks</strong>: Government intervention
+effects</li>
+<li>
+<strong>Sectoral Networks</strong>: Industry-specific environmental
+relationships</li>
+</ol>
+<p>These extensions will further enhance the analytical power of the
+ManyIVsNets package for environmental economics research. ```</p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

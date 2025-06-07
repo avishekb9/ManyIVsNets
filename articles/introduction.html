@@ -60,7 +60,10 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Introduction to ManyIVsNets</h1>
+                        <h4 data-toc-skip class="author">Avishek
+Bhandari</h4>
             
+            <h4 data-toc-skip class="date">2025-06-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/avishekb9/ManyIVsNets/blob/main/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="d-none name"><code>introduction.Rmd</code></div>
@@ -68,9 +71,497 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/avishekb9/ManyIVsNets" class="external-link">ManyIVsNets</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<pre><code><span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
+<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  comment <span class="op">=</span> <span class="st">"#&gt;"</span>,</span>
+<span>  fig.width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  fig.height <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  warning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  message <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  eval <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre>
+<div class="section level2">
+<h2 id="introduction-to-manyivsnets">Introduction to ManyIVsNets<a class="anchor" aria-label="anchor" href="#introduction-to-manyivsnets"></a>
+</h2>
+<p><strong>ManyIVsNets</strong> is a comprehensive R package for
+Environmental Phillips Curve (EPC) analysis that contributes to causal
+identification through multiple instrumental variable approaches and
+network analysis. This package represents the first systematic
+implementation of multidimensional instrument creation from economic and
+geographic data patterns.</p>
+<div class="section level3">
+<h3 id="what-is-the-environmental-phillips-curve">What is the Environmental Phillips Curve?<a class="anchor" aria-label="anchor" href="#what-is-the-environmental-phillips-curve"></a>
+</h3>
+<p>The Environmental Phillips Curve examines the relationship between
+unemployment and environmental outcomes (particularly CO2 emissions),
+extending the traditional Phillips Curve concept to environmental
+economics. This relationship is crucial for understanding:</p>
+<ul>
+<li>
+<strong>Trade-offs</strong> between employment and environmental
+quality</li>
+<li>
+<strong>Policy implications</strong> of labor market interventions
+on emissions</li>
+<li>
+<strong>Causal mechanisms</strong> linking economic activity to
+environmental outcomes</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="package-overview">Package Overview<a class="anchor" aria-label="anchor" href="#package-overview"></a>
+</h3>
+<p>ManyIVsNets provides:</p>
+<div class="section level4">
+<h4 id="instrumental-variable-approaches">🔧 <strong>24 Instrumental Variable Approaches</strong><a class="anchor" aria-label="anchor" href="#instrumental-variable-approaches"></a>
+</h4>
+<ul>
+<li>
+<strong>Geographic instruments</strong>: Isolation, island status,
+landlocked conditions</li>
+<li>
+<strong>Technology instruments</strong>: Internet adoption, mobile
+infrastructure, telecom development</li>
+<li>
+<strong>Migration instruments</strong>: Diaspora networks, language
+advantages, migration costs</li>
+<li>
+<strong>Geopolitical instruments</strong>: Post-communist
+transitions, NATO membership, EU accession</li>
+<li>
+<strong>Financial instruments</strong>: Market maturity, banking
+development, financial openness</li>
+<li>
+<strong>Natural risk instruments</strong>: Seismic risk, volcanic
+activity, climate volatility</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="transfer-entropy-causal-discovery">🌐 <strong>Transfer Entropy Causal Discovery</strong><a class="anchor" aria-label="anchor" href="#transfer-entropy-causal-discovery"></a>
+</h4>
+<ul>
+<li>Non-parametric causal relationship identification</li>
+<li>Network construction from economic similarities</li>
+<li>Directional causality analysis (e.g., PCGDP → CO2)</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="publication-quality-visualizations">📊 <strong>7 Publication-Quality Visualizations</strong><a class="anchor" aria-label="anchor" href="#publication-quality-visualizations"></a>
+</h4>
+<ul>
+<li>Transfer entropy networks</li>
+<li>Country income classification networks</li>
+<li>Cross-income CO2 growth nexus</li>
+<li>Migration impact networks</li>
+<li>Instrument causal pathways</li>
+<li>Regional networks</li>
+<li>Instrument strength comparisons</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="comprehensive-econometric-framework">📈 <strong>Comprehensive Econometric Framework</strong><a class="anchor" aria-label="anchor" href="#comprehensive-econometric-framework"></a>
+</h4>
+<ul>
+<li>OLS baseline models</li>
+<li>IV regression with multiple instrument sets</li>
+<li>Robust standard errors and diagnostics</li>
+<li>Instrument strength testing (F-statistics)</li>
+<li>Overidentification tests (Sargan)</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
+</h3>
+<div class="section level4">
+<h4 id="methodological-innovation">✅ <strong>Methodological Innovation</strong><a class="anchor" aria-label="anchor" href="#methodological-innovation"></a>
+</h4>
+<ul>
+<li>First comprehensive from-scratch instrument creation framework</li>
+<li>Novel application of transfer entropy to environmental
+economics</li>
+<li>Network-based instrument construction</li>
+<li>Multidimensional composite instruments using factor analysis</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="empirical-validation">✅ <strong>Empirical Validation</strong><a class="anchor" aria-label="anchor" href="#empirical-validation"></a>
+</h4>
+<ul>
+<li>
+<strong>21 out of 24 instruments</strong> show strong performance (F
+&gt; 10)</li>
+<li>
+<strong>Judge Historical SOTA</strong>: F = 7,155.39 (strongest
+instrument in environmental economics)</li>
+<li>
+<strong>Spatial Lag SOTA</strong>: F = 569.90</li>
+<li>
+<strong>Geopolitical Composite</strong>: F = 362.37</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+</h3>
+<div class="section level4">
+<h4 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h4>
+<pre><code><span><span class="co"># Install from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"avishekb9/ManyIVsNets"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load the package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/avishekb9/ManyIVsNets" class="external-link">ManyIVsNets</a></span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
+</h4>
+<pre><code><span><span class="co"># Load sample data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">sample_epc_data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run complete EPC analysis pipeline</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_complete_epc_analysis.html">run_complete_epc_analysis</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View results summary</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="create-instruments-from-your-data">Create Instruments from Your Data<a class="anchor" aria-label="anchor" href="#create-instruments-from-your-data"></a>
+</h4>
+<pre><code><span><span class="co"># Create multidimensional instruments from your EPC data</span></span>
+<span><span class="va">instruments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_real_instruments_from_data.html">create_real_instruments_from_data</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View created instruments</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">instruments</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create composite instruments using factor analysis</span></span>
+<span><span class="va">composite_instruments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_composite_instruments.html">create_composite_instruments</a></span><span class="op">(</span><span class="va">instruments</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="transfer-entropy-analysis">Transfer Entropy Analysis<a class="anchor" aria-label="anchor" href="#transfer-entropy-analysis"></a>
+</h4>
+<pre><code><span><span class="co"># Conduct transfer entropy causal discovery</span></span>
+<span><span class="va">te_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/conduct_transfer_entropy_analysis.html">conduct_transfer_entropy_analysis</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View causal relationships</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">te_results</span><span class="op">$</span><span class="va">te_matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Network properties</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Network density:"</span>, <span class="va">te_results</span><span class="op">$</span><span class="va">network_density</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Causal links:"</span>, <span class="va">te_results</span><span class="op">$</span><span class="va">causal_links</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="econometric-analysis">Econometric Analysis<a class="anchor" aria-label="anchor" href="#econometric-analysis"></a>
+</h4>
+<pre><code><span><span class="co"># Merge data with instruments</span></span>
+<span><span class="va">final_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_epc_with_created_instruments.html">merge_epc_with_created_instruments</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">instruments</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run comprehensive IV models</span></span>
+<span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_comprehensive_epc_models.html">run_comprehensive_epc_models</a></span><span class="op">(</span><span class="va">final_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate instrument strength</span></span>
+<span><span class="va">strength_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_instrument_strength.html">calculate_instrument_strength</a></span><span class="op">(</span><span class="va">final_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View top performing instruments</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">strength_results</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">strength_results</span><span class="op">$</span><span class="va">F_Statistic</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
+</h4>
+<pre><code><span><span class="co"># Create all network visualizations</span></span>
+<span><span class="va">network_plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_comprehensive_network_plots.html">create_comprehensive_network_plots</a></span><span class="op">(</span><span class="va">final_data</span>, </span>
+<span>                                                    output_dir <span class="op">=</span> <span class="st">"network_outputs"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot instrument strength comparison</span></span>
+<span><span class="fu"><a href="../reference/plot_instrument_strength_comparison.html">plot_instrument_strength_comparison</a></span><span class="op">(</span><span class="va">strength_results</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot transfer entropy network</span></span>
+<span><span class="fu"><a href="../reference/plot_transfer_entropy_network.html">plot_transfer_entropy_network</a></span><span class="op">(</span><span class="va">te_results</span><span class="op">)</span></span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="methodological-advantages">Methodological Advantages<a class="anchor" aria-label="anchor" href="#methodological-advantages"></a>
+</h3>
+<div class="section level4">
+<h4 id="multiple-identification-strategies">1. <strong>Multiple Identification Strategies</strong><a class="anchor" aria-label="anchor" href="#multiple-identification-strategies"></a>
+</h4>
+<p>Traditional IV approaches often rely on a single instrument, raising
+concerns about validity. ManyIVsNets provides 24 different approaches,
+enabling: - <strong>Robustness testing</strong> across multiple
+identification strategies - <strong>Overidentification tests</strong> to
+validate instrument exogeneity - <strong>Sensitivity analysis</strong>
+to ensure result stability</p>
+</div>
+<div class="section level4">
+<h4 id="theory-driven-instrument-creation">2. <strong>Theory-Driven Instrument Creation</strong><a class="anchor" aria-label="anchor" href="#theory-driven-instrument-creation"></a>
+</h4>
+<p>Rather than searching for arbitrary external instruments, our
+approach: - <strong>Uses economic theory</strong> to identify relevant
+exogenous dimensions - <strong>Creates instruments from observable
+patterns</strong> in the data - <strong>Ensures policy
+relevance</strong> through institutional and historical variation</p>
+</div>
+<div class="section level4">
+<h4 id="network-based-innovation">3. <strong>Network-Based Innovation</strong><a class="anchor" aria-label="anchor" href="#network-based-innovation"></a>
+</h4>
+<ul>
+<li>
+<strong>Transfer entropy networks</strong> reveal causal
+relationships between variables</li>
+<li>
+<strong>Country similarity networks</strong> enable instrument
+construction</li>
+<li>
+<strong>Network centrality measures</strong> provide novel
+instruments</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="empirical-performance">Empirical Performance<a class="anchor" aria-label="anchor" href="#empirical-performance"></a>
+</h3>
+<div class="section level4">
+<h4 id="instrument-strength-results">Instrument Strength Results<a class="anchor" aria-label="anchor" href="#instrument-strength-results"></a>
+</h4>
+<p>Our comprehensive validation shows good performance:</p>
+<pre><code><span><span class="co"># Top 10 strongest instruments</span></span>
+<span><span class="va">top_instruments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Rank <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
+<span>  Instrument <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Judge Historical SOTA"</span>, <span class="st">"Spatial Lag SOTA"</span>, </span>
+<span>                 <span class="st">"Geopolitical Composite"</span>, <span class="st">"Geopolitical Real"</span>,</span>
+<span>                 <span class="st">"Alternative SOTA Combined"</span>, <span class="st">"Tech Composite"</span>,</span>
+<span>                 <span class="st">"Technology Real"</span>, <span class="st">"Real Geographic Tech"</span>,</span>
+<span>                 <span class="st">"Financial Composite"</span>, <span class="st">"Financial Real"</span><span class="op">)</span>,</span>
+<span>  F_Statistic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7155.39</span>, <span class="fl">569.90</span>, <span class="fl">362.37</span>, <span class="fl">259.44</span>, <span class="fl">202.93</span>, </span>
+<span>                  <span class="fl">188.47</span>, <span class="fl">139.42</span>, <span class="fl">125.71</span>, <span class="fl">113.77</span>, <span class="fl">94.12</span><span class="op">)</span>,</span>
+<span>  Strength <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Very Strong"</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_instruments</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="strength-classification">Strength Classification<a class="anchor" aria-label="anchor" href="#strength-classification"></a>
+</h4>
+<ul>
+<li>
+<strong>Very Strong</strong> (F &gt; 50): 8 approaches (33.3%)</li>
+<li>
+<strong>Strong</strong> (F &gt; 10): 13 approaches (54.2%)</li>
+<li>
+<strong>Moderate</strong> (F &gt; 5): 2 approaches (8.3%)</li>
+<li>
+<strong>Weak</strong> (F ≤ 5): 1 approach (4.2%)</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="transfer-entropy-results">Transfer Entropy Results<a class="anchor" aria-label="anchor" href="#transfer-entropy-results"></a>
+</h4>
+<ul>
+<li>
+<strong>Network density</strong>: 0.095 (moderate causal
+connectivity)</li>
+<li>
+<strong>Key causal relationship</strong>: PCGDP → CO2 (TE =
+0.0375)</li>
+<li>
+<strong>Bidirectional employment causality</strong>: URF ↔︎ URM</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="real-world-applications">Real-World Applications<a class="anchor" aria-label="anchor" href="#real-world-applications"></a>
+</h3>
+<div class="section level4">
+<h4 id="policy-analysis">1. <strong>Policy Analysis</strong><a class="anchor" aria-label="anchor" href="#policy-analysis"></a>
+</h4>
+<ul>
+<li>Evaluate employment-environment trade-offs</li>
+<li>Design green growth strategies</li>
+<li>Assess labor market intervention impacts</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="academic-research">2. <strong>Academic Research</strong><a class="anchor" aria-label="anchor" href="#academic-research"></a>
+</h4>
+<ul>
+<li>Causal identification in environmental economics</li>
+<li>Robustness testing with multiple instruments</li>
+<li>Novel methodological applications</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="international-organizations">3. <strong>International Organizations</strong><a class="anchor" aria-label="anchor" href="#international-organizations"></a>
+</h4>
+<ul>
+<li>Cross-country environmental policy analysis</li>
+<li>Development strategy evaluation</li>
+<li>Climate policy assessment</li>
+</ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="package-structure">Package Structure<a class="anchor" aria-label="anchor" href="#package-structure"></a>
+</h3>
+<div class="section level4">
+<h4 id="core-functions">Core Functions<a class="anchor" aria-label="anchor" href="#core-functions"></a>
+</h4>
+<p><strong>Main Analysis:</strong> -
+<code><a href="../reference/run_complete_epc_analysis.html">run_complete_epc_analysis()</a></code>: Complete analysis pipeline -
+<code><a href="../reference/run_comprehensive_epc_models.html">run_comprehensive_epc_models()</a></code>: IV regression models -
+<code><a href="../reference/calculate_instrument_strength.html">calculate_instrument_strength()</a></code>: F-statistic testing</p>
+<p><strong>Instrument Creation:</strong> -
+<code><a href="../reference/create_real_instruments_from_data.html">create_real_instruments_from_data()</a></code>: Multidimensional
+instruments - <code><a href="../reference/create_composite_instruments.html">create_composite_instruments()</a></code>: Factor
+analysis combinations -
+<code><a href="../reference/create_alternative_sota_instruments.html">create_alternative_sota_instruments()</a></code>: State-of-the-art
+approaches</p>
+<p><strong>Transfer Entropy:</strong> -
+<code><a href="../reference/conduct_transfer_entropy_analysis.html">conduct_transfer_entropy_analysis()</a></code>: Causal discovery -
+<code><a href="../reference/create_te_based_instruments.html">create_te_based_instruments()</a></code>: Network-based
+instruments</p>
+<p><strong>Visualization:</strong> -
+<code><a href="../reference/create_comprehensive_network_plots.html">create_comprehensive_network_plots()</a></code>: All 7 network
+visualizations - <code><a href="../reference/plot_transfer_entropy_network.html">plot_transfer_entropy_network()</a></code>: Causal
+relationship networks -
+<code><a href="../reference/plot_instrument_strength_comparison.html">plot_instrument_strength_comparison()</a></code>: Performance
+comparison</p>
+</div>
+<div class="section level4">
+<h4 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h4>
+<p><strong>Sample Dataset:</strong> - <code>sample_epc_data</code>: 5
+countries, 1991-2021, 7 EPC variables - Ready-to-use for testing and
+demonstration</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h3>
+<div class="section level4">
+<h4 id="explore-the-vignettes">1. <strong>Explore the Vignettes</strong><a class="anchor" aria-label="anchor" href="#explore-the-vignettes"></a>
+</h4>
+<ul>
+<li>
+<strong><a href="instrument_creation.html">Creating Multidimensional
+Instruments</a></strong>: Comprehensive guide to instrument
+creation</li>
+<li>
+<strong><a href="network_analysis.html">Network Analysis and
+Visualization</a></strong>: Network analysis and visualization
+guide</li>
+<li>
+<strong><a href="transfer_entropy.html">Transfer Entropy
+Analysis</a></strong>: Causal discovery methodology</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="run-the-examples">2. <strong>Run the Examples</strong><a class="anchor" aria-label="anchor" href="#run-the-examples"></a>
+</h4>
+<pre><code><span><span class="co"># Quick example with sample data</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/avishekb9/ManyIVsNets" class="external-link">ManyIVsNets</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load sample data</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">sample_epc_data</span></span>
+<span></span>
+<span><span class="co"># Create instruments</span></span>
+<span><span class="va">instruments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_real_instruments_from_data.html">create_real_instruments_from_data</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run analysis</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_complete_epc_analysis.html">run_complete_epc_analysis</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View summary</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">summary</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="use-your-own-data">3. <strong>Use Your Own Data</strong><a class="anchor" aria-label="anchor" href="#use-your-own-data"></a>
+</h4>
+<pre><code><span><span class="co"># Load your EPC data (CSV format)</span></span>
+<span><span class="co"># Required columns: country, year, CO2_per_capita, UR, URF, URM, PCGDP, Trade, RES</span></span>
+<span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_epc_data_corrected.html">load_epc_data_corrected</a></span><span class="op">(</span><span class="st">"path/to/your/data.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run complete analysis</span></span>
+<span><span class="va">my_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_complete_epc_analysis.html">run_complete_epc_analysis</a></span><span class="op">(</span></span>
+<span>  data_file <span class="op">=</span> <span class="st">"path/to/your/data.csv"</span>,</span>
+<span>  output_dir <span class="op">=</span> <span class="st">"my_analysis_results"</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h3>
+<p>If you use ManyIVsNets in your research, please cite:</p>
+<p>Bhandari, A. (2025). <em>ManyIVsNets: Environmental Phillips Curve
+Analysis with Multiple Instrumental Variables and Networks</em>
+[Computer software]. GitHub. <a href="https://github.com/avishekb9/ManyIVsNets" class="external-link uri">https://github.com/avishekb9/ManyIVsNets</a></p>
+<div class="section level4">
+<h4 id="bibtex-entry">BibTeX Entry<a class="anchor" aria-label="anchor" href="#bibtex-entry"></a>
+</h4>
+<pre><code>@misc{ManyIVsNets2025,
+  author = {Avishek Bhandari},
+  title = {ManyIVsNets: Environmental Phillips Curve Analysis with Multiple Instrumental Variables and Networks},
+  year = {2025},
+  publisher = {GitHub},
+  url = {https://github.com/avishekb9/ManyIVsNets}
+}</code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="support-and-contribution">Support and Contribution<a class="anchor" aria-label="anchor" href="#support-and-contribution"></a>
+</h3>
+<div class="section level4">
+<h4 id="getting-help">Getting Help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+</h4>
+<ul>
+<li>
+<strong>Package website</strong>: <a href="https://avishekb9.github.io/ManyIVsNets/" class="uri">https://avishekb9.github.io/ManyIVsNets/</a>
+</li>
+<li>
+<strong>GitHub repository</strong>: <a href="https://github.com/avishekb9/ManyIVsNets" class="external-link uri">https://github.com/avishekb9/ManyIVsNets</a>
+</li>
+<li>
+<strong>Issue tracker</strong>: <a href="https://github.com/avishekb9/ManyIVsNets/issues" class="external-link uri">https://github.com/avishekb9/ManyIVsNets/issues</a>
+</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h4>
+<p>We welcome contributions! Please see our GitHub repository for: - Bug
+reports and feature requests - Code contributions and improvements -
+Documentation enhancements</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h3>
+<p>ManyIVsNets represents a contribution to macro-environmental
+economics methodology, providing:</p>
+<ul>
+<li>
+<strong>Comprehensive instrumental variable framework</strong> with
+24 different approaches</li>
+<li>
+<strong>Novel causal discovery methods</strong> using transfer
+entropy</li>
+<li>
+<strong>Professional visualization capabilities</strong> with 7
+publication-quality plots</li>
+<li>
+<strong>Robust empirical validation</strong> with exceptional
+instrument performance</li>
+</ul>
+<p>The package is designed for researchers, policymakers, and students
+working on environmental economics, labor economics, and causal
+inference. With its combination of methodological innovation and
+practical applicability, ManyIVsNets opens new avenues for understanding
+the complex relationships between employment, economic growth, and
+environmental outcomes.</p>
+<p><strong>Ready to revolutionize your environmental economics research?
+Start with ManyIVsNets today!</strong> ```</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

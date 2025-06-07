@@ -60,7 +60,8 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Transfer Entropy Analysis and Causal Discovery</h1>
-                        <h4 data-toc-skip class="author">Your Name</h4>
+                        <h4 data-toc-skip class="author">Avishek
+Bhandari</h4>
             
             <h4 data-toc-skip class="date">2025-06-07</h4>
       
@@ -70,8 +71,15 @@
 
     
     
-<p>knitr::opts_chunk$set( collapse = TRUE, comment = “#&gt;”, fig.width
-= 12, fig.height = 10, warning = FALSE, message = FALSE )</p>
+<pre><code><span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
+<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  comment <span class="op">=</span> <span class="st">"#&gt;"</span>,</span>
+<span>  fig.width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  fig.height <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  warning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  message <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  eval <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre>
 <div class="section level2">
 <h2 id="transfer-entropy-analysis-and-causal-discovery">Transfer Entropy Analysis and Causal Discovery<a class="anchor" aria-label="anchor" href="#transfer-entropy-analysis-and-causal-discovery"></a>
 </h2>
@@ -87,11 +95,12 @@ causal links among EPC variables.</p>
 the amount of information transferred from one time series to another,
 providing a non-parametric approach to causal discovery. Unlike Granger
 causality, transfer entropy can capture non-linear relationships and
-does not assume specific functional forms. <strong>Mathematical
-Foundation:</strong> Transfer entropy from Y to X is defined as: TE(Y→X)
-= H(X_{t+1}|X_t) - H(X_{t+1}|X_t, Y_t) Where H denotes entropy,
-measuring the reduction in uncertainty about X_{t+1} when we know both
-X_t and Y_t compared to knowing only X_t.</p>
+does not assume specific functional forms.</p>
+<p><strong>Mathematical Foundation:</strong></p>
+<p>Transfer entropy from Y to X is defined as:</p>
+<p>TE(Y→X) = H(X_{t+1}|X_t) - H(X_{t+1}|X_t, Y_t)</p>
+<p>Where H denotes entropy, measuring the reduction in uncertainty about
+X_{t+1} when we know both X_t and Y_t compared to knowing only X_t.</p>
 </div>
 <div class="section level3">
 <h3 id="why-transfer-entropy-for-environmental-economics">Why Transfer Entropy for Environmental Economics?<a class="anchor" aria-label="anchor" href="#why-transfer-entropy-for-environmental-economics"></a>
@@ -123,16 +132,25 @@ are less sensitive to extreme values</li>
 </h3>
 <p>Our analysis examines causal relationships among 7 key EPC
 variables:</p>
-<p>te_variables &lt;- c(“lnCO2”, “lnUR”, “lnURF”, “lnURM”, “lnPCGDP”,
-“lnTrade”, “lnRES”)</p>
-<p>variable_descriptions &lt;- data.frame( Variable = te_variables,
-Description = c( “Log CO2 emissions per capita”, “Log unemployment rate
-(total)”, “Log female unemployment rate”, “Log male unemployment rate”,
-“Log per capita GDP”, “Log trade openness”, “Log renewable energy share”
-), Type = c(“Environmental”, “Employment”, “Employment”, “Employment”,
-“Economic”, “Economic”, “Energy”), Role = c(“Dependent”, “Key
-Independent”, “Control”, “Control”, “Control”, “Control”, “Control”) )
-print(variable_descriptions)</p>
+<pre><code><span><span class="va">te_variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lnCO2"</span>, <span class="st">"lnUR"</span>, <span class="st">"lnURF"</span>, <span class="st">"lnURM"</span>, <span class="st">"lnPCGDP"</span>, <span class="st">"lnTrade"</span>, <span class="st">"lnRES"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">variable_descriptions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Variable <span class="op">=</span> <span class="va">te_variables</span>,</span>
+<span>  Description <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Log CO2 emissions per capita"</span>,</span>
+<span>    <span class="st">"Log unemployment rate (total)"</span>,</span>
+<span>    <span class="st">"Log female unemployment rate"</span>,</span>
+<span>    <span class="st">"Log male unemployment rate"</span>,</span>
+<span>    <span class="st">"Log per capita GDP"</span>,</span>
+<span>    <span class="st">"Log trade openness"</span>,</span>
+<span>    <span class="st">"Log renewable energy share"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  Type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Environmental"</span>, <span class="st">"Employment"</span>, <span class="st">"Employment"</span>, <span class="st">"Employment"</span>,</span>
+<span>           <span class="st">"Economic"</span>, <span class="st">"Economic"</span>, <span class="st">"Energy"</span><span class="op">)</span>,</span>
+<span>  Role <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dependent"</span>, <span class="st">"Key Independent"</span>, <span class="st">"Control"</span>, <span class="st">"Control"</span>,</span>
+<span>           <span class="st">"Control"</span>, <span class="st">"Control"</span>, <span class="st">"Control"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">variable_descriptions</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="transfer-entropy-implementation">Transfer Entropy Implementation<a class="anchor" aria-label="anchor" href="#transfer-entropy-implementation"></a>
@@ -140,15 +158,16 @@ print(variable_descriptions)</p>
 <div class="section level4">
 <h4 id="data-preparation">Data Preparation<a class="anchor" aria-label="anchor" href="#data-preparation"></a>
 </h4>
-<p>Prepare time series data for transfer entropy analysis ts_data &lt;-
-enhanced_data %&gt;% select(country, year, country_code,
-all_of(te_variables)) %&gt;% arrange(country, year) %&gt;%
-filter(complete.cases(.))</p>
-<p>cat(“Variables for TE analysis:”, paste(te_variables, collapse =
-“,”)) cat(“Complete cases for TE analysis:”, nrow(ts_data))
-cat(“Countries in analysis:”, length(unique(ts_data<span class="math inline">$country)))
-cat("Time period:", min(ts_data$</span>year), “-”,
-max(ts_data$year))</p>
+<pre><code><span><span class="co"># Prepare time series data for transfer entropy analysis</span></span>
+<span><span class="va">ts_data</span> <span class="op">&lt;-</span> <span class="va">enhanced_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">country</span>, <span class="va">year</span>, <span class="va">country_code</span>, <span class="fu">all_of</span><span class="op">(</span><span class="va">te_variables</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">country</span>, <span class="va">year</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Variables for TE analysis:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">te_variables</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Complete cases for TE analysis:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Countries in analysis:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">$</span><span class="va">country</span><span class="op">)</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Time period:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, <span class="st">"-"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre>
 <p><strong>Data Requirements:</strong> - <strong>Complete time
 series</strong>: No missing values for TE calculation -
 <strong>Sufficient observations</strong>: Minimum 8 observations per
@@ -159,62 +178,90 @@ time sequence for causal inference</p>
 <div class="section level4">
 <h4 id="enhanced-transfer-entropy-calculation">Enhanced Transfer Entropy Calculation<a class="anchor" aria-label="anchor" href="#enhanced-transfer-entropy-calculation"></a>
 </h4>
-<p>Enhanced transfer entropy calculation with fallback
-calculate_te_enhanced &lt;- function(x, y) { tryCatch({ # Check data
-quality if(length(x) &lt; 8 || length(y) &lt; 8) return(0)</p>
-<p>complete_idx &lt;- complete.cases(x, y) if(sum(complete_idx) &lt; 6)
-return(0)</p>
-<p>x_clean &lt;- x[complete_idx] y_clean &lt;- y[complete_idx]</p>
+<pre><code><span><span class="co"># Enhanced transfer entropy calculation with fallback</span></span>
+<span><span class="va">calculate_te_enhanced</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    <span class="co"># Check data quality</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">8</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">8</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="va">complete_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">complete_idx</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">6</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="va">x_clean</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="va">complete_idx</span><span class="op">]</span></span>
+<span>    <span class="va">y_clean</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">complete_idx</span><span class="op">]</span></span>
+<span>    </span>
+<span>    <span class="co"># Check for sufficient variation</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">x_clean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.01</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">y_clean</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.01</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="co"># Use RTransferEntropy if available</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"RTransferEntropy"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">te_result</span> <span class="op">&lt;-</span> <span class="fu">RTransferEntropy</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RTransferEntropy/man/calc_te.html" class="external-link">calc_te</a></span><span class="op">(</span></span>
+<span>        x <span class="op">=</span> <span class="va">x_clean</span>,</span>
+<span>        y <span class="op">=</span> <span class="va">y_clean</span>,</span>
+<span>        lx <span class="op">=</span> <span class="fl">1</span>,  <span class="co"># Lag length for x</span></span>
+<span>        ly <span class="op">=</span> <span class="fl">1</span>,  <span class="co"># Lag length for y</span></span>
+<span>        entropy <span class="op">=</span> <span class="st">"Shannon"</span>,</span>
+<span>        bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x_clean</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>        quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>      <span class="op">)</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">te_result</span><span class="op">)</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="co"># Enhanced fallback: correlation-based approximation</span></span>
+<span>      <span class="va">cor_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">x_clean</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, <span class="va">y_clean</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y_clean</span><span class="op">)</span><span class="op">]</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">cor_val</span> <span class="op">-</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
 </div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="check-for-sufficient-variation">Check for sufficient variation<a class="anchor" aria-label="anchor" href="#check-for-sufficient-variation"></a>
-</h2>
-<p>if(sd(x_clean, na.rm = TRUE) &lt; 0.01 || sd(y_clean, na.rm = TRUE)
-&lt; 0.01) return(0)</p>
-</div>
-<div class="section level2">
-<h2 id="use-rtransferentropy-if-available">Use RTransferEntropy if available<a class="anchor" aria-label="anchor" href="#use-rtransferentropy-if-available"></a>
-</h2>
-<p>if(requireNamespace(“RTransferEntropy”, quietly = TRUE)) { te_result
-&lt;- RTransferEntropy::calc_te( x = x_clean, y = y_clean, lx = 1, # Lag
-length for x ly = 1, # Lag length for y entropy = “Shannon”, bins =
-min(5, length(x_clean) %/% 3), quiet = TRUE ) return(te_result) } else {
-# Enhanced fallback: correlation-based approximation cor_val &lt;-
-abs(cor(x_clean[-1], y_clean[-length(y_clean)], use = “complete.obs”))
-return(max(0, cor_val - 0.3) * 0.1) } }, error = function(e) { return(0)
-}) }</p>
 <div class="section level4">
 <h4 id="transfer-entropy-matrix-construction">Transfer Entropy Matrix Construction<a class="anchor" aria-label="anchor" href="#transfer-entropy-matrix-construction"></a>
 </h4>
-<p>Calculate comprehensive transfer entropy matrix n_vars &lt;-
-length(te_variables) te_matrix &lt;- matrix(0, nrow = n_vars, ncol =
-n_vars) rownames(te_matrix) &lt;- te_variables colnames(te_matrix) &lt;-
-te_variables</p>
-<p>cat(“Calculating Transfer Entropy matrix…”)</p>
-<p>for(i in 1:n_vars) { for(j in 1:n_vars) { if(i != j) { var_i &lt;-
-te_variables[i] var_j &lt;- te_variables[j]</p>
-<p>cat(“Computing TE:”, var_j, “-&gt;”, var_i)</p>
-<p>te_values &lt;- c()</p>
-<p># Calculate TE for each country separately for(ctry in
-unique(ts_data$country)) { country_data &lt;- ts_data %&gt;%
-filter(country == ctry)</p>
-<pre><code><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">country_data</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">6</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">x_series</span> <span class="op">&lt;-</span> <span class="va">country_data</span><span class="op">[[</span><span class="va">var_i</span><span class="op">]</span><span class="op">]</span></span>
-<span>  <span class="va">y_series</span> <span class="op">&lt;-</span> <span class="va">country_data</span><span class="op">[[</span><span class="va">var_j</span><span class="op">]</span><span class="op">]</span></span>
-<span>  </span>
-<span>  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x_series</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y_series</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">6</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">te_val</span> <span class="op">&lt;-</span> <span class="fu">calculate_te_enhanced</span><span class="op">(</span><span class="va">x_series</span>, <span class="va">y_series</span><span class="op">)</span></span>
-<span>    </span>
-<span>    <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">te_val</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.finite</a></span><span class="op">(</span><span class="va">te_val</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="va">te_val</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">te_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">te_values</span>, <span class="va">te_val</span><span class="op">)</span></span>
+<pre><code><span><span class="co"># Calculate comprehensive transfer entropy matrix</span></span>
+<span><span class="va">n_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">te_variables</span><span class="op">)</span></span>
+<span><span class="va">te_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow <span class="op">=</span> <span class="va">n_vars</span>, ncol <span class="op">=</span> <span class="va">n_vars</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">te_matrix</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">te_variables</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">te_matrix</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">te_variables</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Calculating Transfer Entropy matrix...\n"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n_vars</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n_vars</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">i</span> <span class="op">!=</span> <span class="va">j</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">var_i</span> <span class="op">&lt;-</span> <span class="va">te_variables</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>      <span class="va">var_j</span> <span class="op">&lt;-</span> <span class="va">te_variables</span><span class="op">[</span><span class="va">j</span><span class="op">]</span></span>
+<span>      </span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Computing TE:"</span>, <span class="va">var_j</span>, <span class="st">"-&gt;"</span>, <span class="va">var_i</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>      </span>
+<span>      <span class="va">te_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>      </span>
+<span>      <span class="co"># Calculate TE for each country separately</span></span>
+<span>      <span class="kw">for</span><span class="op">(</span><span class="va">ctry</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">$</span><span class="va">country</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">country_data</span> <span class="op">&lt;-</span> <span class="va">ts_data</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">country</span> <span class="op">==</span> <span class="va">ctry</span><span class="op">)</span></span>
+<span>        </span>
+<span>        <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">country_data</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">6</span><span class="op">)</span> <span class="op">{</span></span>
+<span>          <span class="va">x_series</span> <span class="op">&lt;-</span> <span class="va">country_data</span><span class="op">[[</span><span class="va">var_i</span><span class="op">]</span><span class="op">]</span></span>
+<span>          <span class="va">y_series</span> <span class="op">&lt;-</span> <span class="va">country_data</span><span class="op">[[</span><span class="va">var_j</span><span class="op">]</span><span class="op">]</span></span>
+<span>          </span>
+<span>          <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x_series</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">6</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y_series</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">6</span><span class="op">)</span> <span class="op">{</span></span>
+<span>            <span class="va">te_val</span> <span class="op">&lt;-</span> <span class="fu">calculate_te_enhanced</span><span class="op">(</span><span class="va">x_series</span>, <span class="va">y_series</span><span class="op">)</span></span>
+<span>            </span>
+<span>            <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">te_val</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.finite</a></span><span class="op">(</span><span class="va">te_val</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="va">te_val</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>              <span class="va">te_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">te_values</span>, <span class="va">te_val</span><span class="op">)</span></span>
+<span>            <span class="op">}</span></span>
+<span>          <span class="op">}</span></span>
+<span>        <span class="op">}</span></span>
+<span>      <span class="op">}</span></span>
+<span>      </span>
+<span>      <span class="co"># Use median TE across countries</span></span>
+<span>      <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">te_values</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">te_matrix</span><span class="op">[</span><span class="va">i</span>, <span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">te_values</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="op">}</span></span>
 <span>    <span class="op">}</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre>
-<p>}</p>
-<p># Use median TE across countries if(length(te_values) &gt; 0) {
-te_matrix[i, j] &lt;- median(te_values, na.rm = TRUE) } } } }</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="our-transfer-entropy-results">Our Transfer Entropy Results<a class="anchor" aria-label="anchor" href="#our-transfer-entropy-results"></a>
@@ -223,17 +270,22 @@ te_matrix[i, j] &lt;- median(te_values, na.rm = TRUE) } } } }</p>
 <h4 id="transfer-entropy-matrix">Transfer Entropy Matrix<a class="anchor" aria-label="anchor" href="#transfer-entropy-matrix"></a>
 </h4>
 <p>From our analysis of 49 countries (1991-2021):</p>
-<p>Display the transfer entropy matrix from our analysis
-te_matrix_results &lt;- matrix(c( 0.000, 0.000, 0.000, 0.000, 0.0375,
-0.000, 0.0065, 0.000, 0.000, 0.0678, 0.0682, 0.000, 0.000, 0.000, 0.000,
-0.0678, 0.000, 0.0621, 0.000, 0.000, 0.000, 0.000, 0.0682, 0.0621,
-0.000, 0.000, 0.000, 0.000, 0.0375, 0.000, 0.000, 0.000, 0.000, 0.000,
-0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.0065, 0.000,
-0.000, 0.000, 0.000, 0.000, 0.000 ), nrow = 7, byrow = TRUE)</p>
-<p>rownames(te_matrix_results) &lt;- te_variables
-colnames(te_matrix_results) &lt;- te_variables</p>
-<p>print(“Transfer Entropy Matrix (Our Results):”)
-print(round(te_matrix_results, 4))</p>
+<pre><code><span><span class="co"># Display the transfer entropy matrix from our analysis</span></span>
+<span><span class="va">te_matrix_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.0375</span>, <span class="fl">0.000</span>, <span class="fl">0.0065</span>,</span>
+<span>  <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.0678</span>, <span class="fl">0.0682</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>,</span>
+<span>  <span class="fl">0.000</span>, <span class="fl">0.0678</span>, <span class="fl">0.000</span>, <span class="fl">0.0621</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>,</span>
+<span>  <span class="fl">0.000</span>, <span class="fl">0.0682</span>, <span class="fl">0.0621</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>,</span>
+<span>  <span class="fl">0.0375</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>,</span>
+<span>  <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>,</span>
+<span>  <span class="fl">0.0065</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span>, <span class="fl">0.000</span></span>
+<span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">7</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">te_matrix_results</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">te_variables</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">te_matrix_results</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">te_variables</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"Transfer Entropy Matrix (Our Results):"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">te_matrix_results</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="key-causal-relationships-identified">Key Causal Relationships Identified<a class="anchor" aria-label="anchor" href="#key-causal-relationships-identified"></a>
@@ -262,13 +314,15 @@ effects</p>
 <div class="section level4">
 <h4 id="network-properties">Network Properties<a class="anchor" aria-label="anchor" href="#network-properties"></a>
 </h4>
-<p>Network analysis results network_properties &lt;- data.frame(
-Property = c(“Network Density”, “Number of Nodes”, “Number of Edges”,
-“Average Degree”, “Maximum TE Value”, “Threshold Used”), Value =
-c(“0.095”, “7”, “4”, “1.14”, “0.0678”, “0.0200”), Interpretation =
-c(“Moderate connectivity”, “All EPC variables”, “Significant causal
-links”, “Sparse network”, “URF → URM strongest”, “Conservative
-threshold”) ) print(network_properties)</p>
+<pre><code><span><span class="co"># Network analysis results</span></span>
+<span><span class="va">network_properties</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Property <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Network Density"</span>, <span class="st">"Number of Nodes"</span>, <span class="st">"Number of Edges"</span>,</span>
+<span>               <span class="st">"Average Degree"</span>, <span class="st">"Maximum TE Value"</span>, <span class="st">"Threshold Used"</span><span class="op">)</span>,</span>
+<span>  Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0.095"</span>, <span class="st">"7"</span>, <span class="st">"4"</span>, <span class="st">"1.14"</span>, <span class="st">"0.0678"</span>, <span class="st">"0.0200"</span><span class="op">)</span>,</span>
+<span>  Interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Moderate connectivity"</span>, <span class="st">"All EPC variables"</span>, <span class="st">"Significant causal links"</span>,</span>
+<span>                     <span class="st">"Sparse network"</span>, <span class="st">"URF → URM strongest"</span>, <span class="st">"Conservative threshold"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">network_properties</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -277,46 +331,48 @@ threshold”) ) print(network_properties)</p>
 <div class="section level4">
 <h4 id="network-creation-process">Network Creation Process<a class="anchor" aria-label="anchor" href="#network-creation-process"></a>
 </h4>
-<p>Create transfer entropy network te_threshold &lt;-
-quantile(te_matrix[te_matrix &gt; 0], 0.6, na.rm = TRUE) cat(“TE
-threshold used:”, round(te_threshold, 4))</p>
-<p>te_adj &lt;- ifelse(te_matrix &gt; te_threshold, te_matrix, 0)
-te_network &lt;- igraph::graph_from_adjacency_matrix(te_adj, mode =
-“directed”, weighted = TRUE)</p>
-<p>Add node attributes for visualization
-V(te_network)<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mi>a</mi><mi>r</mi><mi>i</mi><mi>a</mi><mi>b</mi><mi>l</mi><msub><mi>e</mi><mi>t</mi></msub><mi>y</mi><mi>p</mi><mi>e</mi><mo>&lt;</mo><mo>−</mo><mi>c</mi><mi>a</mi><mi>s</mi><msub><mi>e</mi><mi>w</mi></msub><mi>h</mi><mi>e</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>V</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><msub><mi>e</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">variable_type &lt;- case_when(
-V(te_network)</annotation></semantics></math>name == “lnCO2” ~
-“Environmental”, grepl(“UR”, V(te_network)<span class="math inline">$name) ~ "Employment",
-V(te_network)$</span>name == “lnRES” ~ “Energy”, V(te_network)$name %in%
-c(“lnPCGDP”, “lnTrade”) ~ “Economic”, TRUE ~ “Other” )</p>
-<p>V(te_network)<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>r</mi><mi>a</mi><mi>l</mi><mi>i</mi><mi>t</mi><mi>y</mi><mo>&lt;</mo><mo>−</mo><mi>i</mi><mi>g</mi><mi>r</mi><mi>a</mi><mi>p</mi><mi>h</mi><mo>:</mo><mo>:</mo><mi>d</mi><mi>e</mi><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><msub><mi>e</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>V</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><msub><mi>e</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">centrality &lt;- igraph::degree(te_network)
-V(te_network)</annotation></semantics></math>betweenness &lt;-
-igraph::betweenness(te_network)</p>
+<pre><code><span><span class="co"># Create transfer entropy network</span></span>
+<span><span class="va">te_threshold</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">te_matrix</span><span class="op">[</span><span class="va">te_matrix</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">]</span>, <span class="fl">0.6</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"TE threshold used:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">te_threshold</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">te_adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">te_matrix</span> <span class="op">&gt;</span> <span class="va">te_threshold</span>, <span class="va">te_matrix</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">te_network</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/graph_from_adjacency_matrix.html" class="external-link">graph_from_adjacency_matrix</a></span><span class="op">(</span><span class="va">te_adj</span>, mode <span class="op">=</span> <span class="st">"directed"</span>, weighted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add node attributes for visualization</span></span>
+<span><span class="fu">V</span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span><span class="op">$</span><span class="va">variable_type</span> <span class="op">&lt;-</span> <span class="fu">case_when</span><span class="op">(</span></span>
+<span>  <span class="fu">V</span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"lnCO2"</span> <span class="op">~</span> <span class="st">"Environmental"</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"UR"</span>, <span class="fu">V</span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Employment"</span>,</span>
+<span>  <span class="fu">V</span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"lnRES"</span> <span class="op">~</span> <span class="st">"Energy"</span>,</span>
+<span>  <span class="fu">V</span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lnPCGDP"</span>, <span class="st">"lnTrade"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Economic"</span>,</span>
+<span>  <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"Other"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">V</span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span><span class="op">$</span><span class="va">centrality</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/degree.html" class="external-link">degree</a></span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span></span>
+<span><span class="fu">V</span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span><span class="op">$</span><span class="va">betweenness</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/betweenness.html" class="external-link">betweenness</a></span><span class="op">(</span><span class="va">te_network</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="network-visualization">Network Visualization<a class="anchor" aria-label="anchor" href="#network-visualization"></a>
 </h4>
-<p>Create transfer entropy network visualization
-plot_transfer_entropy_network &lt;- function(te_results, output_dir =
-NULL) { p &lt;- ggraph::ggraph(te_results<span class="math inline">$te_network, layout = "stress") +
-ggraph::geom_edge_arc(aes(width = weight, alpha = weight),
-arrow = arrow(length = unit(3, "mm")),
-start_cap = circle(3, "mm"),
-end_cap = circle(3, "mm"),
-color = "#2E86AB") +
-ggraph::geom_node_point(aes(color = variable_type, size = centrality)) +
-ggraph::geom_node_(aes(label = name), repel = TRUE, size = 3) +
-scale_color_viridis_d(name = "Variable Type") +
-scale_size_continuous(name = "Centrality", range = c(3, 8)) +
-scale_edge_width_continuous(name = "Transfer Entropy", range = c(0.5,
-2)) +
-scale_edge_alpha_continuous(range = c(0.3, 0.8)) +
-theme_void() +
-labs(title = "Transfer Entropy Network: EPC Variables Causal
-Relationships",
-subtitle = paste("Network Density:",
-round(edge_density(te_results$</span>te_network), 3)))</p>
-<p>return(p) }</p>
+<pre><code><span><span class="co"># Create transfer entropy network visualization</span></span>
+<span><span class="va">plot_transfer_entropy_network</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">te_results</span>, <span class="va">output_dir</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/ggraph.html" class="external-link">ggraph</a></span><span class="op">(</span><span class="va">te_results</span><span class="op">$</span><span class="va">te_network</span>, layout <span class="op">=</span> <span class="st">"stress"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_edge_arc.html" class="external-link">geom_edge_arc</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>width <span class="op">=</span> <span class="va">weight</span>, alpha <span class="op">=</span> <span class="va">weight</span><span class="op">)</span>,</span>
+<span>                          arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">3</span>, <span class="st">"mm"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                          start_cap <span class="op">=</span> <span class="fu">circle</span><span class="op">(</span><span class="fl">3</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
+<span>                          end_cap <span class="op">=</span> <span class="fu">circle</span><span class="op">(</span><span class="fl">3</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
+<span>                          color <span class="op">=</span> <span class="st">"#2E86AB"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_point.html" class="external-link">geom_node_point</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">variable_type</span>, size <span class="op">=</span> <span class="va">centrality</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggraph</span><span class="fu">::</span><span class="fu"><a href="https://ggraph.data-imaginist.com/reference/geom_node_text.html" class="external-link">geom_node_text</a></span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="va">name</span><span class="op">)</span>, repel <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">scale_color_viridis_d</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Variable Type"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">scale_size_continuous</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Centrality"</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">scale_edge_width_continuous</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Transfer Entropy"</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">scale_edge_alpha_continuous</span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Transfer Entropy Network: EPC Variables Causal Relationships"</span>,</span>
+<span>         subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Network Density:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">edge_density</span><span class="op">(</span><span class="va">te_results</span><span class="op">$</span><span class="va">te_network</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -325,53 +381,64 @@ round(edge_density(te_results$</span>te_network), 3)))</p>
 <div class="section level4">
 <h4 id="country-similarity-matrix">Country Similarity Matrix<a class="anchor" aria-label="anchor" href="#country-similarity-matrix"></a>
 </h4>
-<p>Create country-level network based on economic similarities
-country_data &lt;- enhanced_data %&gt;% group_by(country, country_code,
-income_group, region_enhanced) %&gt;% summarise( avg_lnUR = mean(lnUR,
-na.rm = TRUE), avg_lnCO2 = mean(lnCO2, na.rm = TRUE), avg_lnPCGDP =
-mean(lnPCGDP, na.rm = TRUE), avg_lnTrade = mean(lnTrade, na.rm = TRUE),
-avg_lnRES = mean(lnRES, na.rm = TRUE), .groups = ‘drop’ )</p>
-<p>Calculate country correlation matrix econ_vars &lt;- c(“avg_lnUR”,
-“avg_lnCO2”, “avg_lnPCGDP”, “avg_lnTrade”, “avg_lnRES”) country_matrix
-&lt;- as.matrix(country_data[, econ_vars]) rownames(country_matrix)
-&lt;- country_data$country</p>
-<p>country_cor &lt;- cor(t(country_matrix), use = “complete.obs”)</p>
+<pre><code><span><span class="co"># Create country-level network based on economic similarities</span></span>
+<span><span class="va">country_data</span> <span class="op">&lt;-</span> <span class="va">enhanced_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">country</span>, <span class="va">country_code</span>, <span class="va">income_group</span>, <span class="va">region_enhanced</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>    avg_lnUR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnUR</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    avg_lnCO2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnCO2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    avg_lnPCGDP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnPCGDP</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    avg_lnTrade <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnTrade</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    avg_lnRES <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnRES</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">'drop'</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate country correlation matrix</span></span>
+<span><span class="va">econ_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"avg_lnUR"</span>, <span class="st">"avg_lnCO2"</span>, <span class="st">"avg_lnPCGDP"</span>, <span class="st">"avg_lnTrade"</span>, <span class="st">"avg_lnRES"</span><span class="op">)</span></span>
+<span><span class="va">country_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">country_data</span><span class="op">[</span>, <span class="va">econ_vars</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">country_matrix</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">country_data</span><span class="op">$</span><span class="va">country</span></span>
+<span></span>
+<span><span class="va">country_cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">country_matrix</span><span class="op">)</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="network-based-instruments-creation">Network-Based Instruments Creation<a class="anchor" aria-label="anchor" href="#network-based-instruments-creation"></a>
 </h4>
-<p>Create network centrality measures as instruments
-if(vcount(country_network) &gt; 0) { country_centralities &lt;-
-data.frame( country =
-V(country_network)<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>a</mi><mi>m</mi><mi>e</mi><mo>,</mo><mi>t</mi><msub><mi>e</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><msub><mi>k</mi><mi>d</mi></msub><mi>e</mi><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mo>=</mo><mi>d</mi><mi>e</mi><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><msub><mi>y</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mi>m</mi><mi>a</mi><mi>x</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>v</mi><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><msub><mi>y</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>t</mi><msub><mi>e</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><msub><mi>k</mi><mi>b</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>e</mi><mi>e</mi><mi>n</mi><mi>n</mi><mi>e</mi><mi>s</mi><mi>s</mi><mo>=</mo><mi>b</mi><mi>e</mi><mi>t</mi><mi>w</mi><mi>e</mi><mi>e</mi><mi>n</mi><mi>n</mi><mi>e</mi><mi>s</mi><mi>s</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><msub><mi>y</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mi>m</mi><mi>a</mi><mi>x</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>v</mi><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><msub><mi>y</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>v</mi><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><msub><mi>y</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>t</mi><msub><mi>e</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><msub><mi>k</mi><mi>c</mi></msub><mi>l</mi><mi>o</mi><mi>s</mi><mi>e</mi><mi>n</mi><mi>e</mi><mi>s</mi><mi>s</mi><mo>=</mo><mi>c</mi><mi>l</mi><mi>o</mi><mi>s</mi><mi>e</mi><mi>n</mi><mi>e</mi><mi>s</mi><mi>s</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><msub><mi>y</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>t</mi><msub><mi>e</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><msub><mi>k</mi><mi>e</mi></msub><mi>i</mi><mi>g</mi><mi>e</mi><mi>n</mi><mi>v</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mo>=</mo><mi>e</mi><mi>i</mi><mi>g</mi><mi>e</mi><msub><mi>n</mi><mi>c</mi></msub><mi>e</mi><mi>n</mi><mi>t</mi><mi>r</mi><mi>a</mi><mi>l</mi><mi>i</mi><mi>t</mi><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>r</mi><msub><mi>y</mi><mi>n</mi></msub><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">name,
-te_network_degree = degree(country_network) / max(1, vcount(country_network) - 1),
-te_network_betweenness = betweenness(country_network) /
-max(1, (vcount(country_network)-1)*(vcount(country_network)-2)/2),
-te_network_closeness = closeness(country_network),
-te_network_eigenvector = eigen_centrality(country_network)</annotation></semantics></math>vector
-) }</p>
-<p>Transform centralities into instruments enhanced_data &lt;-
-enhanced_data %&gt;% left_join(country_centralities, by = “country”)
-%&gt;% mutate( # Transfer entropy-based instruments te_isolation = 1 /
-(1 + te_network_degree), te_bridging = te_network_betweenness,
-te_integration = te_network_closeness, te_influence =
-te_network_eigenvector,</p>
+<pre><code><span><span class="co"># Create network centrality measures as instruments</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="fu">vcount</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">country_centralities</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    country <span class="op">=</span> <span class="fu">V</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>    te_network_degree <span class="op">=</span> <span class="fu">degree</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu">vcount</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    te_network_betweenness <span class="op">=</span> <span class="fu">betweenness</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span> <span class="op">/</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">(</span><span class="fu">vcount</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fu">vcount</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span><span class="op">-</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>    te_network_closeness <span class="op">=</span> <span class="fu">closeness</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span>,</span>
+<span>    te_network_eigenvector <span class="op">=</span> <span class="fu">eigen_centrality</span><span class="op">(</span><span class="va">country_network</span><span class="op">)</span><span class="op">$</span><span class="va">vector</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Transform centralities into instruments</span></span>
+<span><span class="va">enhanced_data</span> <span class="op">&lt;-</span> <span class="va">enhanced_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">country_centralities</span>, by <span class="op">=</span> <span class="st">"country"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    <span class="co"># Transfer entropy-based instruments</span></span>
+<span>    te_isolation <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">te_network_degree</span><span class="op">)</span>,</span>
+<span>    te_bridging <span class="op">=</span> <span class="va">te_network_betweenness</span>,</span>
+<span>    te_integration <span class="op">=</span> <span class="va">te_network_closeness</span>,</span>
+<span>    te_influence <span class="op">=</span> <span class="va">te_network_eigenvector</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Time interactions</span></span>
+<span>    te_isolation_x_time <span class="op">=</span> <span class="va">te_isolation</span> <span class="op">*</span> <span class="va">time_trend</span>,</span>
+<span>    te_bridging_x_res <span class="op">=</span> <span class="va">te_bridging</span> <span class="op">*</span> <span class="va">lnRES</span>,</span>
+<span>    </span>
+<span>    <span class="co"># Income-based instruments</span></span>
+<span>    income_network_effect <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
+<span>      <span class="va">income_group</span> <span class="op">==</span> <span class="st">"High_Income"</span> <span class="op">~</span> <span class="va">te_integration</span> <span class="op">*</span> <span class="fl">1.2</span>,</span>
+<span>      <span class="va">income_group</span> <span class="op">==</span> <span class="st">"Upper_Middle_Income"</span> <span class="op">~</span> <span class="va">te_integration</span> <span class="op">*</span> <span class="fl">1.0</span>,</span>
+<span>      <span class="va">income_group</span> <span class="op">==</span> <span class="st">"Lower_Middle_Income"</span> <span class="op">~</span> <span class="va">te_integration</span> <span class="op">*</span> <span class="fl">0.8</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="va">te_integration</span> <span class="op">*</span> <span class="fl">0.6</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
 </div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="time-interactions">Time interactions<a class="anchor" aria-label="anchor" href="#time-interactions"></a>
-</h2>
-<p>te_isolation_x_time = te_isolation * time_trend, te_bridging_x_res =
-te_bridging * lnRES,</p>
-</div>
-<div class="section level2">
-<h2 id="income-based-instruments">Income-based instruments<a class="anchor" aria-label="anchor" href="#income-based-instruments"></a>
-</h2>
-<p>income_network_effect = case_when( income_group == “High_Income” ~
-te_integration * 1.2, income_group == “Upper_Middle_Income” ~
-te_integration * 1.0, income_group == “Lower_Middle_Income” ~
-te_integration * 0.8, TRUE ~ te_integration * 0.6 ) )</p>
 <div class="section level3">
 <h3 id="transfer-entropy-instrument-performance">Transfer Entropy Instrument Performance<a class="anchor" aria-label="anchor" href="#transfer-entropy-instrument-performance"></a>
 </h3>
@@ -379,12 +446,14 @@ te_integration * 0.8, TRUE ~ te_integration * 0.6 ) )</p>
 <h4 id="te-based-instrument-strength">TE-Based Instrument Strength<a class="anchor" aria-label="anchor" href="#te-based-instrument-strength"></a>
 </h4>
 <p>From our comprehensive analysis:</p>
-<p>te_instrument_performance &lt;- data.frame( Instrument =
-c(“TE_Isolation”, “TE_Combined”, “Network_Clustering_SOTA”), F_Statistic
-= c(39.22, 24.89, 24.89), Strength = c(“Strong”, “Strong”, “Strong”),
-R_Squared = c(0.0604, 0.0562, 0.0562), Interpretation = c(“Network
-isolation effect”, “Combined TE measures”, “Clustering centrality”) )
-print(te_instrument_performance)</p>
+<pre><code><span><span class="va">te_instrument_performance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Instrument <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TE_Isolation"</span>, <span class="st">"TE_Combined"</span>, <span class="st">"Network_Clustering_SOTA"</span><span class="op">)</span>,</span>
+<span>  F_Statistic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">39.22</span>, <span class="fl">24.89</span>, <span class="fl">24.89</span><span class="op">)</span>,</span>
+<span>  Strength <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strong"</span>, <span class="st">"Strong"</span>, <span class="st">"Strong"</span><span class="op">)</span>,</span>
+<span>  R_Squared <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0604</span>, <span class="fl">0.0562</span>, <span class="fl">0.0562</span><span class="op">)</span>,</span>
+<span>  Interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Network isolation effect"</span>, <span class="st">"Combined TE measures"</span>, <span class="st">"Clustering centrality"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">te_instrument_performance</span><span class="op">)</span></span></code></pre>
 <p><strong>Key Results:</strong> - <strong>TE Isolation</strong>: F =
 39.22 (Strong instrument) - <strong>TE Combined</strong>: F = 24.89
 (Strong instrument)<br>
@@ -393,12 +462,14 @@ print(te_instrument_performance)</p>
 <div class="section level4">
 <h4 id="country-network-properties">Country Network Properties<a class="anchor" aria-label="anchor" href="#country-network-properties"></a>
 </h4>
-<p>country_network_stats &lt;- data.frame( Property = c(“Network
-Density”, “Number of Countries”, “Number of Connections”, “Average
-Degree”, “Clustering Coefficient”, “Diameter”), Value = c(“0.25”, “49”,
-“294”, “12.0”, “0.68”, “3”), Interpretation = c(“Moderate connectivity”,
-“Full sample”, “Economic similarities”, “Well connected”, “High
-clustering”, “Short paths”) ) print(country_network_stats)</p>
+<pre><code><span><span class="va">country_network_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Property <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Network Density"</span>, <span class="st">"Number of Countries"</span>, <span class="st">"Number of Connections"</span>,</span>
+<span>               <span class="st">"Average Degree"</span>, <span class="st">"Clustering Coefficient"</span>, <span class="st">"Diameter"</span><span class="op">)</span>,</span>
+<span>  Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0.25"</span>, <span class="st">"49"</span>, <span class="st">"294"</span>, <span class="st">"12.0"</span>, <span class="st">"0.68"</span>, <span class="st">"3"</span><span class="op">)</span>,</span>
+<span>  Interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Moderate connectivity"</span>, <span class="st">"Full sample"</span>, <span class="st">"Economic similarities"</span>,</span>
+<span>                     <span class="st">"Well connected"</span>, <span class="st">"High clustering"</span>, <span class="st">"Short paths"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">country_network_stats</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -417,12 +488,15 @@ Enables network analysis</p>
 <div class="section level4">
 <h4 id="directional-causality">2. Directional Causality<a class="anchor" aria-label="anchor" href="#directional-causality"></a>
 </h4>
-<p>Example: Bidirectional causality detection causality_analysis &lt;-
-data.frame( Relationship = c(“PCGDP → CO2”, “CO2 → PCGDP”, “URF → URM”,
-“URM → URF”), TE_Value = c(0.0375, 0.0000, 0.0678, 0.0621), Significance
-= c(“Yes”, “No”, “Yes”, “Yes”), Interpretation = c(“GDP drives
-emissions”, “No reverse causality”, “Female affects male”, “Male affects
-female”) ) print(causality_analysis)</p>
+<pre><code><span><span class="co"># Example: Bidirectional causality detection</span></span>
+<span><span class="va">causality_analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Relationship <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PCGDP → CO2"</span>, <span class="st">"CO2 → PCGDP"</span>, <span class="st">"URF → URM"</span>, <span class="st">"URM → URF"</span><span class="op">)</span>,</span>
+<span>  TE_Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0375</span>, <span class="fl">0.0000</span>, <span class="fl">0.0678</span>, <span class="fl">0.0621</span><span class="op">)</span>,</span>
+<span>  Significance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Yes"</span>, <span class="st">"No"</span>, <span class="st">"Yes"</span>, <span class="st">"Yes"</span><span class="op">)</span>,</span>
+<span>  Interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GDP drives emissions"</span>, <span class="st">"No reverse causality"</span>,</span>
+<span>                     <span class="st">"Female affects male"</span>, <span class="st">"Male affects female"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">causality_analysis</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="network-based-instruments">3. Network-Based Instruments<a class="anchor" aria-label="anchor" href="#network-based-instruments"></a>
@@ -443,28 +517,39 @@ network impacts</p>
 <div class="section level4">
 <h4 id="alternative-entropy-measures">1. Alternative Entropy Measures<a class="anchor" aria-label="anchor" href="#alternative-entropy-measures"></a>
 </h4>
-<p>Test different entropy measures entropy_comparison &lt;- data.frame(
-Measure = c(“Shannon”, “Renyi”, “Tsallis”), Implementation =
-c(“Standard”, “Alpha=2”, “Q=2”), Robustness = c(“High”, “Medium”,
-“Medium”), Computational = c(“Fast”, “Moderate”, “Moderate”) )
-print(entropy_comparison)</p>
+<pre><code><span><span class="co"># Test different entropy measures</span></span>
+<span><span class="va">entropy_comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Shannon"</span>, <span class="st">"Renyi"</span>, <span class="st">"Tsallis"</span><span class="op">)</span>,</span>
+<span>  Implementation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Standard"</span>, <span class="st">"Alpha=2"</span>, <span class="st">"Q=2"</span><span class="op">)</span>,</span>
+<span>  Robustness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"High"</span>, <span class="st">"Medium"</span>, <span class="st">"Medium"</span><span class="op">)</span>,</span>
+<span>  Computational <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fast"</span>, <span class="st">"Moderate"</span>, <span class="st">"Moderate"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">entropy_comparison</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="lag-length-sensitivity">2. Lag Length Sensitivity<a class="anchor" aria-label="anchor" href="#lag-length-sensitivity"></a>
 </h4>
-<p>Test different lag lengths lag_sensitivity &lt;- data.frame(
-Lag_Length = c(1, 2, 3), Network_Density = c(0.095, 0.087, 0.079),
-Strongest_TE = c(0.0678, 0.0654, 0.0621), Interpretation = c(“Baseline”,
-“Slightly weaker”, “Weaker but robust”) ) print(lag_sensitivity)</p>
+<pre><code><span><span class="co"># Test different lag lengths</span></span>
+<span><span class="va">lag_sensitivity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Lag_Length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  Network_Density <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.095</span>, <span class="fl">0.087</span>, <span class="fl">0.079</span><span class="op">)</span>,</span>
+<span>  Strongest_TE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0678</span>, <span class="fl">0.0654</span>, <span class="fl">0.0621</span><span class="op">)</span>,</span>
+<span>  Interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Slightly weaker"</span>, <span class="st">"Weaker but robust"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lag_sensitivity</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="sample-period-robustness">3. Sample Period Robustness<a class="anchor" aria-label="anchor" href="#sample-period-robustness"></a>
 </h4>
-<p>Test different time periods period_robustness &lt;- data.frame(
-Period = c(“1991-2021”, “1995-2021”, “2000-2021”), Countries = c(49, 49,
-49), Network_Density = c(0.095, 0.102, 0.089), Key_Relationships =
-c(“4”, “4”, “3”), Robustness = c(“Baseline”, “Robust”, “Mostly robust”)
-) print(period_robustness)</p>
+<pre><code><span><span class="co"># Test different time periods</span></span>
+<span><span class="va">period_robustness</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1991-2021"</span>, <span class="st">"1995-2021"</span>, <span class="st">"2000-2021"</span><span class="op">)</span>,</span>
+<span>  Countries <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">49</span>, <span class="fl">49</span>, <span class="fl">49</span><span class="op">)</span>,</span>
+<span>  Network_Density <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.095</span>, <span class="fl">0.102</span>, <span class="fl">0.089</span><span class="op">)</span>,</span>
+<span>  Key_Relationships <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"4"</span>, <span class="st">"4"</span>, <span class="st">"3"</span><span class="op">)</span>,</span>
+<span>  Robustness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Robust"</span>, <span class="st">"Mostly robust"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">period_robustness</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -501,23 +586,28 @@ renewable energy deployment</p>
 <div class="section level4">
 <h4 id="transfer-entropy-vs--granger-causality">Transfer Entropy vs. Granger Causality<a class="anchor" aria-label="anchor" href="#transfer-entropy-vs--granger-causality"></a>
 </h4>
-<p>method_comparison &lt;- data.frame( Aspect = c(“Functional Form”,
-“Non-linearity”, “Robustness”, “Interpretation”, “Computational”,
-“Network Analysis”), Transfer_Entropy = c(“Non-parametric”, “Yes”,
-“High”, “Information flow”, “Moderate”, “Natural”), Granger_Causality =
-c(“Linear VAR”, “No”, “Medium”, “Predictive power”, “Fast”, “Limited”),
-Advantage = c(“TE”, “TE”, “TE”, “Both”, “GC”, “TE”) )
-print(method_comparison)</p>
+<pre><code><span><span class="va">method_comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Aspect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Functional Form"</span>, <span class="st">"Non-linearity"</span>, <span class="st">"Robustness"</span>, <span class="st">"Interpretation"</span>,</span>
+<span>             <span class="st">"Computational"</span>, <span class="st">"Network Analysis"</span><span class="op">)</span>,</span>
+<span>  Transfer_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Non-parametric"</span>, <span class="st">"Yes"</span>, <span class="st">"High"</span>, <span class="st">"Information flow"</span>,</span>
+<span>                       <span class="st">"Moderate"</span>, <span class="st">"Natural"</span><span class="op">)</span>,</span>
+<span>  Granger_Causality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Linear VAR"</span>, <span class="st">"No"</span>, <span class="st">"Medium"</span>, <span class="st">"Predictive power"</span>,</span>
+<span>                        <span class="st">"Fast"</span>, <span class="st">"Limited"</span><span class="op">)</span>,</span>
+<span>  Advantage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TE"</span>, <span class="st">"TE"</span>, <span class="st">"TE"</span>, <span class="st">"Both"</span>, <span class="st">"GC"</span>, <span class="st">"TE"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">method_comparison</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="empirical-comparison">Empirical Comparison<a class="anchor" aria-label="anchor" href="#empirical-comparison"></a>
 </h4>
-<p>Compare TE and Granger causality results empirical_comparison &lt;-
-data.frame( Relationship = c(“PCGDP → CO2”, “UR → CO2”, “Trade → CO2”,
-“RES → CO2”), Transfer_Entropy = c(“Strong (0.0375)”, “Weak (0.000)”,
-“None (0.000)”, “Weak (0.0065)”), Granger_Causality = c(“Significant”,
-“Not significant”, “Significant”, “Not significant”), Agreement =
-c(“Yes”, “Yes”, “No”, “Partial”) ) print(empirical_comparison)</p>
+<pre><code><span><span class="co"># Compare TE and Granger causality results</span></span>
+<span><span class="va">empirical_comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  Relationship <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PCGDP → CO2"</span>, <span class="st">"UR → CO2"</span>, <span class="st">"Trade → CO2"</span>, <span class="st">"RES → CO2"</span><span class="op">)</span>,</span>
+<span>  Transfer_Entropy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Strong (0.0375)"</span>, <span class="st">"Weak (0.000)"</span>, <span class="st">"None (0.000)"</span>, <span class="st">"Weak (0.0065)"</span><span class="op">)</span>,</span>
+<span>  Granger_Causality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Significant"</span>, <span class="st">"Not significant"</span>, <span class="st">"Significant"</span>, <span class="st">"Not significant"</span><span class="op">)</span>,</span>
+<span>  Agreement <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Yes"</span>, <span class="st">"Yes"</span>, <span class="st">"No"</span>, <span class="st">"Partial"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">empirical_comparison</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -526,30 +616,39 @@ c(“Yes”, “Yes”, “No”, “Partial”) ) print(empirical_comparison)</
 <div class="section level4">
 <h4 id="dynamic-network-analysis">1. Dynamic Network Analysis<a class="anchor" aria-label="anchor" href="#dynamic-network-analysis"></a>
 </h4>
-<p>Time-varying transfer entropy networks dynamic_te_analysis &lt;-
-function(data, window_size = 10) { years &lt;- unique(data$year)
-te_evolution &lt;- list()</p>
-<p>for(i in window_size:length(years)) { window_data &lt;- data %&gt;%
-filter(year &gt;= years[i-window_size+1] &amp; year &lt;= years[i])</p>
-<p>te_results &lt;- conduct_transfer_entropy_analysis(window_data)
-te_evolution[[i]] &lt;- te_results$te_matrix }</p>
-<p>return(te_evolution) }</p>
+<pre><code><span><span class="co"># Time-varying transfer entropy networks</span></span>
+<span><span class="va">dynamic_te_analysis</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">window_size</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
+<span>  <span class="va">te_evolution</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">window_size</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">years</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">window_data</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">%&gt;%</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;=</span> <span class="va">years</span><span class="op">[</span><span class="va">i</span><span class="op">-</span><span class="va">window_size</span><span class="op">+</span><span class="fl">1</span><span class="op">]</span> <span class="op">&amp;</span> <span class="va">year</span> <span class="op">&lt;=</span> <span class="va">years</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="va">te_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/conduct_transfer_entropy_analysis.html">conduct_transfer_entropy_analysis</a></span><span class="op">(</span><span class="va">window_data</span><span class="op">)</span></span>
+<span>    <span class="va">te_evolution</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">te_results</span><span class="op">$</span><span class="va">te_matrix</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">te_evolution</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="conditional-transfer-entropy">2. Conditional Transfer Entropy<a class="anchor" aria-label="anchor" href="#conditional-transfer-entropy"></a>
 </h4>
-<p>Conditional TE controlling for third variables conditional_te &lt;-
-function(x, y, z) {</p>
-<p>TE(Y→X|Z) = H(X_{t+1}|X_t, Z_t) - H(X_{t+1}|X_t, Y_t, Z_t)
-Implementation would require more sophisticated entropy estimation }</p>
+<pre><code><span><span class="co"># Conditional TE controlling for third variables</span></span>
+<span><span class="va">conditional_te</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">z</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># TE(Y→X|Z) = H(X_{t+1}|X_t, Z_t) - H(X_{t+1}|X_t, Y_t, Z_t)</span></span>
+<span>  <span class="co"># Implementation would require more sophisticated entropy estimation</span></span>
+<span><span class="op">}</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="multivariate-transfer-entropy">3. Multivariate Transfer Entropy<a class="anchor" aria-label="anchor" href="#multivariate-transfer-entropy"></a>
 </h4>
-<p>Multiple source transfer entropy multivariate_te &lt;-
-function(target, sources) {</p>
-<p>TE(Sources→Target) considering all sources simultaneously Useful for
-understanding combined causal effects }</p>
+<pre><code><span><span class="co"># Multiple source transfer entropy</span></span>
+<span><span class="va">multivariate_te</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target</span>, <span class="va">sources</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># TE(Sources→Target) considering all sources simultaneously</span></span>
+<span>  <span class="co"># Useful for understanding combined causal effects</span></span>
+<span><span class="op">}</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -579,11 +678,9 @@ dynamics</strong>: Bidirectional gender unemployment causality -
 <strong>Network instruments</strong>: Strong performance (F &gt; 24) for
 TE-based instruments - <strong>Country networks</strong>: Moderate
 connectivity (density = 0.25) enabling instrument construction</p>
-<p>This approach represents a significant advancement in environmental
-economics methodology, providing both theoretical insights and practical
-instruments for causal identification.</p>
-<p><strong>Ready for publication</strong> in top-tier journals with
-methodological innovation and robust empirical results.</p>
+<p>This approach contributes to existing methods implemented in
+empirical economics, providing both theoretical insights and practical
+instruments for causal identification. ```</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

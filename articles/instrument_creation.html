@@ -60,7 +60,8 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Creating Multidimensional Instruments from Scratch</h1>
-                        <h4 data-toc-skip class="author">Your Name</h4>
+                        <h4 data-toc-skip class="author">Avishek
+Bhandari</h4>
             
             <h4 data-toc-skip class="date">2025-06-07</h4>
       
@@ -70,8 +71,15 @@
 
     
     
-<p>knitr::opts_chunk$set( collapse = TRUE, comment = “#&gt;”, fig.width
-= 12, fig.height = 8, warning = FALSE, message = FALSE )</p>
+<pre><code><span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span></span>
+<span>  collapse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  comment <span class="op">=</span> <span class="st">"#&gt;"</span>,</span>
+<span>  fig.width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  fig.height <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  warning <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  message <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  eval <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre>
 <div class="section level2">
 <h2 id="creating-multidimensional-instruments-from-scratch">Creating Multidimensional Instruments from Scratch<a class="anchor" aria-label="anchor" href="#creating-multidimensional-instruments-from-scratch"></a>
 </h2>
@@ -113,13 +121,15 @@ environmental economics literature.</p>
 </h4>
 <p>Geographic factors provide truly exogenous variation based on
 physical geography and natural connectivity constraints.</p>
-<p>Geographic isolation examples from our analysis geographic_examples
-&lt;- data.frame( country = c(“Australia”, “Germany”, “Japan”,
-“Switzerland”), geo_isolation = c(0.9, 0.1, 0.8, 0.1), # Higher = more
-isolated island_isolation = c(1, 0, 1, 0), # 1 = island nation
-landlocked_status = c(0, 0, 0, 1), # 1 = landlocked interpretation =
-c(“Highest isolation”, “Core Europe”, “Island nation”, “Landlocked”) )
-print(geographic_examples)</p>
+<pre><code><span><span class="co"># Geographic isolation examples from our analysis</span></span>
+<span><span class="va">geographic_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Australia"</span>, <span class="st">"Germany"</span>, <span class="st">"Japan"</span>, <span class="st">"Switzerland"</span><span class="op">)</span>,</span>
+<span>  geo_isolation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span><span class="op">)</span>, <span class="co"># Higher = more isolated</span></span>
+<span>  island_isolation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="co"># 1 = island nation</span></span>
+<span>  landlocked_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="co"># 1 = landlocked</span></span>
+<span>  interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Highest isolation"</span>, <span class="st">"Core Europe"</span>, <span class="st">"Island nation"</span>, <span class="st">"Landlocked"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">geographic_examples</span><span class="op">)</span></span></code></pre>
 <p><strong>Key Variables Created:</strong> - <code>geo_isolation</code>:
 Distance-based connectivity (0.1-0.9 scale) - Australia/New Zealand: 0.9
 (highest isolation) - Core Europe (Germany/France): 0.1 (lowest
@@ -135,14 +145,16 @@ Strong)</p>
 <h4 id="dimension-2-technology-instruments">Dimension 2: Technology Instruments<a class="anchor" aria-label="anchor" href="#dimension-2-technology-instruments"></a>
 </h4>
 <p>Technology adoption patterns reflect institutional quality,
-development trajectories, and historical connectivity advantages.
-Technology adoption patterns from our data tech_examples &lt;-
-data.frame( country = c(“USA”, “Germany”, “China”, “Estonia”),
-internet_adoption_lag = c(5, 8, 28, 20), # Years behind leaders
-mobile_infrastructure_1995 = c(0.8, 0.8, 0.2, 0.2), # 1995 baseline
-telecom_development_1995 = c(0.8, 0.7, 0.2, 0.2), # Communication
-infrastructure tech_composite = c(1.68, 1.16, -0.81, -1.71) #
-Standardized composite ) print(tech_examples)</p>
+development trajectories, and historical connectivity advantages.</p>
+<pre><code><span><span class="co"># Technology adoption patterns from our data</span></span>
+<span><span class="va">tech_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USA"</span>, <span class="st">"Germany"</span>, <span class="st">"China"</span>, <span class="st">"Estonia"</span><span class="op">)</span>,</span>
+<span>  internet_adoption_lag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span>, <span class="fl">28</span>, <span class="fl">20</span><span class="op">)</span>, <span class="co"># Years behind leaders</span></span>
+<span>  mobile_infrastructure_1995 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.8</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>, <span class="co"># 1995 baseline</span></span>
+<span>  telecom_development_1995 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.7</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>, <span class="co"># Communication infrastructure</span></span>
+<span>  tech_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.68</span>, <span class="fl">1.16</span>, <span class="op">-</span><span class="fl">0.81</span>, <span class="op">-</span><span class="fl">1.71</span><span class="op">)</span> <span class="co"># Standardized composite</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tech_examples</span><span class="op">)</span></span></code></pre>
 <p><strong>Key Variables Created:</strong> -
 <code>internet_adoption_lag</code>: Technology diffusion timing - Early
 adopters (USA, UK, Nordic): 5 years - Developed economies (Germany,
@@ -161,13 +173,15 @@ instruments): F = 139.42 (Very Strong) - Tech Composite (single): F =
 </h4>
 <p>Migration patterns reflect economic opportunities, network effects,
 and historical diaspora connections.</p>
-<p>Migration network examples from our analysis migration_examples &lt;-
-data.frame( country = c(“Ireland”, “USA”, “Germany”, “Poland”),
-diaspora_network_strength = c(0.9, 0.2, 0.4, 0.9), # Emigration history
-english_language_advantage = c(1.0, 1.0, 0.8, 0.4), # Language effects
-net_migration_1990s = c(4169, 172060, 160802, -46754), # Historical
-flows migration_composite = c(5.48, -0.27, 0.71, 3.48) # Standardized
-composite ) print(migration_examples)</p>
+<pre><code><span><span class="co"># Migration network examples from our analysis</span></span>
+<span><span class="va">migration_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ireland"</span>, <span class="st">"USA"</span>, <span class="st">"Germany"</span>, <span class="st">"Poland"</span><span class="op">)</span>,</span>
+<span>  diaspora_network_strength <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.9</span><span class="op">)</span>, <span class="co"># Emigration history</span></span>
+<span>  english_language_advantage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">0.8</span>, <span class="fl">0.4</span><span class="op">)</span>, <span class="co"># Language effects</span></span>
+<span>  net_migration_1990s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4169</span>, <span class="fl">172060</span>, <span class="fl">160802</span>, <span class="op">-</span><span class="fl">46754</span><span class="op">)</span>, <span class="co"># Historical flows</span></span>
+<span>  migration_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.48</span>, <span class="op">-</span><span class="fl">0.27</span>, <span class="fl">0.71</span>, <span class="fl">3.48</span><span class="op">)</span> <span class="co"># Standardized composite</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">migration_examples</span><span class="op">)</span></span></code></pre>
 <p><strong>Key Variables Created:</strong> -
 <code>diaspora_network_strength</code>: Historical emigration patterns -
 High emigration countries (Ireland, Italy, Poland): 0.9 - Immigration
@@ -185,14 +199,16 @@ instruments): F = 31.19 (Strong) - Migration Composite (single): F =
 </h4>
 <p>Historical political events and institutional transitions provide
 exogenous variation in economic structures.</p>
-<p>Geopolitical transition examples geopolitical_examples &lt;-
-data.frame( country = c(“Poland”, “Germany”, “USA”, “Estonia”),
-post_communist_transition = c(1, 0, 0, 1), # Transition economy
-nato_membership_early = c(0, 1, 1, 0), # Early NATO member
-eu_membership_year = c(2004, 1957, 9999, 2004), # EU accession timing
-cold_war_western = c(0, 1, 1, 0), # Cold War alignment
-geopolitical_composite = c(0.13, 2.07, 2.07, 0.13) # Standardized
-composite ) print(geopolitical_examples)</p>
+<pre><code><span><span class="co"># Geopolitical transition examples</span></span>
+<span><span class="va">geopolitical_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Poland"</span>, <span class="st">"Germany"</span>, <span class="st">"USA"</span>, <span class="st">"Estonia"</span><span class="op">)</span>,</span>
+<span>  post_communist_transition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="co"># Transition economy</span></span>
+<span>  nato_membership_early <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="co"># Early NATO member</span></span>
+<span>  eu_membership_year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2004</span>, <span class="fl">1957</span>, <span class="fl">9999</span>, <span class="fl">2004</span><span class="op">)</span>, <span class="co"># EU accession timing</span></span>
+<span>  cold_war_western <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="co"># Cold War alignment</span></span>
+<span>  geopolitical_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.13</span>, <span class="fl">2.07</span>, <span class="fl">2.07</span>, <span class="fl">0.13</span><span class="op">)</span> <span class="co"># Standardized composite</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">geopolitical_examples</span><span class="op">)</span></span></code></pre>
 <p><strong>Key Variables Created:</strong> -
 <code>post_communist_transition</code>: Economic system transformation
 (28 countries) - <code>nato_membership_early</code>: Security alliance
@@ -211,14 +227,16 @@ instruments): F = 259.44 (Very Strong) - Geopolitical Composite
 </h4>
 <p>Financial system development affects economic structure, capital
 allocation, and environmental investment patterns.</p>
-<p>Financial development examples financial_examples &lt;- data.frame(
-country = c(“Switzerland”, “Germany”, “Poland”, “China”),
-financial_market_maturity = c(1.0, 0.95, 0.6, 0.5), # Market development
-banking_development_1990 = c(0.9, 0.9, 0.4, 0.25), # 1990 baseline
-financial_openness_1990 = c(0.95, 0.8, 0.4, 0.3), # Capital account
-openness stock_market_development_1990 = c(0.9, 0.9, 0.3, 0.2), # Equity
-market development financial_composite = c(5.99, 5.19, -1.97, -3.65) #
-Standardized composite ) print(financial_examples)</p>
+<pre><code><span><span class="co"># Financial development examples</span></span>
+<span><span class="va">financial_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Switzerland"</span>, <span class="st">"Germany"</span>, <span class="st">"Poland"</span>, <span class="st">"China"</span><span class="op">)</span>,</span>
+<span>  financial_market_maturity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">0.95</span>, <span class="fl">0.6</span>, <span class="fl">0.5</span><span class="op">)</span>, <span class="co"># Market development</span></span>
+<span>  banking_development_1990 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.9</span>, <span class="fl">0.4</span>, <span class="fl">0.25</span><span class="op">)</span>, <span class="co"># 1990 baseline</span></span>
+<span>  financial_openness_1990 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">0.8</span>, <span class="fl">0.4</span>, <span class="fl">0.3</span><span class="op">)</span>, <span class="co"># Capital account openness</span></span>
+<span>  stock_market_development_1990 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.9</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span><span class="op">)</span>, <span class="co"># Equity market development</span></span>
+<span>  financial_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.99</span>, <span class="fl">5.19</span>, <span class="op">-</span><span class="fl">1.97</span>, <span class="op">-</span><span class="fl">3.65</span><span class="op">)</span> <span class="co"># Standardized composite</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">financial_examples</span><span class="op">)</span></span></code></pre>
 <p><strong>Key Variables Created:</strong> -
 <code>financial_market_maturity</code>: Financial system sophistication
 - Global financial centers (USA, UK, Switzerland): 1.0 - Developed
@@ -236,13 +254,16 @@ instruments): F = 94.12 (Very Strong) - Financial Composite (single): F
 </h4>
 <p>Natural hazards and geographic risks provide truly exogenous
 variation unrelated to economic policies.</p>
-<p>Natural risk examples risk_examples &lt;- data.frame( country =
-c(“Japan”, “Germany”, “Chile”, “Iceland”), seismic_risk_index = c(0.9,
-0.1, 0.9, 0.8), # Earthquake risk volcanic_risk = c(0.9, 0.1, 0.9, 0.9),
-# Volcanic activity climate_volatility_1960_1990 = c(0.49, 0.2, 0.7,
-0.3), # Weather variability island_isolation = c(1, 0, 0, 1), # Island
-status risk_composite = c(6.06, -3.33, 4.17, 5.65) # Standardized
-composite ) print(risk_examples)</p>
+<pre><code><span><span class="co"># Natural risk examples</span></span>
+<span><span class="va">risk_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Japan"</span>, <span class="st">"Germany"</span>, <span class="st">"Chile"</span>, <span class="st">"Iceland"</span><span class="op">)</span>,</span>
+<span>  seismic_risk_index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.8</span><span class="op">)</span>, <span class="co"># Earthquake risk</span></span>
+<span>  volcanic_risk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.9</span><span class="op">)</span>, <span class="co"># Volcanic activity</span></span>
+<span>  climate_volatility_1960_1990 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.49</span>, <span class="fl">0.2</span>, <span class="fl">0.7</span>, <span class="fl">0.3</span><span class="op">)</span>, <span class="co"># Weather variability</span></span>
+<span>  island_isolation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="co"># Island status</span></span>
+<span>  risk_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6.06</span>, <span class="op">-</span><span class="fl">3.33</span>, <span class="fl">4.17</span>, <span class="fl">5.65</span><span class="op">)</span> <span class="co"># Standardized composite</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">risk_examples</span><span class="op">)</span></span></code></pre>
 <p><strong>Key Variables Created:</strong> -
 <code>seismic_risk_index</code>: Earthquake vulnerability measures -
 High risk: Japan, Chile, Turkey, Greece, Italy (0.9) - Moderate risk:
@@ -261,12 +282,15 @@ instruments): F = 38.41 (Strong) - Risk Composite (single): F = 40.67
 </h3>
 <p>The package combines individual instruments using factor analysis and
 standardization:</p>
-<p>Create composite instruments using factor analysis
-instruments_complete &lt;- create_composite_instruments(instruments)</p>
-<p>View composite structure composite_summary &lt;- instruments_complete
-%&gt;% select(country, tech_composite, migration_composite,
-geopolitical_composite, risk_composite, financial_composite,
-multidim_composite) %&gt;% head(10) print(composite_summary)</p>
+<pre><code><span><span class="co"># Create composite instruments using factor analysis</span></span>
+<span><span class="va">instruments_complete</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_composite_instruments.html">create_composite_instruments</a></span><span class="op">(</span><span class="va">instruments</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View composite structure</span></span>
+<span><span class="va">composite_summary</span> <span class="op">&lt;-</span> <span class="va">instruments_complete</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">country</span>, <span class="va">tech_composite</span>, <span class="va">migration_composite</span>, <span class="va">geopolitical_composite</span>,</span>
+<span>         <span class="va">risk_composite</span>, <span class="va">financial_composite</span>, <span class="va">multidim_composite</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">composite_summary</span><span class="op">)</span></span></code></pre>
 <p><strong>Composite Variables Created:</strong> -
 <code>tech_composite</code>: Combined technology indicators
 (standardized) - <code>migration_composite</code>: Combined migration
@@ -276,14 +300,18 @@ indicators<br>
 <code>financial_composite</code>: Combined financial indicators -
 <code>multidim_composite</code>: Overall multidimensional measure (all 6
 dimensions)</p>
-<p><strong>Mathematical Approach:</strong> Example composite creation
-(simplified) tech_composite = scale(internet_adoption_lag)[,1] +
-scale(mobile_infrastructure_1995)[,1] +
-scale(telecom_development_1995)[,1]</p>
-<p>multidim_composite = scale(geo_isolation)[,1] +
-scale(tech_composite)[,1] + scale(migration_composite)[,1] +
-scale(geopolitical_composite)[,1] + scale(risk_composite)[,1] +
-scale(financial_composite)[,1]</p>
+<p><strong>Mathematical Approach:</strong></p>
+<pre><code><span><span class="co"># Example composite creation (simplified)</span></span>
+<span><span class="va">tech_composite</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">internet_adoption_lag</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">mobile_infrastructure_1995</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">telecom_development_1995</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">multidim_composite</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">geo_isolation</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">tech_composite</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">migration_composite</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">geopolitical_composite</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">risk_composite</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">financial_composite</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="alternative-state-of-the-art-instruments">Alternative State-of-the-Art Instruments<a class="anchor" aria-label="anchor" href="#alternative-state-of-the-art-instruments"></a>
@@ -293,33 +321,36 @@ alternative approaches:</p>
 <div class="section level4">
 <h4 id="spatial-and-network-instruments">Spatial and Network Instruments<a class="anchor" aria-label="anchor" href="#spatial-and-network-instruments"></a>
 </h4>
-<p>Spatial lag instruments (geographic spillovers) spatial_lag_ur =
-lag(lnUR, 1) # Previous period unemployment spatial_lag_co2 = lag(lnCO2,
-1) # Previous period emissions</p>
-<p>Network clustering instruments network_clustering_1 =
-te_network_degree * te_network_betweenness network_clustering_2 =
-te_integration * financial_composite</p>
+<pre><code><span><span class="co"># Spatial lag instruments (geographic spillovers)</span></span>
+<span><span class="va">spatial_lag_ur</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">lnUR</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># Previous period unemployment</span></span>
+<span><span class="va">spatial_lag_co2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">lnCO2</span>, <span class="fl">1</span><span class="op">)</span> <span class="co"># Previous period emissions</span></span>
+<span></span>
+<span><span class="co"># Network clustering instruments</span></span>
+<span><span class="va">network_clustering_1</span> <span class="op">=</span> <span class="va">te_network_degree</span> <span class="op">*</span> <span class="va">te_network_betweenness</span></span>
+<span><span class="va">network_clustering_2</span> <span class="op">=</span> <span class="va">te_integration</span> <span class="op">*</span> <span class="va">financial_composite</span></span></code></pre>
 <p><strong>Performance:</strong> - Spatial Lag SOTA: F = 569.90 (Very
 Strong) - Network Clustering SOTA: F = 24.89 (Strong)</p>
 </div>
 <div class="section level4">
 <h4 id="bartik-and-shift-share-instruments">Bartik and Shift-Share Instruments<a class="anchor" aria-label="anchor" href="#bartik-and-shift-share-instruments"></a>
 </h4>
-<p>Bartik instruments (shift-share approach) bartik_employment = lnUR *
-lnPCGDP / mean(lnPCGDP, na.rm = TRUE) bartik_trade = lnTrade * lnPCGDP /
-mean(lnPCGDP, na.rm = TRUE)</p>
-<p>Shift-share instruments shift_share_tech = tech_composite * (year -
-1990) / 10 shift_share_financial = financial_composite * lnPCGDP</p>
+<pre><code><span><span class="co"># Bartik instruments (shift-share approach)</span></span>
+<span><span class="va">bartik_employment</span> <span class="op">=</span> <span class="va">lnUR</span> <span class="op">*</span> <span class="va">lnPCGDP</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnPCGDP</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">bartik_trade</span> <span class="op">=</span> <span class="va">lnTrade</span> <span class="op">*</span> <span class="va">lnPCGDP</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lnPCGDP</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Shift-share instruments</span></span>
+<span><span class="va">shift_share_tech</span> <span class="op">=</span> <span class="va">tech_composite</span> <span class="op">*</span> <span class="op">(</span><span class="va">year</span> <span class="op">-</span> <span class="fl">1990</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10</span></span>
+<span><span class="va">shift_share_financial</span> <span class="op">=</span> <span class="va">financial_composite</span> <span class="op">*</span> <span class="va">lnPCGDP</span></span></code></pre>
 <p><strong>Performance:</strong> - Bartik SOTA: F = 72.11 (Very Strong)
 - Shift Share SOTA: F = 32.43 (Strong)</p>
 </div>
 <div class="section level4">
 <h4 id="judge-historical-instruments-best-performing">Judge Historical Instruments (Best Performing!)<a class="anchor" aria-label="anchor" href="#judge-historical-instruments-best-performing"></a>
 </h4>
-<p>Judge historical instruments (our strongest approach)
-judge_historical_1 = post_communist_transition * time_trend
-judge_historical_2 = nato_membership_early * (year - 1990)
-judge_historical_3 = (eu_membership_year &lt; 2000) * lnPCGDP</p>
+<pre><code><span><span class="co"># Judge historical instruments (our strongest approach)</span></span>
+<span><span class="va">judge_historical_1</span> <span class="op">=</span> <span class="va">post_communist_transition</span> <span class="op">*</span> <span class="va">time_trend</span></span>
+<span><span class="va">judge_historical_2</span> <span class="op">=</span> <span class="va">nato_membership_early</span> <span class="op">*</span> <span class="op">(</span><span class="va">year</span> <span class="op">-</span> <span class="fl">1990</span><span class="op">)</span></span>
+<span><span class="va">judge_historical_3</span> <span class="op">=</span> <span class="op">(</span><span class="va">eu_membership_year</span> <span class="op">&lt;</span> <span class="fl">2000</span><span class="op">)</span> <span class="op">*</span> <span class="va">lnPCGDP</span></span></code></pre>
 <p><strong>Performance:</strong> - Judge Historical SOTA: <strong>F =
 7,155.39</strong> (Exceptionally Strong!)</p>
 </div>
@@ -330,11 +361,14 @@ judge_historical_3 = (eu_membership_year &lt; 2000) * lnPCGDP</p>
 <div class="section level4">
 <h4 id="strength-testing-f-statistics">1. Strength Testing (F-statistics)<a class="anchor" aria-label="anchor" href="#strength-testing-f-statistics"></a>
 </h4>
-<p>Calculate comprehensive instrument strength strength_results &lt;-
-calculate_instrument_strength(final_data)</p>
-<p>View top performing instruments top_instruments &lt;-
-strength_results %&gt;% arrange(desc(F_Statistic)) %&gt;% head(10)
-print(top_instruments)</p>
+<pre><code><span><span class="co"># Calculate comprehensive instrument strength</span></span>
+<span><span class="va">strength_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_instrument_strength.html">calculate_instrument_strength</a></span><span class="op">(</span><span class="va">final_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View top performing instruments</span></span>
+<span><span class="va">top_instruments</span> <span class="op">&lt;-</span> <span class="va">strength_results</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">F_Statistic</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_instruments</span><span class="op">)</span></span></code></pre>
 <p><strong>Strength Classification:</strong> - <strong>Very
 Strong</strong>: F &gt; 50 (8 approaches, 33.3%) -
 <strong>Strong</strong>: F &gt; 10 (13 approaches, 54.2%)<br>
@@ -346,22 +380,26 @@ Strong</strong>: F &gt; 50 (8 approaches, 33.3%) -
 </h4>
 <p>Instruments must be correlated with the endogenous variable
 (unemployment):</p>
-<p>First stage regression example first_stage &lt;- lm(lnUR ~
-geo_isolation + tech_composite + migration_composite + lnPCGDP + lnTrade
-+ lnRES + factor(country) + factor(year), data = final_data)</p>
-<p>Check relevance cat(“First-stage R-squared:”,
-round(summary(first_stage)<span class="math inline">$r.squared, 3))
-cat("F-statistic:", round(summary(first_stage)$</span>fstatistic,
-2))</p>
+<pre><code><span><span class="co"># First stage regression example</span></span>
+<span><span class="va">first_stage</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">lnUR</span> <span class="op">~</span> <span class="va">geo_isolation</span> <span class="op">+</span> <span class="va">tech_composite</span> <span class="op">+</span> <span class="va">migration_composite</span> <span class="op">+</span></span>
+<span>                         <span class="va">lnPCGDP</span> <span class="op">+</span> <span class="va">lnTrade</span> <span class="op">+</span> <span class="va">lnRES</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>,</span>
+<span>                  data <span class="op">=</span> <span class="va">final_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Check relevance</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"First-stage R-squared:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">first_stage</span><span class="op">)</span><span class="op">$</span><span class="va">r.squared</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"F-statistic:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">first_stage</span><span class="op">)</span><span class="op">$</span><span class="va">fstatistic</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="exogeneity-testing">3. Exogeneity Testing<a class="anchor" aria-label="anchor" href="#exogeneity-testing"></a>
 </h4>
-<p>Sargan test for overidentification iv_model &lt;- AER::ivreg(lnCO2 ~
-lnPCGDP + lnTrade + lnRES + factor(country) + factor(year) |
-geo_isolation + tech_composite + migration_composite + lnPCGDP + lnTrade
-+ lnRES + factor(country) + factor(year) | lnUR, data = final_data)</p>
-<p>Check exogeneity summary(iv_model, diagnostics = TRUE)</p>
+<pre><code><span><span class="co"># Sargan test for overidentification</span></span>
+<span><span class="va">iv_model</span> <span class="op">&lt;-</span> <span class="fu">AER</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/AER/man/ivreg.html" class="external-link">ivreg</a></span><span class="op">(</span><span class="va">lnCO2</span> <span class="op">~</span> <span class="va">lnPCGDP</span> <span class="op">+</span> <span class="va">lnTrade</span> <span class="op">+</span> <span class="va">lnRES</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|</span></span>
+<span>                              <span class="va">geo_isolation</span> <span class="op">+</span> <span class="va">tech_composite</span> <span class="op">+</span> <span class="va">migration_composite</span> <span class="op">+</span></span>
+<span>                              <span class="va">lnPCGDP</span> <span class="op">+</span> <span class="va">lnTrade</span> <span class="op">+</span> <span class="va">lnRES</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|</span> <span class="va">lnUR</span>,</span>
+<span>                       data <span class="op">=</span> <span class="va">final_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Check exogeneity</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">iv_model</span>, diagnostics <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -370,32 +408,38 @@ geo_isolation + tech_composite + migration_composite + lnPCGDP + lnTrade
 <div class="section level4">
 <h4 id="high-income-countries">High-Income Countries<a class="anchor" aria-label="anchor" href="#high-income-countries"></a>
 </h4>
-<p>high_income_examples &lt;- data.frame( country = c(“USA”, “Germany”,
-“Japan”, “Switzerland”), geo_isolation = c(0.4, 0.1, 0.8, 0.1),
-tech_composite = c(1.68, 1.53, 1.08, 1.97), financial_composite =
-c(5.99, 5.19, 5.19, 5.99), interpretation = c(“Large economy”, “Core
-Europe”, “Island developed”, “Financial center”) )
-print(high_income_examples)</p>
+<pre><code><span><span class="va">high_income_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USA"</span>, <span class="st">"Germany"</span>, <span class="st">"Japan"</span>, <span class="st">"Switzerland"</span><span class="op">)</span>,</span>
+<span>  geo_isolation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  tech_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.68</span>, <span class="fl">1.53</span>, <span class="fl">1.08</span>, <span class="fl">1.97</span><span class="op">)</span>,</span>
+<span>  financial_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5.99</span>, <span class="fl">5.19</span>, <span class="fl">5.19</span>, <span class="fl">5.99</span><span class="op">)</span>,</span>
+<span>  interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Large economy"</span>, <span class="st">"Core Europe"</span>, <span class="st">"Island developed"</span>, <span class="st">"Financial center"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">high_income_examples</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="transition-economies">Transition Economies<a class="anchor" aria-label="anchor" href="#transition-economies"></a>
 </h4>
-<p>transition_examples &lt;- data.frame( country = c(“Poland”, “Czech
-Republic”, “Estonia”, “Hungary”), post_communist_transition = c(1, 1, 1,
-1), eu_membership_year = c(2004, 2004, 2004, 2004),
-geopolitical_composite = c(0.13, 0.13, 0.13, 0.13), interpretation =
-c(“Large transition”, “Central transition”, “Baltic transition”,
-“Central transition”) ) print(transition_examples)</p>
+<pre><code><span><span class="va">transition_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Poland"</span>, <span class="st">"Czech Republic"</span>, <span class="st">"Estonia"</span>, <span class="st">"Hungary"</span><span class="op">)</span>,</span>
+<span>  post_communist_transition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  eu_membership_year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2004</span>, <span class="fl">2004</span>, <span class="fl">2004</span>, <span class="fl">2004</span><span class="op">)</span>,</span>
+<span>  geopolitical_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.13</span>, <span class="fl">0.13</span>, <span class="fl">0.13</span>, <span class="fl">0.13</span><span class="op">)</span>,</span>
+<span>  interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Large transition"</span>, <span class="st">"Central transition"</span>, <span class="st">"Baltic transition"</span>, <span class="st">"Central transition"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">transition_examples</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="emerging-markets">Emerging Markets<a class="anchor" aria-label="anchor" href="#emerging-markets"></a>
 </h4>
-<p>emerging_examples &lt;- data.frame( country = c(“China”, “India”,
-“Brazil”, “Mexico”), tech_composite = c(-0.81, -0.31, -0.96, -0.68),
-migration_composite = c(1.95, 2.17, -0.47, 1.86), financial_composite =
-c(-3.65, -2.79, -3.65, -3.23), interpretation = c(“Tech lag, diaspora”,
-“Tech lag, diaspora”, “Tech lag, internal”, “Tech lag, diaspora”) )
-print(emerging_examples)</p>
+<pre><code><span><span class="va">emerging_examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"China"</span>, <span class="st">"India"</span>, <span class="st">"Brazil"</span>, <span class="st">"Mexico"</span><span class="op">)</span>,</span>
+<span>  tech_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.81</span>, <span class="op">-</span><span class="fl">0.31</span>, <span class="op">-</span><span class="fl">0.96</span>, <span class="op">-</span><span class="fl">0.68</span><span class="op">)</span>,</span>
+<span>  migration_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.95</span>, <span class="fl">2.17</span>, <span class="op">-</span><span class="fl">0.47</span>, <span class="fl">1.86</span><span class="op">)</span>,</span>
+<span>  financial_composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3.65</span>, <span class="op">-</span><span class="fl">2.79</span>, <span class="op">-</span><span class="fl">3.65</span>, <span class="op">-</span><span class="fl">3.23</span><span class="op">)</span>,</span>
+<span>  interpretation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Tech lag, diaspora"</span>, <span class="st">"Tech lag, diaspora"</span>, <span class="st">"Tech lag, internal"</span>, <span class="st">"Tech lag, diaspora"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">emerging_examples</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -404,29 +448,36 @@ print(emerging_examples)</p>
 <div class="section level4">
 <h4 id="time-varying-instruments">1. Time-Varying Instruments<a class="anchor" aria-label="anchor" href="#time-varying-instruments"></a>
 </h4>
-<p>Create time interactions for dynamic effects final_data &lt;-
-final_data %&gt;% mutate( geo_isolation_x_time = geo_isolation *
-time_trend, tech_composite_x_time = tech_composite * (year - 1990),
-eu_membership_x_time = ifelse(year &gt;= eu_membership_year, (year -
-eu_membership_year), 0) )</p>
+<pre><code><span><span class="co"># Create time interactions for dynamic effects</span></span>
+<span><span class="va">final_data</span> <span class="op">&lt;-</span> <span class="va">final_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    geo_isolation_x_time <span class="op">=</span> <span class="va">geo_isolation</span> <span class="op">*</span> <span class="va">time_trend</span>,</span>
+<span>    tech_composite_x_time <span class="op">=</span> <span class="va">tech_composite</span> <span class="op">*</span> <span class="op">(</span><span class="va">year</span> <span class="op">-</span> <span class="fl">1990</span><span class="op">)</span>,</span>
+<span>    eu_membership_x_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;=</span> <span class="va">eu_membership_year</span>,</span>
+<span>                                  <span class="op">(</span><span class="va">year</span> <span class="op">-</span> <span class="va">eu_membership_year</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="income-specific-instruments">2. Income-Specific Instruments<a class="anchor" aria-label="anchor" href="#income-specific-instruments"></a>
 </h4>
-<p>Create income-group specific effects final_data &lt;- final_data
-%&gt;% mutate( geo_isolation_high_income = geo_isolation * (income_group
-== “High_Income”), tech_composite_developing = tech_composite *
-(income_group != “High_Income”), financial_composite_advanced =
-financial_composite * (income_group == “High_Income”) )</p>
+<pre><code><span><span class="co"># Create income-group specific effects</span></span>
+<span><span class="va">final_data</span> <span class="op">&lt;-</span> <span class="va">final_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    geo_isolation_high_income <span class="op">=</span> <span class="va">geo_isolation</span> <span class="op">*</span> <span class="op">(</span><span class="va">income_group</span> <span class="op">==</span> <span class="st">"High_Income"</span><span class="op">)</span>,</span>
+<span>    tech_composite_developing <span class="op">=</span> <span class="va">tech_composite</span> <span class="op">*</span> <span class="op">(</span><span class="va">income_group</span> <span class="op">!=</span> <span class="st">"High_Income"</span><span class="op">)</span>,</span>
+<span>    financial_composite_advanced <span class="op">=</span> <span class="va">financial_composite</span> <span class="op">*</span> <span class="op">(</span><span class="va">income_group</span> <span class="op">==</span> <span class="st">"High_Income"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="regional-interactions">3. Regional Interactions<a class="anchor" aria-label="anchor" href="#regional-interactions"></a>
 </h4>
-<p>Create regional instrument variations final_data &lt;- final_data
-%&gt;% mutate( migration_europe = migration_composite * grepl(“Europe”,
-region_enhanced), tech_asia = tech_composite * grepl(“Asia”,
-region_enhanced), geopolitical_transition = geopolitical_composite *
-(post_communist_transition == 1) )</p>
+<pre><code><span><span class="co"># Create regional instrument variations</span></span>
+<span><span class="va">final_data</span> <span class="op">&lt;-</span> <span class="va">final_data</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    migration_europe <span class="op">=</span> <span class="va">migration_composite</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Europe"</span>, <span class="va">region_enhanced</span><span class="op">)</span>,</span>
+<span>    tech_asia <span class="op">=</span> <span class="va">tech_composite</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Asia"</span>, <span class="va">region_enhanced</span><span class="op">)</span>,</span>
+<span>    geopolitical_transition <span class="op">=</span> <span class="va">geopolitical_composite</span> <span class="op">*</span> <span class="op">(</span><span class="va">post_communist_transition</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -573,7 +624,7 @@ comprehensive from-scratch framework</li>
 Environmental Phillips Curve analysis while maintaining complete
 transparency and replicability. The exceptional empirical performance (F
 = 7,155.39 for best instrument) demonstrates the superiority of this
-methodology over traditional approaches.</p>
+methodology over traditional approaches. ```</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
