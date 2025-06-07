@@ -4,11 +4,10 @@
 
 ## Overview
 
-ManyIVsNets is a comprehensive R package for Environmental Phillips Curve (EPC) analysis featuring state-of-the-art econometric methods and network analysis. Based on your complete analysis of 49 countries (1991-2021) with 3,201 observations and 85 created variables.
+ManyIVsNets is a comprehensive R package for Environmental Phillips Curve (EPC) analysis featuring state-of-the-art econometric methods and network analysis. 
 
-### Key Results from Your Analysis
+### Key Results based on example data
 - **21 out of 24 instrument approaches** show strong performance (F > 10)
-- **Best performing instrument**: Judge Historical SOTA (F = 7,155.39)
 - **Main finding**: 1% ↑ unemployment → 0.071% ↓ CO2 emissions
 - **Network density**: Transfer entropy (0.095), Country network (0.25)
 
@@ -31,13 +30,11 @@ View instrument strength results
 print(results$strength_results)
 
 
-## Features Based on Your Code
+## Features 
 
-- **Complete from-scratch analysis** - no CSV dependencies
 - **Real multidimensional instruments** from economic/geographic data
 - **Transfer entropy causal discovery** using RTransferEntropy
 - **24 different instrument approaches** tested
-- **7 publication-quality visualizations** (600 DPI)
 - **Comprehensive network analysis** with country codes
 
 ## Citation
