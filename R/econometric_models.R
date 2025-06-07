@@ -11,11 +11,11 @@ run_comprehensive_epc_models <- function(data) {
   # OLS Baseline
   tryCatch({
     models$OLS_Baseline <- lm(lnCO2 ~ lnUR + lnPCGDP + lnTrade + lnRES + 
-                              factor(country) + factor(year), data = data)
+                                factor(country) + factor(year), data = data)
     cat("✓ OLS Baseline completed\n")
   }, error = function(e) cat("✗ OLS Baseline failed:", e$message, "\n"))
   
-  # IV Models with different instrument sets
+  # IV Models with different instrument sets - FIXED FORMULA CONSTRUCTION
   iv_specs <- list(
     IV_Geographic = c("geo_isolation"),
     IV_TE_Isolation = c("te_isolation"),
@@ -33,11 +33,21 @@ run_comprehensive_epc_models <- function(data) {
     instruments <- iv_specs[[model_name]]
     
     tryCatch({
-      # Create formula
+      # Check if all instruments exist in data
+      missing_instruments <- instruments[!instruments %in% names(data)]
+      if(length(missing_instruments) > 0) {
+        cat("✗", model_name, "failed: Missing instruments:", paste(missing_instruments, collapse = ", "), "\n")
+        next
+      }
+      
+      # Create proper IV formula - FIXED SYNTAX
+      exog_vars <- c("lnPCGDP", "lnTrade", "lnRES", "factor(country)", "factor(year)")
+      all_instruments <- c(instruments, exog_vars)
+      
+      # Correct AER::ivreg formula syntax: outcome ~ endogenous + exogenous | instruments + exogenous
       iv_formula <- as.formula(paste(
-        "lnCO2 ~ lnPCGDP + lnTrade + lnRES + factor(country) + factor(year) |",
-        paste(instruments, collapse = " + "),
-        "+ lnPCGDP + lnTrade + lnRES + factor(country) + factor(year) | lnUR"
+        "lnCO2 ~ lnUR +", paste(exog_vars, collapse = " + "),
+        "|", paste(all_instruments, collapse = " + ")
       ))
       
       models[[model_name]] <- AER::ivreg(iv_formula, data = data)
@@ -60,33 +70,49 @@ run_comprehensive_epc_models <- function(data) {
 calculate_instrument_strength <- function(data) {
   cat("Calculating instrument strength (F-statistics)...\n")
   
-  # Define instrument sets
-  instrument_sets <- list(
-    Geographic_Single = c("geo_isolation"),
-    Technology_Real = c("internet_adoption_lag", "mobile_infrastructure_1995"),
-    Migration_Real = c("diaspora_network_strength", "english_language_advantage"),
-    Geopolitical_Real = c("post_communist_transition", "nato_membership_early"),
-    Financial_Real = c("financial_market_maturity", "banking_development_1990"),
-    Natural_Risk_Real = c("seismic_risk_index", "island_isolation"),
-    TE_Isolation = c("te_isolation"),
-    Spatial_Lag_SOTA = c("spatial_lag_ur"),
-    Bartik_SOTA = c("bartik_employment"),
-    Migration_Network_SOTA = c("migration_network_ur"),
-    Judge_Historical_SOTA = c("judge_historical_1"),
-    Network_Clustering_SOTA = c("network_clustering_1"),
-    Shift_Share_SOTA = c("shift_share_tech"),
-    Gravity_Trade_SOTA = c("gravity_trade_1"),
-    Tech_Composite = c("tech_composite"),
-    Migration_Composite = c("migration_composite"),
-    Geopolitical_Composite = c("geopolitical_composite"),
-    Risk_Composite = c("risk_composite"),
-    Financial_Composite = c("financial_composite"),
-    Multidim_Composite = c("multidim_composite"),
-    Geographic_TE = c("geo_isolation", "te_isolation"),
-    Real_Geographic_Tech = c("geo_isolation", "tech_composite"),
-    Alternative_SOTA_Combined = c("spatial_lag_ur", "bartik_employment", "judge_historical_1"),
-    Comprehensive_Real = c("geo_isolation", "tech_composite", "migration_composite", "financial_composite")
-  )
+  # Define instrument sets - ONLY USE VARIABLES THAT EXIST AND HAVE VARIATION
+  instrument_sets <- list()
+  
+  # Check each instrument set before adding
+  if("geo_isolation" %in% names(data) && length(unique(data$geo_isolation)) > 1) {
+    instrument_sets$Geographic_Single <- c("geo_isolation")
+  }
+  
+  if("tech_composite" %in% names(data) && length(unique(data$tech_composite)) > 1) {
+    instrument_sets$Tech_Composite <- c("tech_composite")
+  }
+  
+  if("migration_composite" %in% names(data) && length(unique(data$migration_composite)) > 1) {
+    instrument_sets$Migration_Composite <- c("migration_composite")
+  }
+  
+  if("financial_composite" %in% names(data) && length(unique(data$financial_composite)) > 1) {
+    instrument_sets$Financial_Composite <- c("financial_composite")
+  }
+  
+  if("multidim_composite" %in% names(data) && length(unique(data$multidim_composite)) > 1) {
+    instrument_sets$Multidim_Composite <- c("multidim_composite")
+  }
+  
+  if("te_isolation" %in% names(data) && length(unique(data$te_isolation)) > 1) {
+    instrument_sets$TE_Isolation <- c("te_isolation")
+  }
+  
+  # Only add spatial lag if we have enough observations (handle NA from lag)
+  if("spatial_lag_ur" %in% names(data)) {
+    complete_spatial <- data %>% dplyr::filter(!is.na(spatial_lag_ur))
+    if(nrow(complete_spatial) > 10 && length(unique(complete_spatial$spatial_lag_ur)) > 1) {
+      instrument_sets$Spatial_Lag_SOTA <- c("spatial_lag_ur")
+    }
+  }
+  
+  if("bartik_employment" %in% names(data) && length(unique(data$bartik_employment)) > 1) {
+    instrument_sets$Bartik_SOTA <- c("bartik_employment")
+  }
+  
+  if("judge_historical_1" %in% names(data) && length(unique(data$judge_historical_1)) > 1) {
+    instrument_sets$Judge_Historical_SOTA <- c("judge_historical_1")
+  }
   
   strength_results <- data.frame()
   
@@ -94,20 +120,35 @@ calculate_instrument_strength <- function(data) {
     instruments <- instrument_sets[[set_name]]
     
     tryCatch({
+      # Filter data to remove NAs for this specific instrument set
+      analysis_data <- data %>%
+        dplyr::filter(dplyr::if_all(dplyr::all_of(c("lnUR", "lnPCGDP", "lnTrade", "lnRES", "country", "year", instruments)), ~ !is.na(.)))
+      
+      if(nrow(analysis_data) < 10) {
+        cat("Error calculating strength for", set_name, ": Insufficient data after removing NAs\n")
+        next
+      }
+      
+      # Check if we have enough countries for factor(country)
+      if(length(unique(analysis_data$country)) < 2) {
+        cat("Error calculating strength for", set_name, ": Need at least 2 countries\n")
+        next
+      }
+      
       # First stage regression
       first_stage_formula <- as.formula(paste(
         "lnUR ~", paste(instruments, collapse = " + "),
         "+ lnPCGDP + lnTrade + lnRES + factor(country) + factor(year)"
       ))
       
-      first_stage <- lm(first_stage_formula, data = data)
+      first_stage <- lm(first_stage_formula, data = analysis_data)
       
       # Calculate F-statistic for excluded instruments
       restricted_formula <- as.formula(paste(
         "lnUR ~ lnPCGDP + lnTrade + lnRES + factor(country) + factor(year)"
       ))
       
-      restricted_model <- lm(restricted_formula, data = data)
+      restricted_model <- lm(restricted_formula, data = analysis_data)
       
       # F-test
       f_test <- anova(restricted_model, first_stage)
@@ -139,4 +180,122 @@ calculate_instrument_strength <- function(data) {
   
   cat("✓ Instrument strength analysis completed\n")
   return(strength_results)
+}
+
+
+#' Run Comprehensive IV Diagnostics
+#'
+#' @param models List of fitted models
+#' @return List of diagnostic results
+#' @export
+run_comprehensive_iv_diagnostics <- function(models) {
+  cat("Running comprehensive IV diagnostics...\n")
+  
+  diagnostics <- list()
+  
+  for(model_name in names(models)) {
+    model <- models[[model_name]]
+    
+    if(!is.null(model)) {
+      tryCatch({
+        if(grepl("IV_", model_name)) {
+          # IV diagnostics
+          model_summary <- summary(model, diagnostics = TRUE)
+          
+          # Extract diagnostics safely
+          diag_names <- rownames(model_summary$diagnostics)
+          
+          sargan_test <- if("Sargan" %in% diag_names) {
+            model_summary$diagnostics["Sargan", ]
+          } else {
+            c(statistic = NA, p.value = NA)
+          }
+          
+          weak_test <- if("Weak instruments" %in% diag_names) {
+            model_summary$diagnostics["Weak instruments", ]
+          } else {
+            c(statistic = NA, p.value = NA)
+          }
+          
+          diagnostics[[model_name]] <- list(
+            model_name = model_name,
+            n_obs = nobs(model),
+            r_squared = summary(model)$r.squared,
+            sargan_statistic = sargan_test["statistic"],
+            sargan_p_value = sargan_test["p-value"],
+            weak_statistic = weak_test["statistic"],
+            weak_p_value = weak_test["p-value"],
+            valid = ifelse(is.na(sargan_test["p-value"]), TRUE, sargan_test["p-value"] > 0.05) && 
+              summary(model)$r.squared > 0
+          )
+        } else {
+          # OLS diagnostics
+          diagnostics[[model_name]] <- list(
+            model_name = model_name,
+            n_obs = nobs(model),
+            r_squared = summary(model)$r.squared,
+            valid = TRUE
+          )
+        }
+      }, error = function(e) {
+        diagnostics[[model_name]] <- list(
+          model_name = model_name,
+          error = e$message,
+          valid = FALSE
+        )
+      })
+    }
+  }
+  
+  cat("✓ Comprehensive IV diagnostics completed\n")
+  return(diagnostics)
+}
+
+#' Create Comprehensive Results Table
+#'
+#' @param models List of fitted models
+#' @param diagnostics List of diagnostic results
+#' @return Data frame with comprehensive results
+#' @export
+create_comprehensive_results_table <- function(models, diagnostics) {
+  results <- data.frame()
+  
+  for(model_name in names(models)) {
+    model <- models[[model_name]]
+    
+    if(!is.null(model)) {
+      tryCatch({
+        # Get robust standard errors
+        robust_vcov <- sandwich::vcovHC(model, type = "HC1")
+        robust_summary <- lmtest::coeftest(model, vcov = robust_vcov)
+        
+        # Extract unemployment coefficient
+        ur_coef <- robust_summary["lnUR", "Estimate"]
+        ur_se <- robust_summary["lnUR", "Std. Error"]
+        ur_pval <- robust_summary["lnUR", "Pr(>|t|)"]
+        ur_tstat <- robust_summary["lnUR", "t value"]
+        
+        # Get diagnostics
+        diag <- diagnostics[[model_name]]
+        
+        results <- rbind(results, data.frame(
+          Model = model_name,
+          Method = ifelse(grepl("IV_", model_name), "IV", "OLS"),
+          UR_Coefficient = ur_coef,
+          UR_SE = ur_se,
+          UR_TStatistic = ur_tstat,
+          UR_PValue = ur_pval,
+          R_Squared = ifelse(is.null(diag$r_squared), NA, diag$r_squared),
+          N_Obs = ifelse(is.null(diag$n_obs), NA, diag$n_obs),
+          Sargan_PValue = ifelse(is.null(diag$sargan_p_value), NA, diag$sargan_p_value),
+          Valid = ifelse(is.null(diag$valid), FALSE, diag$valid),
+          stringsAsFactors = FALSE
+        ))
+      }, error = function(e) {
+        cat("Error processing", model_name, "\n")
+      })
+    }
+  }
+  
+  return(results)
 }
