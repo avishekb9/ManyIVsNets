@@ -1,4 +1,65 @@
-url: ~
+url: https://avishekb9.github.io/ManyIVsNets
+
+navbar:
+  structure:
+    left:
+      - home
+      - reference
+      - articles
+      - news
+
 template:
   bootstrap: 5
 
+home:
+  title: "ManyIVsNets: Environmental Phillips Curve Analysis"
+  description: "Comprehensive toolkit for EPC analysis with multiple instrumental variables and networks"
+
+reference:
+  - title: "Main Analysis Functions"
+    contents:
+      - run_complete_epc_analysis
+      - run_comprehensive_epc_models
+      - run_comprehensive_iv_diagnostics
+      - calculate_instrument_strength
+  
+  - title: "Instrument Creation"
+    contents:
+      - create_real_instruments_from_data
+      - create_composite_instruments
+      - create_alternative_sota_instruments
+      - merge_epc_with_created_instruments
+  
+  - title: "Transfer Entropy Analysis"
+    contents:
+      - conduct_transfer_entropy_analysis
+      - create_te_based_instruments
+  
+  - title: "Visualization Functions"
+    contents:
+      - plot_transfer_entropy_network
+      - plot_country_income_network
+      - plot_instrument_strength_comparison
+      - plot_cross_income_co2_nexus
+      - plot_instrument_causal_pathways
+      - plot_migration_impact
+      - plot_regional_network
+      - create_comprehensive_network_plots
+  
+  - title: "Results and Export"
+    contents:
+      - create_comprehensive_results_table
+      - create_publication_summary
+      - export_comprehensive_results
+  
+  - title: "Data and Utilities"
+    contents:
+      - sample_epc_data
+      - load_epc_data_corrected
+      - safe_load_packages
+  
+  - title: "Test Helper Functions"
+    contents:
+      - create_test_epc_data
+      - create_test_instruments
+      - create_enhanced_test_data

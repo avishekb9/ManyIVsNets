@@ -12,7 +12,7 @@ Description: Comprehensive toolkit for Environmental Phillips Curve (EPC) analys
     Implements geographic, technological, migration, geopolitical, financial, 
     and natural risk instruments with robust diagnostics and visualization.
 License: MIT + file LICENSE
-URL: https://github.com/avishekb9/ManyIVsNets
+URL: https://github.com/avishekb9/ManyIVsNets, https://avishekb9.github.io/ManyIVsNets
 BugReports: https://github.com/avishekb9/ManyIVsNets/issues
 Encoding: UTF-8
 LazyData: true
@@ -39,5 +39,3 @@ Suggests:
     countrycode
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-
-
