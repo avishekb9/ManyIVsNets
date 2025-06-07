@@ -41,6 +41,7 @@ run_complete_epc_analysis <- function(data_file = NULL, output_dir = "epc_analys
   if(is.null(data_file)) {
     # Use sample data if no file provided - PROPER WAY
     epc_data <- ManyIVsNets::sample_epc_data
+
   } else {
     epc_data <- load_epc_data_corrected(data_file)
   }

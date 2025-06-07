@@ -16,7 +16,7 @@ URL: https://github.com/avishekb9/ManyIVsNets
 BugReports: https://github.com/avishekb9/ManyIVsNets/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.2.3
 Depends: 
     R (>= 4.0.0)
 Imports:
@@ -27,8 +27,7 @@ Imports:
     ggraph,
     AER,
     lmtest,
-    sandwich,
-    magrittr
+    sandwich
 Suggests:
     testthat (>= 3.0.0),
     rmarkdown,
@@ -40,4 +39,5 @@ Suggests:
     countrycode
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+
 
