@@ -1,3 +1,53 @@
+# Fix global variable binding issues
+utils::globalVariables(c(
+  # Data variables
+  "CO2_per_capita", "UR", "URF", "URM", "PCGDP", "Trade", "RES",
+  "lnCO2", "lnUR", "lnURF", "lnURM", "lnPCGDP", "lnTrade", "lnRES",
+  "country", "year", "country_code", "time_trend", "income_group", "region_enhanced",
+  
+  # Instrument variables
+  "spatial_lag_ur", "bartik_employment", "judge_historical_1", 
+  "migration_network_ur", "network_clustering_1", "shift_share_tech",
+  "gravity_trade_1", "te_isolation", "te_bridging", "multidim_composite",
+  "tech_composite", "migration_composite", "financial_composite",
+  "geopolitical_composite", "risk_composite", "geo_isolation",
+  
+  # Technology instruments
+  "internet_adoption_lag", "mobile_infrastructure_1995", "telecom_development_1995",
+  
+  # Migration instruments
+  "diaspora_network_strength", "english_language_advantage", "migration_cost_index",
+  "net_migration_1990s",
+  
+  # Geopolitical instruments
+  "post_communist_transition", "nato_membership_early", "eu_membership_year",
+  "cold_war_western",
+  
+  # Natural risk instruments
+  "seismic_risk_index", "island_isolation", "volcanic_risk", 
+  "climate_volatility_1960_1990",
+  
+  # Financial instruments
+  "financial_market_maturity", "banking_development_1990", 
+  "financial_openness_1990", "stock_market_development_1990",
+  
+  # Transfer entropy instruments
+  "te_network_degree", "te_network_betweenness", "te_network_closeness",
+  "te_network_eigenvector", "te_integration",
+  
+  # Plot variables
+  "weight", "variable_type", "centrality", "name", "Instrument_Set", 
+  "F_Statistic", "Strength_Color", "avg_ur", "avg_co2", "avg_migration", 
+  "avg_co2_growth",
+  
+  # Package data
+  "sample_epc_data",
+  
+  # Special symbols
+  ".", "where"
+))
+
+
 #' Run Comprehensive EPC Models
 #'
 #' @param data Enhanced EPC data with all instruments
@@ -12,8 +62,8 @@ run_comprehensive_epc_models <- function(data) {
   tryCatch({
     models$OLS_Baseline <- lm(lnCO2 ~ lnUR + lnPCGDP + lnTrade + lnRES + 
                                 factor(country) + factor(year), data = data)
-    cat("✓ OLS Baseline completed\n")
-  }, error = function(e) cat("✗ OLS Baseline failed:", e$message, "\n"))
+    cat("v OLS Baseline completed\n")
+  }, error = function(e) cat("x OLS Baseline failed:", e$message, "\n"))
   
   # IV Models with different instrument sets - FIXED FORMULA CONSTRUCTION
   iv_specs <- list(
@@ -36,7 +86,7 @@ run_comprehensive_epc_models <- function(data) {
       # Check if all instruments exist in data
       missing_instruments <- instruments[!instruments %in% names(data)]
       if(length(missing_instruments) > 0) {
-        cat("✗", model_name, "failed: Missing instruments:", paste(missing_instruments, collapse = ", "), "\n")
+        cat("x", model_name, "failed: Missing instruments:", paste(missing_instruments, collapse = ", "), "\n")
         next
       }
       
@@ -51,14 +101,14 @@ run_comprehensive_epc_models <- function(data) {
       ))
       
       models[[model_name]] <- AER::ivreg(iv_formula, data = data)
-      cat("✓", model_name, "completed\n")
+      cat("v", model_name, "completed\n")
     }, error = function(e) {
-      cat("✗", model_name, "failed:", e$message, "\n")
+      cat("x", model_name, "failed:", e$message, "\n")
       models[[model_name]] <- NULL
     })
   }
   
-  cat("✓ Comprehensive EPC models completed\n")
+  cat("v Comprehensive EPC models completed\n")
   return(models)
 }
 
@@ -178,10 +228,9 @@ calculate_instrument_strength <- function(data) {
     })
   }
   
-  cat("✓ Instrument strength analysis completed\n")
+  cat("v Instrument strength analysis completed\n")
   return(strength_results)
 }
-
 
 #' Run Comprehensive IV Diagnostics
 #'
@@ -247,7 +296,7 @@ run_comprehensive_iv_diagnostics <- function(models) {
     }
   }
   
-  cat("✓ Comprehensive IV diagnostics completed\n")
+  cat("v Comprehensive IV diagnostics completed\n")
   return(diagnostics)
 }
 

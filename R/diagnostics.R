@@ -62,7 +62,7 @@ run_comprehensive_iv_diagnostics <- function(models) {
     }
   }
   
-  cat("✓ Comprehensive IV diagnostics completed\n")
+  cat("v Comprehensive IV diagnostics completed\n")
   return(diagnostics)
 }
 

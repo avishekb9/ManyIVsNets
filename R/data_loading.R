@@ -11,7 +11,7 @@ load_epc_data_corrected <- function(file_path = "epc_data_new_ar5_indicators.csv
   if(file.exists(file_path)) {
     cat("Loading AR5 EPC data...\n")
     epc_data <- readr::read_csv(file_path, show_col_types = FALSE)
-    cat("✓ AR5 EPC data loaded:", nrow(epc_data), "observations\n")
+    cat("v AR5 EPC data loaded:", nrow(epc_data), "observations\n")
   } else {
     stop("AR5 EPC data not found. Please ensure the CSV file is available.")
   }

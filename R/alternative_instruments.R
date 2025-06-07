@@ -46,6 +46,6 @@ create_alternative_sota_instruments <- function(data) {
     ) %>%
     dplyr::ungroup()
   
-  cat("✓ Alternative state-of-the-art instruments created\n")
+  cat("v Alternative state-of-the-art instruments created\n")
   return(enhanced_data)
 }

@@ -13,14 +13,14 @@ safe_load_packages <- function(packages) {
         install.packages(pkg, dependencies = TRUE, repos = "https://cran.r-project.org/")
         library(pkg, character.only = TRUE)
         loaded <- c(loaded, pkg)
-        cat("✓ Installed & loaded:", pkg, "\n")
+        cat("v Installed & loaded:", pkg, "\n")
       }, error = function(e) {
         failed <- c(failed, pkg)
         cat("~ Package not available:", pkg, "\n")
       })
     } else {
       loaded <- c(loaded, pkg)
-      cat("✓ Already loaded:", pkg, "\n")
+      cat("v Already loaded:", pkg, "\n")
     }
   }
   
@@ -37,14 +37,14 @@ run_complete_epc_analysis <- function(data_file = NULL, output_dir = "epc_analys
   
   cat("=== RUNNING COMPLETE EPC ANALYSIS PIPELINE ===\n")
   
-  # Load data
+  # Load data - FIXED
   if(is.null(data_file)) {
-    # Use sample data if no file provided
-    data("sample_epc_data", package = "ManyIVsNets")
-    epc_data <- sample_epc_data
+    # Use sample data if no file provided - PROPER WAY
+    epc_data <- ManyIVsNets::sample_epc_data
   } else {
     epc_data <- load_epc_data_corrected(data_file)
   }
+  
   
   # Create instruments
   cat("\n1. Creating instruments...\n")
@@ -95,7 +95,7 @@ run_complete_epc_analysis <- function(data_file = NULL, output_dir = "epc_analys
     file.path(output_dir, "tables")
   )
   
-  cat("\n✓ COMPLETE EPC ANALYSIS PIPELINE FINISHED\n")
+  cat("\nv COMPLETE EPC ANALYSIS PIPELINE FINISHED\n")
   cat("Results saved to:", output_dir, "\n")
   
   return(list(

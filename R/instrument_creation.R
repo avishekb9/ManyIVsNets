@@ -220,7 +220,7 @@ create_real_instruments_from_data <- function(epc_data) {
       dplyr::across(where(is.numeric), ~ifelse(is.na(.x), median(.x, na.rm = TRUE), .x))
     )
   
-  cat("✓ Real instruments created for", nrow(instruments), "countries\n")
+  cat("v Real instruments created for", nrow(instruments), "countries\n")
   return(instruments)
 }
 
@@ -291,7 +291,7 @@ create_composite_instruments <- function(instruments) {
         scale(financial_composite)[,1]
     )
   
-  cat("✓ Composite instruments created using factor analysis approach\n")
+  cat("v Composite instruments created using factor analysis approach\n")
   return(enhanced_instruments)
 }
 
@@ -312,7 +312,7 @@ merge_epc_with_created_instruments <- function(epc_data, instruments) {
     dplyr::filter(!is.na(geo_isolation)) %>%
     dplyr::arrange(country, year)
   
-  cat("✓ Data merged successfully\n")
+  cat("v Data merged successfully\n")
   cat("Enhanced dataset:", nrow(enhanced_data), "observations,", length(unique(enhanced_data$country)), "countries\n")
   
   return(enhanced_data)

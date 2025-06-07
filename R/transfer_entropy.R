@@ -149,7 +149,7 @@ conduct_transfer_entropy_analysis <- function(data) {
     igraph::V(te_network)$betweenness <- igraph::betweenness(te_network)
   }
   
-  cat("✓ Transfer Entropy network created\n")
+  cat("v Transfer Entropy network created\n")
   cat("Network density:", round(igraph::edge_density(te_network), 3), "\n")
   cat("Number of causal links:", igraph::ecount(te_network), "\n")
   cat("TE threshold used:", round(te_threshold, 4), "\n")
@@ -253,7 +253,7 @@ create_te_based_instruments <- function(data, te_results) {
       )
     )
   
-  cat("✓ Transfer entropy-based instruments created\n")
+  cat("v Transfer entropy-based instruments created\n")
   cat("Country network density:", round(igraph::edge_density(country_network), 3), "\n")
   
   return(list(

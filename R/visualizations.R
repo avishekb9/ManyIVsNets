@@ -365,7 +365,7 @@ create_comprehensive_network_plots <- function(te_results, te_iv_results, data, 
   # Plot 3: Instrument Strength Comparison
   plots$strength_comparison <- plot_instrument_strength_comparison(strength_results, output_dir)
   
-  cat("✓ All comprehensive network visualizations completed\n")
+  cat("v All comprehensive network visualizations completed\n")
   
   return(plots)
 }

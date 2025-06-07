@@ -53,7 +53,7 @@ export_comprehensive_results <- function(models, diagnostics, strength_results, 
   summary_text <- create_publication_summary(results_table, strength_results, te_results)
   writeLines(summary_text, file.path(output_dir, "Publication_Summary_Complete_From_Scratch.txt"))
   
-  cat("✓ All results exported successfully\n")
+  cat("v All results exported successfully\n")
 }
 
 #' Create Publication Summary
@@ -118,7 +118,7 @@ create_publication_summary <- function(results_table, strength_results, te_resul
     paste("- Standard error:", round(main_result$UR_SE, 4)),
     paste("- P-value:", format(main_result$UR_PValue, scientific = TRUE)),
     paste("- R-squared:", round(main_result$R_Squared, 3)),
-    paste("- Economic interpretation: 1% ↑ unemployment →", round(main_result$UR_Coefficient * 100, 3), "% ↓ CO2 emissions"),
+    paste("- Economic interpretation: 1% ^ unemployment ->", round(main_result$UR_Coefficient * 100, 3), "% v CO2 emissions"),
     "",
     "PUBLICATION OUTPUTS:",
     "- Table_1_Complete_EPC_Results_From_Scratch.csv (main results)",
