@@ -35,10 +35,14 @@ plot_transfer_entropy_network <- function(te_results, output_dir = NULL) {
     )
   
   if(!is.null(output_dir)) {
-    ggplot2::ggsave(
-      filename = file.path(output_dir, "network_01_transfer_entropy_variables.png"),
-      plot = p, width = 12, height = 8, dpi = 600, bg = "white"
-    )
+    tryCatch({
+      ggplot2::ggsave(
+        filename = file.path(output_dir, "network_01_transfer_entropy_variables.png"),
+        plot = p, width = 12, height = 8, dpi = 600, bg = "white"
+      )
+    }, error = function(e) {
+      warning("Could not save plot: ", e$message)
+    })
   }
   
   return(p)
@@ -79,10 +83,14 @@ plot_country_income_network <- function(country_network, output_dir = NULL) {
     )
   
   if(!is.null(output_dir)) {
-    ggplot2::ggsave(
-      filename = file.path(output_dir, "network_02_countries_income_classification.png"),
-      plot = p, width = 12, height = 8, dpi = 600, bg = "white"
-    )
+    tryCatch({
+      ggplot2::ggsave(
+        filename = file.path(output_dir, "network_02_countries_income_classification.png"),
+        plot = p, width = 12, height = 8, dpi = 600, bg = "white"
+      )
+    }, error = function(e) {
+      warning("Could not save plot: ", e$message)
+    })
   }
   
   return(p)
@@ -123,10 +131,14 @@ plot_cross_income_co2_nexus <- function(data, output_dir = NULL) {
         )
       
       if(!is.null(output_dir)) {
-        ggplot2::ggsave(
-          filename = file.path(output_dir, "network_03_cross_income_co2_growth_nexus.png"),
-          plot = p, width = 12, height = 8, dpi = 600, bg = "white"
-        )
+        tryCatch({
+          ggplot2::ggsave(
+            filename = file.path(output_dir, "network_03_cross_income_co2_growth_nexus.png"),
+            plot = p, width = 12, height = 8, dpi = 600, bg = "white"
+          )
+        }, error = function(e) {
+          warning("Could not save plot: ", e$message)
+        })
       }
       
       return(p)
@@ -325,10 +337,14 @@ plot_instrument_strength_comparison <- function(strength_results, output_dir = N
     )
   
   if(!is.null(output_dir)) {
-    ggplot2::ggsave(
-      filename = file.path(output_dir, "network_07_instrument_strength_comparison.png"),
-      plot = p, width = 16, height = 12, dpi = 600, bg = "white"
-    )
+    tryCatch({
+      ggplot2::ggsave(
+        filename = file.path(output_dir, "network_07_instrument_strength_comparison.png"),
+        plot = p, width = 16, height = 12, dpi = 600, bg = "white"
+      )
+    }, error = function(e) {
+      warning("Could not save plot: ", e$message)
+    })
   }
   
   return(p)
