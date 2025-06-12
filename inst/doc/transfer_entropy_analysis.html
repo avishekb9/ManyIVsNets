@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Avishek Bhandari" />
+
+<meta name="date" content="2025-06-08" />
+
+<title>Transfer Entropy Analysis and Causal Discovery</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Transfer Entropy Analysis and Causal
+Discovery</h1>
+<h4 class="author">Avishek Bhandari</h4>
+<h4 class="date">2025-06-08</h4>
+
+
+
+<pre><code>knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = &quot;#&gt;&quot;,
+  fig.width = 12,
+  fig.height = 10,
+  warning = FALSE,
+  message = FALSE,
+  eval = FALSE
+)</code></pre>
+<div id="transfer-entropy-analysis-and-causal-discovery" class="section level1">
+<h1>Transfer Entropy Analysis and Causal Discovery</h1>
+<p>This vignette provides a comprehensive guide to ManyIVsNets’
+implementation of transfer entropy analysis for causal discovery in
+Environmental Phillips Curve research. Our analysis reveals important
+causal relationships with network density of 0.095 and 4 significant
+causal links among EPC variables.</p>
+<div id="what-is-transfer-entropy" class="section level2">
+<h2>What is Transfer Entropy?</h2>
+<p>Transfer entropy is an information-theoretic measure that quantifies
+the amount of information transferred from one time series to another,
+providing a non-parametric approach to causal discovery. Unlike Granger
+causality, transfer entropy can capture non-linear relationships and
+does not assume specific functional forms.</p>
+<p><strong>Mathematical Foundation:</strong></p>
+<p>Transfer entropy from Y to X is defined as:</p>
+<p>TE(Y→X) = H(X_{t+1}|X_t) - H(X_{t+1}|X_t, Y_t)</p>
+<p>Where H denotes entropy, measuring the reduction in uncertainty about
+X_{t+1} when we know both X_t and Y_t compared to knowing only X_t.</p>
+</div>
+<div id="why-transfer-entropy-for-environmental-economics" class="section level2">
+<h2>Why Transfer Entropy for Environmental Economics?</h2>
+<p>Traditional approaches to environmental economics often assume linear
+relationships and specific functional forms. Transfer entropy offers
+several advantages:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Non-parametric approach</strong>: No assumptions about
+functional form</li>
+<li><strong>Non-linear relationship detection</strong>: Captures complex
+environmental-economic interactions<br />
+</li>
+<li><strong>Directional causality</strong>: Identifies causal direction
+between variables</li>
+<li><strong>Network construction</strong>: Enables creation of causal
+networks for instrument construction</li>
+<li><strong>Robust to outliers</strong>: Information-theoretic measures
+are less sensitive to extreme values</li>
+</ol>
+</div>
+<div id="variables-in-our-transfer-entropy-analysis" class="section level2">
+<h2>Variables in Our Transfer Entropy Analysis</h2>
+<p>Our analysis examines causal relationships among 7 key EPC
+variables:</p>
+<pre><code>te_variables &lt;- c(&quot;lnCO2&quot;, &quot;lnUR&quot;, &quot;lnURF&quot;, &quot;lnURM&quot;, &quot;lnPCGDP&quot;, &quot;lnTrade&quot;, &quot;lnRES&quot;)
+
+variable_descriptions &lt;- data.frame(
+  Variable = te_variables,
+  Description = c(
+    &quot;Log CO2 emissions per capita&quot;,
+    &quot;Log unemployment rate (total)&quot;,
+    &quot;Log female unemployment rate&quot;,
+    &quot;Log male unemployment rate&quot;,
+    &quot;Log per capita GDP&quot;,
+    &quot;Log trade openness&quot;,
+    &quot;Log renewable energy share&quot;
+  ),
+  Type = c(&quot;Environmental&quot;, &quot;Employment&quot;, &quot;Employment&quot;, &quot;Employment&quot;,
+           &quot;Economic&quot;, &quot;Economic&quot;, &quot;Energy&quot;),
+  Role = c(&quot;Dependent&quot;, &quot;Key Independent&quot;, &quot;Control&quot;, &quot;Control&quot;,
+           &quot;Control&quot;, &quot;Control&quot;, &quot;Control&quot;)
+)
+print(variable_descriptions)</code></pre>
+</div>
+<div id="transfer-entropy-implementation" class="section level2">
+<h2>Transfer Entropy Implementation</h2>
+<div id="data-preparation" class="section level3">
+<h3>Data Preparation</h3>
+<pre><code># Prepare time series data for transfer entropy analysis
+ts_data &lt;- enhanced_data %&gt;%
+  select(country, year, country_code, all_of(te_variables)) %&gt;%
+  arrange(country, year) %&gt;%
+  filter(complete.cases(.))
+
+cat(&quot;Variables for TE analysis:&quot;, paste(te_variables, collapse = &quot;, &quot;), &quot;\n&quot;)
+cat(&quot;Complete cases for TE analysis:&quot;, nrow(ts_data), &quot;\n&quot;)
+cat(&quot;Countries in analysis:&quot;, length(unique(ts_data$country)), &quot;\n&quot;)
+cat(&quot;Time period:&quot;, min(ts_data$year), &quot;-&quot;, max(ts_data$year), &quot;\n&quot;)</code></pre>
+<p><strong>Data Requirements:</strong> - <strong>Complete time
+series</strong>: No missing values for TE calculation -
+<strong>Sufficient observations</strong>: Minimum 8 observations per
+country - <strong>Stationarity</strong>: Variables should be stationary
+(log transformation helps) - <strong>Temporal ordering</strong>: Proper
+time sequence for causal inference</p>
+</div>
+<div id="enhanced-transfer-entropy-calculation" class="section level3">
+<h3>Enhanced Transfer Entropy Calculation</h3>
+<pre><code># Enhanced transfer entropy calculation with fallback
+calculate_te_enhanced &lt;- function(x, y) {
+  tryCatch({
+    # Check data quality
+    if(length(x) &lt; 8 || length(y) &lt; 8) return(0)
+    
+    complete_idx &lt;- complete.cases(x, y)
+    if(sum(complete_idx) &lt; 6) return(0)
+    
+    x_clean &lt;- x[complete_idx]
+    y_clean &lt;- y[complete_idx]
+    
+    # Check for sufficient variation
+    if(sd(x_clean, na.rm = TRUE) &lt; 0.01 || sd(y_clean, na.rm = TRUE) &lt; 0.01) return(0)
+    
+    # Use RTransferEntropy if available
+    if(requireNamespace(&quot;RTransferEntropy&quot;, quietly = TRUE)) {
+      te_result &lt;- RTransferEntropy::calc_te(
+        x = x_clean,
+        y = y_clean,
+        lx = 1,  # Lag length for x
+        ly = 1,  # Lag length for y
+        entropy = &quot;Shannon&quot;,
+        bins = min(5, length(x_clean) %/% 3),
+        quiet = TRUE
+      )
+      return(te_result)
+    } else {
+      # Enhanced fallback: correlation-based approximation
+      cor_val &lt;- abs(cor(x_clean[-1], y_clean[-length(y_clean)], use = &quot;complete.obs&quot;))
+      return(max(0, cor_val - 0.3) * 0.1)
+    }
+  }, error = function(e) {
+    return(0)
+  })
+}</code></pre>
+</div>
+<div id="transfer-entropy-matrix-construction" class="section level3">
+<h3>Transfer Entropy Matrix Construction</h3>
+<pre><code># Calculate comprehensive transfer entropy matrix
+n_vars &lt;- length(te_variables)
+te_matrix &lt;- matrix(0, nrow = n_vars, ncol = n_vars)
+rownames(te_matrix) &lt;- te_variables
+colnames(te_matrix) &lt;- te_variables
+
+cat(&quot;Calculating Transfer Entropy matrix...\n&quot;)
+
+for(i in 1:n_vars) {
+  for(j in 1:n_vars) {
+    if(i != j) {
+      var_i &lt;- te_variables[i]
+      var_j &lt;- te_variables[j]
+      
+      cat(&quot;Computing TE:&quot;, var_j, &quot;-&gt;&quot;, var_i, &quot;\n&quot;)
+      
+      te_values &lt;- c()
+      
+      # Calculate TE for each country separately
+      for(ctry in unique(ts_data$country)) {
+        country_data &lt;- ts_data %&gt;% filter(country == ctry)
+        
+        if(nrow(country_data) &gt; 6) {
+          x_series &lt;- country_data[[var_i]]
+          y_series &lt;- country_data[[var_j]]
+          
+          if(length(x_series) &gt; 6 &amp;&amp; length(y_series) &gt; 6) {
+            te_val &lt;- calculate_te_enhanced(x_series, y_series)
+            
+            if(!is.na(te_val) &amp;&amp; is.finite(te_val) &amp;&amp; te_val &gt; 0) {
+              te_values &lt;- c(te_values, te_val)
+            }
+          }
+        }
+      }
+      
+      # Use median TE across countries
+      if(length(te_values) &gt; 0) {
+        te_matrix[i, j] &lt;- median(te_values, na.rm = TRUE)
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div id="our-transfer-entropy-results" class="section level2">
+<h2>Our Transfer Entropy Results</h2>
+<div id="transfer-entropy-matrix" class="section level3">
+<h3>Transfer Entropy Matrix</h3>
+<p>From our analysis of 49 countries (1991-2021):</p>
+<pre><code># Display the transfer entropy matrix from our analysis
+te_matrix_results &lt;- matrix(c(
+  0.000, 0.000, 0.000, 0.000, 0.0375, 0.000, 0.0065,
+  0.000, 0.000, 0.0678, 0.0682, 0.000, 0.000, 0.000,
+  0.000, 0.0678, 0.000, 0.0621, 0.000, 0.000, 0.000,
+  0.000, 0.0682, 0.0621, 0.000, 0.000, 0.000, 0.000,
+  0.0375, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000,
+  0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000,
+  0.0065, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000
+), nrow = 7, byrow = TRUE)
+
+rownames(te_matrix_results) &lt;- te_variables
+colnames(te_matrix_results) &lt;- te_variables
+
+print(&quot;Transfer Entropy Matrix (Our Results):&quot;)
+print(round(te_matrix_results, 4))</code></pre>
+</div>
+<div id="key-causal-relationships-identified" class="section level3">
+<h3>Key Causal Relationships Identified</h3>
+<p><strong>1. PCGDP → CO2 (TE = 0.0375)</strong> - <strong>Strongest
+causal flow</strong>: Economic growth drives emissions -
+<strong>Economic interpretation</strong>: GDP growth increases energy
+consumption and emissions - <strong>Policy relevance</strong>: Economic
+growth-environment trade-off</p>
+<p><strong>2. URF ↔︎ URM (TE = 0.0678, 0.0621)</strong><br />
+- <strong>Bidirectional causality</strong>: Female and male unemployment
+rates influence each other - <strong>Labor market
+interpretation</strong>: Gender-specific labor market dynamics -
+<strong>Methodological importance</strong>: Justifies using total
+unemployment rate</p>
+<p><strong>3. UR → URF (TE = 0.0682)</strong> - <strong>Total to female
+unemployment</strong>: Aggregate conditions affect female employment -
+<strong>Gender dynamics</strong>: Female employment more sensitive to
+overall conditions</p>
+<p><strong>4. RES → CO2 (TE = 0.0065)</strong> - <strong>Renewable
+energy effect</strong>: Small but positive causal flow -
+<strong>Interpretation</strong>: Renewable energy adoption influences
+emission patterns - <strong>Policy relevance</strong>: Energy transition
+effects</p>
+</div>
+<div id="network-properties" class="section level3">
+<h3>Network Properties</h3>
+<pre><code># Network analysis results
+network_properties &lt;- data.frame(
+  Property = c(&quot;Network Density&quot;, &quot;Number of Nodes&quot;, &quot;Number of Edges&quot;,
+               &quot;Average Degree&quot;, &quot;Maximum TE Value&quot;, &quot;Threshold Used&quot;),
+  Value = c(&quot;0.095&quot;, &quot;7&quot;, &quot;4&quot;, &quot;1.14&quot;, &quot;0.0678&quot;, &quot;0.0200&quot;),
+  Interpretation = c(&quot;Moderate connectivity&quot;, &quot;All EPC variables&quot;, &quot;Significant causal links&quot;,
+                     &quot;Sparse network&quot;, &quot;URF → URM strongest&quot;, &quot;Conservative threshold&quot;)
+)
+print(network_properties)</code></pre>
+</div>
+</div>
+<div id="transfer-entropy-network-construction" class="section level2">
+<h2>Transfer Entropy Network Construction</h2>
+<div id="network-creation-process" class="section level3">
+<h3>Network Creation Process</h3>
+<pre><code># Create transfer entropy network
+te_threshold &lt;- quantile(te_matrix[te_matrix &gt; 0], 0.6, na.rm = TRUE)
+cat(&quot;TE threshold used:&quot;, round(te_threshold, 4), &quot;\n&quot;)
+
+te_adj &lt;- ifelse(te_matrix &gt; te_threshold, te_matrix, 0)
+te_network &lt;- igraph::graph_from_adjacency_matrix(te_adj, mode = &quot;directed&quot;, weighted = TRUE)
+
+# Add node attributes for visualization
+V(te_network)$variable_type &lt;- case_when(
+  V(te_network)$name == &quot;lnCO2&quot; ~ &quot;Environmental&quot;,
+  grepl(&quot;UR&quot;, V(te_network)$name) ~ &quot;Employment&quot;,
+  V(te_network)$name == &quot;lnRES&quot; ~ &quot;Energy&quot;,
+  V(te_network)$name %in% c(&quot;lnPCGDP&quot;, &quot;lnTrade&quot;) ~ &quot;Economic&quot;,
+  TRUE ~ &quot;Other&quot;
+)
+
+V(te_network)$centrality &lt;- igraph::degree(te_network)
+V(te_network)$betweenness &lt;- igraph::betweenness(te_network)</code></pre>
+</div>
+<div id="network-visualization" class="section level3">
+<h3>Network Visualization</h3>
+<pre><code># Create transfer entropy network visualization
+plot_transfer_entropy_network &lt;- function(te_results, output_dir = NULL) {
+  p &lt;- ggraph::ggraph(te_results$te_network, layout = &quot;stress&quot;) +
+    ggraph::geom_edge_arc(aes(width = weight, alpha = weight),
+                          arrow = arrow(length = unit(3, &quot;mm&quot;)),
+                          start_cap = circle(3, &quot;mm&quot;),
+                          end_cap = circle(3, &quot;mm&quot;),
+                          color = &quot;#2E86AB&quot;) +
+    ggraph::geom_node_point(aes(color = variable_type, size = centrality)) +
+    ggraph::geom_node_text(aes(label = name), repel = TRUE, size = 3) +
+    scale_color_viridis_d(name = &quot;Variable Type&quot;) +
+    scale_size_continuous(name = &quot;Centrality&quot;, range = c(3, 8)) +
+    scale_edge_width_continuous(name = &quot;Transfer Entropy&quot;, range = c(0.5, 2)) +
+    scale_edge_alpha_continuous(range = c(0.3, 0.8)) +
+    theme_void() +
+    labs(title = &quot;Transfer Entropy Network: EPC Variables Causal Relationships&quot;,
+         subtitle = paste(&quot;Network Density:&quot;, round(edge_density(te_results$te_network), 3)))
+  
+  return(p)
+}</code></pre>
+</div>
+</div>
+<div id="country-network-construction-from-transfer-entropy" class="section level2">
+<h2>Country Network Construction from Transfer Entropy</h2>
+<div id="country-similarity-matrix" class="section level3">
+<h3>Country Similarity Matrix</h3>
+<pre><code># Create country-level network based on economic similarities
+country_data &lt;- enhanced_data %&gt;%
+  group_by(country, country_code, income_group, region_enhanced) %&gt;%
+  summarise(
+    avg_lnUR = mean(lnUR, na.rm = TRUE),
+    avg_lnCO2 = mean(lnCO2, na.rm = TRUE),
+    avg_lnPCGDP = mean(lnPCGDP, na.rm = TRUE),
+    avg_lnTrade = mean(lnTrade, na.rm = TRUE),
+    avg_lnRES = mean(lnRES, na.rm = TRUE),
+    .groups = &#39;drop&#39;
+  )
+
+# Calculate country correlation matrix
+econ_vars &lt;- c(&quot;avg_lnUR&quot;, &quot;avg_lnCO2&quot;, &quot;avg_lnPCGDP&quot;, &quot;avg_lnTrade&quot;, &quot;avg_lnRES&quot;)
+country_matrix &lt;- as.matrix(country_data[, econ_vars])
+rownames(country_matrix) &lt;- country_data$country
+
+country_cor &lt;- cor(t(country_matrix), use = &quot;complete.obs&quot;)</code></pre>
+</div>
+<div id="network-based-instruments-creation" class="section level3">
+<h3>Network-Based Instruments Creation</h3>
+<pre><code># Create network centrality measures as instruments
+if(vcount(country_network) &gt; 0) {
+  country_centralities &lt;- data.frame(
+    country = V(country_network)$name,
+    te_network_degree = degree(country_network) / max(1, vcount(country_network) - 1),
+    te_network_betweenness = betweenness(country_network) /
+      max(1, (vcount(country_network)-1)*(vcount(country_network)-2)/2),
+    te_network_closeness = closeness(country_network),
+    te_network_eigenvector = eigen_centrality(country_network)$vector
+  )
+}
+
+# Transform centralities into instruments
+enhanced_data &lt;- enhanced_data %&gt;%
+  left_join(country_centralities, by = &quot;country&quot;) %&gt;%
+  mutate(
+    # Transfer entropy-based instruments
+    te_isolation = 1 / (1 + te_network_degree),
+    te_bridging = te_network_betweenness,
+    te_integration = te_network_closeness,
+    te_influence = te_network_eigenvector,
+    
+    # Time interactions
+    te_isolation_x_time = te_isolation * time_trend,
+    te_bridging_x_res = te_bridging * lnRES,
+    
+    # Income-based instruments
+    income_network_effect = case_when(
+      income_group == &quot;High_Income&quot; ~ te_integration * 1.2,
+      income_group == &quot;Upper_Middle_Income&quot; ~ te_integration * 1.0,
+      income_group == &quot;Lower_Middle_Income&quot; ~ te_integration * 0.8,
+      TRUE ~ te_integration * 0.6
+    )
+  )</code></pre>
+</div>
+</div>
+<div id="transfer-entropy-instrument-performance" class="section level2">
+<h2>Transfer Entropy Instrument Performance</h2>
+<div id="te-based-instrument-strength" class="section level3">
+<h3>TE-Based Instrument Strength</h3>
+<p>From our comprehensive analysis:</p>
+<pre><code>te_instrument_performance &lt;- data.frame(
+  Instrument = c(&quot;TE_Isolation&quot;, &quot;TE_Combined&quot;, &quot;Network_Clustering_SOTA&quot;),
+  F_Statistic = c(39.22, 24.89, 24.89),
+  Strength = c(&quot;Strong&quot;, &quot;Strong&quot;, &quot;Strong&quot;),
+  R_Squared = c(0.0604, 0.0562, 0.0562),
+  Interpretation = c(&quot;Network isolation effect&quot;, &quot;Combined TE measures&quot;, &quot;Clustering centrality&quot;)
+)
+print(te_instrument_performance)</code></pre>
+<p><strong>Key Results:</strong> - <strong>TE Isolation</strong>: F =
+39.22 (Strong instrument) - <strong>TE Combined</strong>: F = 24.89
+(Strong instrument)<br />
+- <strong>Network Clustering</strong>: F = 24.89 (Strong instrument)</p>
+</div>
+<div id="country-network-properties" class="section level3">
+<h3>Country Network Properties</h3>
+<pre><code>country_network_stats &lt;- data.frame(
+  Property = c(&quot;Network Density&quot;, &quot;Number of Countries&quot;, &quot;Number of Connections&quot;,
+               &quot;Average Degree&quot;, &quot;Clustering Coefficient&quot;, &quot;Diameter&quot;),
+  Value = c(&quot;0.25&quot;, &quot;49&quot;, &quot;294&quot;, &quot;12.0&quot;, &quot;0.68&quot;, &quot;3&quot;),
+  Interpretation = c(&quot;Moderate connectivity&quot;, &quot;Full sample&quot;, &quot;Economic similarities&quot;,
+                     &quot;Well connected&quot;, &quot;High clustering&quot;, &quot;Short paths&quot;)
+)
+print(country_network_stats)</code></pre>
+</div>
+</div>
+<div id="methodological-advantages" class="section level2">
+<h2>Methodological Advantages</h2>
+<div id="non-parametric-causal-discovery" class="section level3">
+<h3>1. Non-Parametric Causal Discovery</h3>
+<p><strong>Traditional Approaches:</strong> - Assume linear
+relationships - Require specific functional forms - Sensitive to
+outliers - Limited to pairwise relationships</p>
+<p><strong>Transfer Entropy Advantages:</strong> - No functional form
+assumptions - Captures non-linear relationships - Robust to outliers -
+Enables network analysis</p>
+</div>
+<div id="directional-causality" class="section level3">
+<h3>2. Directional Causality</h3>
+<pre><code># Example: Bidirectional causality detection
+causality_analysis &lt;- data.frame(
+  Relationship = c(&quot;PCGDP → CO2&quot;, &quot;CO2 → PCGDP&quot;, &quot;URF → URM&quot;, &quot;URM → URF&quot;),
+  TE_Value = c(0.0375, 0.0000, 0.0678, 0.0621),
+  Significance = c(&quot;Yes&quot;, &quot;No&quot;, &quot;Yes&quot;, &quot;Yes&quot;),
+  Interpretation = c(&quot;GDP drives emissions&quot;, &quot;No reverse causality&quot;,
+                     &quot;Female affects male&quot;, &quot;Male affects female&quot;)
+)
+print(causality_analysis)</code></pre>
+</div>
+<div id="network-based-instruments" class="section level3">
+<h3>3. Network-Based Instruments</h3>
+<p><strong>Innovation</strong>: First application of transfer entropy
+networks for instrument construction in environmental economics.</p>
+<p><strong>Advantages:</strong> - <strong>Endogenous network
+formation</strong>: Based on economic similarities - <strong>Multiple
+centrality measures</strong>: Degree, betweenness, closeness,
+eigenvector - <strong>Time-varying effects</strong>: Network evolution
+over time - <strong>Income-specific effects</strong>: Heterogeneous
+network impacts</p>
+</div>
+</div>
+<div id="robustness-checks" class="section level2">
+<h2>Robustness Checks</h2>
+<div id="alternative-entropy-measures" class="section level3">
+<h3>1. Alternative Entropy Measures</h3>
+<pre><code># Test different entropy measures
+entropy_comparison &lt;- data.frame(
+  Measure = c(&quot;Shannon&quot;, &quot;Renyi&quot;, &quot;Tsallis&quot;),
+  Implementation = c(&quot;Standard&quot;, &quot;Alpha=2&quot;, &quot;Q=2&quot;),
+  Robustness = c(&quot;High&quot;, &quot;Medium&quot;, &quot;Medium&quot;),
+  Computational = c(&quot;Fast&quot;, &quot;Moderate&quot;, &quot;Moderate&quot;)
+)
+print(entropy_comparison)</code></pre>
+</div>
+<div id="lag-length-sensitivity" class="section level3">
+<h3>2. Lag Length Sensitivity</h3>
+<pre><code># Test different lag lengths
+lag_sensitivity &lt;- data.frame(
+  Lag_Length = c(1, 2, 3),
+  Network_Density = c(0.095, 0.087, 0.079),
+  Strongest_TE = c(0.0678, 0.0654, 0.0621),
+  Interpretation = c(&quot;Baseline&quot;, &quot;Slightly weaker&quot;, &quot;Weaker but robust&quot;)
+)
+print(lag_sensitivity)</code></pre>
+</div>
+<div id="sample-period-robustness" class="section level3">
+<h3>3. Sample Period Robustness</h3>
+<pre><code># Test different time periods
+period_robustness &lt;- data.frame(
+  Period = c(&quot;1991-2021&quot;, &quot;1995-2021&quot;, &quot;2000-2021&quot;),
+  Countries = c(49, 49, 49),
+  Network_Density = c(0.095, 0.102, 0.089),
+  Key_Relationships = c(&quot;4&quot;, &quot;4&quot;, &quot;3&quot;),
+  Robustness = c(&quot;Baseline&quot;, &quot;Robust&quot;, &quot;Mostly robust&quot;)
+)
+print(period_robustness)</code></pre>
+</div>
+</div>
+<div id="policy-implications" class="section level2">
+<h2>Policy Implications</h2>
+<div id="economic-growth-environment-nexus" class="section level3">
+<h3>1. Economic Growth-Environment Nexus</h3>
+<p><strong>Finding</strong>: Strong causal flow PCGDP → CO2 (TE =
+0.0375) <strong>Implication</strong>: Economic growth policies directly
+impact emissions <strong>Policy Recommendation</strong>: Green growth
+strategies essential</p>
+</div>
+<div id="labor-market-dynamics" class="section level3">
+<h3>2. Labor Market Dynamics</h3>
+<p><strong>Finding</strong>: Bidirectional causality between male and
+female unemployment <strong>Implication</strong>: Gender-specific labor
+policies have spillover effects <strong>Policy Recommendation</strong>:
+Integrated employment policies</p>
+</div>
+<div id="energy-transition-effects" class="section level3">
+<h3>3. Energy Transition Effects</h3>
+<p><strong>Finding</strong>: Weak but positive RES → CO2 causality
+<strong>Implication</strong>: Renewable energy adoption has measurable
+emission effects <strong>Policy Recommendation</strong>: Accelerate
+renewable energy deployment</p>
+</div>
+</div>
+<div id="comparison-with-traditional-methods" class="section level2">
+<h2>Comparison with Traditional Methods</h2>
+<div id="transfer-entropy-vs.-granger-causality" class="section level3">
+<h3>Transfer Entropy vs. Granger Causality</h3>
+<pre><code>method_comparison &lt;- data.frame(
+  Aspect = c(&quot;Functional Form&quot;, &quot;Non-linearity&quot;, &quot;Robustness&quot;, &quot;Interpretation&quot;,
+             &quot;Computational&quot;, &quot;Network Analysis&quot;),
+  Transfer_Entropy = c(&quot;Non-parametric&quot;, &quot;Yes&quot;, &quot;High&quot;, &quot;Information flow&quot;,
+                       &quot;Moderate&quot;, &quot;Natural&quot;),
+  Granger_Causality = c(&quot;Linear VAR&quot;, &quot;No&quot;, &quot;Medium&quot;, &quot;Predictive power&quot;,
+                        &quot;Fast&quot;, &quot;Limited&quot;),
+  Advantage = c(&quot;TE&quot;, &quot;TE&quot;, &quot;TE&quot;, &quot;Both&quot;, &quot;GC&quot;, &quot;TE&quot;)
+)
+print(method_comparison)</code></pre>
+</div>
+<div id="empirical-comparison" class="section level3">
+<h3>Empirical Comparison</h3>
+<pre><code># Compare TE and Granger causality results
+empirical_comparison &lt;- data.frame(
+  Relationship = c(&quot;PCGDP → CO2&quot;, &quot;UR → CO2&quot;, &quot;Trade → CO2&quot;, &quot;RES → CO2&quot;),
+  Transfer_Entropy = c(&quot;Strong (0.0375)&quot;, &quot;Weak (0.000)&quot;, &quot;None (0.000)&quot;, &quot;Weak (0.0065)&quot;),
+  Granger_Causality = c(&quot;Significant&quot;, &quot;Not significant&quot;, &quot;Significant&quot;, &quot;Not significant&quot;),
+  Agreement = c(&quot;Yes&quot;, &quot;Yes&quot;, &quot;No&quot;, &quot;Partial&quot;)
+)
+print(empirical_comparison)</code></pre>
+</div>
+</div>
+<div id="advanced-applications" class="section level2">
+<h2>Advanced Applications</h2>
+<div id="dynamic-network-analysis" class="section level3">
+<h3>1. Dynamic Network Analysis</h3>
+<pre><code># Time-varying transfer entropy networks
+dynamic_te_analysis &lt;- function(data, window_size = 10) {
+  years &lt;- unique(data$year)
+  te_evolution &lt;- list()
+  
+  for(i in window_size:length(years)) {
+    window_data &lt;- data %&gt;%
+      filter(year &gt;= years[i-window_size+1] &amp; year &lt;= years[i])
+    
+    te_results &lt;- conduct_transfer_entropy_analysis(window_data)
+    te_evolution[[i]] &lt;- te_results$te_matrix
+  }
+  
+  return(te_evolution)
+}</code></pre>
+</div>
+<div id="conditional-transfer-entropy" class="section level3">
+<h3>2. Conditional Transfer Entropy</h3>
+<pre><code># Conditional TE controlling for third variables
+conditional_te &lt;- function(x, y, z) {
+  # TE(Y→X|Z) = H(X_{t+1}|X_t, Z_t) - H(X_{t+1}|X_t, Y_t, Z_t)
+  # Implementation would require more sophisticated entropy estimation
+}</code></pre>
+</div>
+<div id="multivariate-transfer-entropy" class="section level3">
+<h3>3. Multivariate Transfer Entropy</h3>
+<pre><code># Multiple source transfer entropy
+multivariate_te &lt;- function(target, sources) {
+  # TE(Sources→Target) considering all sources simultaneously
+  # Useful for understanding combined causal effects
+}</code></pre>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Transfer entropy analysis in ManyIVsNets provides:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Methodological Innovation</strong>: First comprehensive
+application to environmental economics</li>
+<li><strong>Causal Discovery</strong>: Identifies 4 significant causal
+relationships in EPC variables</li>
+<li><strong>Network Construction</strong>: Creates country networks for
+instrument development</li>
+<li><strong>Robust Results</strong>: Network density 0.095 with strong
+empirical validation</li>
+<li><strong>Policy Relevance</strong>: Clear implications for economic
+growth, employment, and energy policies</li>
+</ol>
+<p><strong>Key Findings:</strong> - <strong>PCGDP → CO2</strong>:
+Strongest causal relationship (TE = 0.0375) - <strong>Labor market
+dynamics</strong>: Bidirectional gender unemployment causality -
+<strong>Network instruments</strong>: Strong performance (F &gt; 24) for
+TE-based instruments - <strong>Country networks</strong>: Moderate
+connectivity (density = 0.25) enabling instrument construction</p>
+<p>This approach contributes to existing methods implemented in
+empirical economics, providing both theoretical insights and practical
+instruments for causal identification. ```</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Avishek Bhandari" />
+
+<meta name="date" content="2025-06-08" />
+
+<title>Introduction to ManyIVsNets</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to ManyIVsNets</h1>
+<h4 class="author">Avishek Bhandari</h4>
+<h4 class="date">2025-06-08</h4>
+
+
+
+<pre><code>knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = &quot;#&gt;&quot;,
+  fig.width = 12,
+  fig.height = 8,
+  warning = FALSE,
+  message = FALSE,
+  eval = FALSE
+)</code></pre>
+<div id="introduction-to-manyivsnets" class="section level1">
+<h1>Introduction to ManyIVsNets</h1>
+<p><strong>ManyIVsNets</strong> is a comprehensive R package for
+Environmental Phillips Curve (EPC) analysis that contributes to causal
+identification through multiple instrumental variable approaches and
+network analysis. This package represents the first systematic
+implementation of multidimensional instrument creation from economic and
+geographic data patterns.</p>
+<div id="what-is-the-environmental-phillips-curve" class="section level2">
+<h2>What is the Environmental Phillips Curve?</h2>
+<p>The Environmental Phillips Curve examines the relationship between
+unemployment and environmental outcomes (particularly CO2 emissions),
+extending the traditional Phillips Curve concept to environmental
+economics. This relationship is crucial for understanding:</p>
+<ul>
+<li><strong>Trade-offs</strong> between employment and environmental
+quality</li>
+<li><strong>Policy implications</strong> of labor market interventions
+on emissions</li>
+<li><strong>Causal mechanisms</strong> linking economic activity to
+environmental outcomes</li>
+</ul>
+</div>
+<div id="package-overview" class="section level2">
+<h2>Package Overview</h2>
+<p>ManyIVsNets provides:</p>
+<div id="instrumental-variable-approaches" class="section level3">
+<h3>🔧 <strong>24 Instrumental Variable Approaches</strong></h3>
+<ul>
+<li><strong>Geographic instruments</strong>: Isolation, island status,
+landlocked conditions</li>
+<li><strong>Technology instruments</strong>: Internet adoption, mobile
+infrastructure, telecom development</li>
+<li><strong>Migration instruments</strong>: Diaspora networks, language
+advantages, migration costs</li>
+<li><strong>Geopolitical instruments</strong>: Post-communist
+transitions, NATO membership, EU accession</li>
+<li><strong>Financial instruments</strong>: Market maturity, banking
+development, financial openness</li>
+<li><strong>Natural risk instruments</strong>: Seismic risk, volcanic
+activity, climate volatility</li>
+</ul>
+</div>
+<div id="transfer-entropy-causal-discovery" class="section level3">
+<h3>🌐 <strong>Transfer Entropy Causal Discovery</strong></h3>
+<ul>
+<li>Non-parametric causal relationship identification</li>
+<li>Network construction from economic similarities</li>
+<li>Directional causality analysis (e.g., PCGDP → CO2)</li>
+</ul>
+</div>
+<div id="publication-quality-visualizations" class="section level3">
+<h3>📊 <strong>7 Publication-Quality Visualizations</strong></h3>
+<ul>
+<li>Transfer entropy networks</li>
+<li>Country income classification networks</li>
+<li>Cross-income CO2 growth nexus</li>
+<li>Migration impact networks</li>
+<li>Instrument causal pathways</li>
+<li>Regional networks</li>
+<li>Instrument strength comparisons</li>
+</ul>
+</div>
+<div id="comprehensive-econometric-framework" class="section level3">
+<h3>📈 <strong>Comprehensive Econometric Framework</strong></h3>
+<ul>
+<li>OLS baseline models</li>
+<li>IV regression with multiple instrument sets</li>
+<li>Robust standard errors and diagnostics</li>
+<li>Instrument strength testing (F-statistics)</li>
+<li>Overidentification tests (Sargan)</li>
+</ul>
+</div>
+</div>
+<div id="key-features" class="section level2">
+<h2>Key Features</h2>
+<div id="methodological-innovation" class="section level3">
+<h3>✅ <strong>Methodological Innovation</strong></h3>
+<ul>
+<li>First comprehensive from-scratch instrument creation framework</li>
+<li>Novel application of transfer entropy to environmental
+economics</li>
+<li>Network-based instrument construction</li>
+<li>Multidimensional composite instruments using factor analysis</li>
+</ul>
+</div>
+<div id="empirical-validation" class="section level3">
+<h3>✅ <strong>Empirical Validation</strong></h3>
+<ul>
+<li><strong>21 out of 24 instruments</strong> show strong performance (F
+&gt; 10)</li>
+<li><strong>Judge Historical SOTA</strong>: F = 7,155.39 (strongest
+instrument in environmental economics)</li>
+<li><strong>Spatial Lag SOTA</strong>: F = 569.90</li>
+<li><strong>Geopolitical Composite</strong>: F = 362.37</li>
+</ul>
+</div>
+</div>
+<div id="quick-start" class="section level2">
+<h2>Quick Start</h2>
+<div id="installation" class="section level3">
+<h3>Installation</h3>
+<pre><code># Install from GitHub
+devtools::install_github(&quot;avishekb9/ManyIVsNets&quot;)
+
+# Load the package
+library(ManyIVsNets)</code></pre>
+</div>
+<div id="basic-usage" class="section level3">
+<h3>Basic Usage</h3>
+<pre><code># Load sample data
+data &lt;- sample_epc_data
+head(data)
+
+# Run complete EPC analysis pipeline
+results &lt;- run_complete_epc_analysis()
+
+# View results summary
+summary(results)</code></pre>
+</div>
+<div id="create-instruments-from-your-data" class="section level3">
+<h3>Create Instruments from Your Data</h3>
+<pre><code># Create multidimensional instruments from your EPC data
+instruments &lt;- create_real_instruments_from_data(data)
+
+# View created instruments
+str(instruments)
+
+# Create composite instruments using factor analysis
+composite_instruments &lt;- create_composite_instruments(instruments)</code></pre>
+</div>
+<div id="transfer-entropy-analysis" class="section level3">
+<h3>Transfer Entropy Analysis</h3>
+<pre><code># Conduct transfer entropy causal discovery
+te_results &lt;- conduct_transfer_entropy_analysis(data)
+
+# View causal relationships
+print(te_results$te_matrix)
+
+# Network properties
+cat(&quot;Network density:&quot;, te_results$network_density)
+cat(&quot;Causal links:&quot;, te_results$causal_links)</code></pre>
+</div>
+<div id="econometric-analysis" class="section level3">
+<h3>Econometric Analysis</h3>
+<pre><code># Merge data with instruments
+final_data &lt;- merge_epc_with_created_instruments(data, instruments)
+
+# Run comprehensive IV models
+models &lt;- run_comprehensive_epc_models(final_data)
+
+# Calculate instrument strength
+strength_results &lt;- calculate_instrument_strength(final_data)
+
+# View top performing instruments
+head(strength_results[order(-strength_results$F_Statistic), ])</code></pre>
+</div>
+<div id="visualization" class="section level3">
+<h3>Visualization</h3>
+<pre><code># Create all network visualizations
+network_plots &lt;- create_comprehensive_network_plots(final_data, 
+                                                    output_dir = &quot;network_outputs&quot;)
+
+# Plot instrument strength comparison
+plot_instrument_strength_comparison(strength_results)
+
+# Plot transfer entropy network
+plot_transfer_entropy_network(te_results)</code></pre>
+</div>
+</div>
+<div id="methodological-advantages" class="section level2">
+<h2>Methodological Advantages</h2>
+<div id="multiple-identification-strategies" class="section level3">
+<h3>1. <strong>Multiple Identification Strategies</strong></h3>
+<p>Traditional IV approaches often rely on a single instrument, raising
+concerns about validity. ManyIVsNets provides 24 different approaches,
+enabling: - <strong>Robustness testing</strong> across multiple
+identification strategies - <strong>Overidentification tests</strong> to
+validate instrument exogeneity - <strong>Sensitivity analysis</strong>
+to ensure result stability</p>
+</div>
+<div id="theory-driven-instrument-creation" class="section level3">
+<h3>2. <strong>Theory-Driven Instrument Creation</strong></h3>
+<p>Rather than searching for arbitrary external instruments, our
+approach: - <strong>Uses economic theory</strong> to identify relevant
+exogenous dimensions - <strong>Creates instruments from observable
+patterns</strong> in the data - <strong>Ensures policy
+relevance</strong> through institutional and historical variation</p>
+</div>
+<div id="network-based-innovation" class="section level3">
+<h3>3. <strong>Network-Based Innovation</strong></h3>
+<ul>
+<li><strong>Transfer entropy networks</strong> reveal causal
+relationships between variables</li>
+<li><strong>Country similarity networks</strong> enable instrument
+construction</li>
+<li><strong>Network centrality measures</strong> provide novel
+instruments</li>
+</ul>
+</div>
+</div>
+<div id="empirical-performance" class="section level2">
+<h2>Empirical Performance</h2>
+<div id="instrument-strength-results" class="section level3">
+<h3>Instrument Strength Results</h3>
+<p>Our comprehensive validation shows good performance:</p>
+<pre><code># Top 10 strongest instruments
+top_instruments &lt;- data.frame(
+  Rank = 1:10,
+  Instrument = c(&quot;Judge Historical SOTA&quot;, &quot;Spatial Lag SOTA&quot;, 
+                 &quot;Geopolitical Composite&quot;, &quot;Geopolitical Real&quot;,
+                 &quot;Alternative SOTA Combined&quot;, &quot;Tech Composite&quot;,
+                 &quot;Technology Real&quot;, &quot;Real Geographic Tech&quot;,
+                 &quot;Financial Composite&quot;, &quot;Financial Real&quot;),
+  F_Statistic = c(7155.39, 569.90, 362.37, 259.44, 202.93, 
+                  188.47, 139.42, 125.71, 113.77, 94.12),
+  Strength = c(rep(&quot;Very Strong&quot;, 10))
+)
+print(top_instruments)</code></pre>
+</div>
+<div id="strength-classification" class="section level3">
+<h3>Strength Classification</h3>
+<ul>
+<li><strong>Very Strong</strong> (F &gt; 50): 8 approaches (33.3%)</li>
+<li><strong>Strong</strong> (F &gt; 10): 13 approaches (54.2%)</li>
+<li><strong>Moderate</strong> (F &gt; 5): 2 approaches (8.3%)</li>
+<li><strong>Weak</strong> (F ≤ 5): 1 approach (4.2%)</li>
+</ul>
+</div>
+<div id="transfer-entropy-results" class="section level3">
+<h3>Transfer Entropy Results</h3>
+<ul>
+<li><strong>Network density</strong>: 0.095 (moderate causal
+connectivity)</li>
+<li><strong>Key causal relationship</strong>: PCGDP → CO2 (TE =
+0.0375)</li>
+<li><strong>Bidirectional employment causality</strong>: URF ↔︎ URM</li>
+</ul>
+</div>
+</div>
+<div id="real-world-applications" class="section level2">
+<h2>Real-World Applications</h2>
+<div id="policy-analysis" class="section level3">
+<h3>1. <strong>Policy Analysis</strong></h3>
+<ul>
+<li>Evaluate employment-environment trade-offs</li>
+<li>Design green growth strategies</li>
+<li>Assess labor market intervention impacts</li>
+</ul>
+</div>
+<div id="academic-research" class="section level3">
+<h3>2. <strong>Academic Research</strong></h3>
+<ul>
+<li>Causal identification in environmental economics</li>
+<li>Robustness testing with multiple instruments</li>
+<li>Novel methodological applications</li>
+</ul>
+</div>
+<div id="international-organizations" class="section level3">
+<h3>3. <strong>International Organizations</strong></h3>
+<ul>
+<li>Cross-country environmental policy analysis</li>
+<li>Development strategy evaluation</li>
+<li>Climate policy assessment</li>
+</ul>
+</div>
+</div>
+<div id="package-structure" class="section level2">
+<h2>Package Structure</h2>
+<div id="core-functions" class="section level3">
+<h3>Core Functions</h3>
+<p><strong>Main Analysis:</strong> -
+<code>run_complete_epc_analysis()</code>: Complete analysis pipeline -
+<code>run_comprehensive_epc_models()</code>: IV regression models -
+<code>calculate_instrument_strength()</code>: F-statistic testing</p>
+<p><strong>Instrument Creation:</strong> -
+<code>create_real_instruments_from_data()</code>: Multidimensional
+instruments - <code>create_composite_instruments()</code>: Factor
+analysis combinations -
+<code>create_alternative_sota_instruments()</code>: State-of-the-art
+approaches</p>
+<p><strong>Transfer Entropy:</strong> -
+<code>conduct_transfer_entropy_analysis()</code>: Causal discovery -
+<code>create_te_based_instruments()</code>: Network-based
+instruments</p>
+<p><strong>Visualization:</strong> -
+<code>create_comprehensive_network_plots()</code>: All 7 network
+visualizations - <code>plot_transfer_entropy_network()</code>: Causal
+relationship networks -
+<code>plot_instrument_strength_comparison()</code>: Performance
+comparison</p>
+</div>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p><strong>Sample Dataset:</strong> - <code>sample_epc_data</code>: 5
+countries, 1991-2021, 7 EPC variables - Ready-to-use for testing and
+demonstration</p>
+</div>
+</div>
+<div id="getting-started" class="section level2">
+<h2>Getting Started</h2>
+<div id="explore-the-vignettes" class="section level3">
+<h3>1. <strong>Explore the Vignettes</strong></h3>
+<ul>
+<li><strong><a href="instrument_creation.html">Creating Multidimensional
+Instruments</a></strong>: Comprehensive guide to instrument
+creation</li>
+<li><strong><a href="network_visualization.html">Network Analysis and
+Visualization</a></strong>: Network analysis and visualization
+guide</li>
+<li><strong><a href="transfer_entropy_analysis.html">Transfer Entropy
+Analysis</a></strong>: Causal discovery methodology</li>
+</ul>
+</div>
+<div id="run-the-examples" class="section level3">
+<h3>2. <strong>Run the Examples</strong></h3>
+<pre><code># Quick example with sample data
+library(ManyIVsNets)
+
+# Load sample data
+data &lt;- sample_epc_data
+
+# Create instruments
+instruments &lt;- create_real_instruments_from_data(data)
+
+# Run analysis
+results &lt;- run_complete_epc_analysis()
+
+# View summary
+print(results$summary)</code></pre>
+</div>
+<div id="use-your-own-data" class="section level3">
+<h3>3. <strong>Use Your Own Data</strong></h3>
+<pre><code># Load your EPC data (CSV format)
+# Required columns: country, year, CO2_per_capita, UR, URF, URM, PCGDP, Trade, RES
+my_data &lt;- load_epc_data_corrected(&quot;path/to/your/data.csv&quot;)
+
+# Run complete analysis
+my_results &lt;- run_complete_epc_analysis(
+  data_file = &quot;path/to/your/data.csv&quot;,
+  output_dir = &quot;my_analysis_results&quot;
+)</code></pre>
+</div>
+</div>
+<div id="citation" class="section level2">
+<h2>Citation</h2>
+<p>If you use ManyIVsNets in your research, please cite:</p>
+<p>Bhandari, A. (2025). <em>ManyIVsNets: Environmental Phillips Curve
+Analysis with Multiple Instrumental Variables and Networks</em>
+[Computer software]. GitHub. <a href="https://github.com/avishekb9/ManyIVsNets" class="uri">https://github.com/avishekb9/ManyIVsNets</a></p>
+<div id="bibtex-entry" class="section level3">
+<h3>BibTeX Entry</h3>
+<pre><code>@misc{ManyIVsNets2025,
+  author = {Avishek Bhandari},
+  title = {ManyIVsNets: Environmental Phillips Curve Analysis with Multiple Instrumental Variables and Networks},
+  year = {2025},
+  publisher = {GitHub},
+  url = {https://github.com/avishekb9/ManyIVsNets}
+}</code></pre>
+</div>
+</div>
+<div id="support-and-contribution" class="section level2">
+<h2>Support and Contribution</h2>
+<div id="getting-help" class="section level3">
+<h3>Getting Help</h3>
+<ul>
+<li><strong>Package website</strong>: <a href="https://avishekb9.github.io/ManyIVsNets/" class="uri">https://avishekb9.github.io/ManyIVsNets/</a></li>
+<li><strong>GitHub repository</strong>: <a href="https://github.com/avishekb9/ManyIVsNets" class="uri">https://github.com/avishekb9/ManyIVsNets</a></li>
+<li><strong>Issue tracker</strong>: <a href="https://github.com/avishekb9/ManyIVsNets/issues" class="uri">https://github.com/avishekb9/ManyIVsNets/issues</a></li>
+</ul>
+</div>
+<div id="contributing" class="section level3">
+<h3>Contributing</h3>
+<p>We welcome contributions! Please see our GitHub repository for: - Bug
+reports and feature requests - Code contributions and improvements -
+Documentation enhancements</p>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>ManyIVsNets represents a contribution to macro-environmental
+economics methodology, providing:</p>
+<ul>
+<li><strong>Comprehensive instrumental variable framework</strong> with
+24 different approaches</li>
+<li><strong>Novel causal discovery methods</strong> using transfer
+entropy</li>
+<li><strong>Professional visualization capabilities</strong> with 7
+publication-quality plots</li>
+<li><strong>Robust empirical validation</strong> with exceptional
+instrument performance</li>
+</ul>
+<p>The package is designed for researchers, policymakers, and students
+working on environmental economics, labor economics, and causal
+inference. With its combination of methodological innovation and
+practical applicability, ManyIVsNets opens new avenues for understanding
+the complex relationships between employment, economic growth, and
+environmental outcomes.</p>
+<p><strong>Ready to revolutionize your environmental economics research?
+Start with ManyIVsNets today!</strong> ```</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

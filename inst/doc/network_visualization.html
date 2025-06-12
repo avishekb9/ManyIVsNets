@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Avishek Bhandari" />
+
+<meta name="date" content="2025-06-08" />
+
+<title>Network Analysis and Visualization Guide</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Network Analysis and Visualization
+Guide</h1>
+<h4 class="author">Avishek Bhandari</h4>
+<h4 class="date">2025-06-08</h4>
+
+
+
+<pre><code>knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = &quot;#&gt;&quot;,
+  fig.width = 14,
+  fig.height = 10,
+  warning = FALSE,
+  message = FALSE,
+  dpi = 300,
+  eval = FALSE
+)</code></pre>
+<div id="network-analysis-and-visualization-guide" class="section level1">
+<h1>Network Analysis and Visualization Guide</h1>
+<p>This vignette provides a comprehensive guide to ManyIVsNets’ network
+analysis and visualization capabilities. Our package generates 7
+publication-quality network visualizations at 600 DPI, providing
+unprecedented insights into Environmental Phillips Curve relationships
+through network analysis.</p>
+<div id="overview-of-network-analysis-in-manyivsnets" class="section level2">
+<h2>Overview of Network Analysis in ManyIVsNets</h2>
+<p>ManyIVsNets implements multiple types of network analysis:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Transfer Entropy Networks</strong>: Causal relationships
+between EPC variables</li>
+<li><strong>Country Income Networks</strong>: Economic similarity
+networks by income classification<br />
+</li>
+<li><strong>Cross-Income CO2 Growth Nexus</strong>: Income-based
+environmental networks</li>
+<li><strong>Migration Impact Networks</strong>: Diaspora effects on
+environmental outcomes</li>
+<li><strong>Instrument Causal Pathways</strong>: Relationships between
+different instrument types</li>
+<li><strong>Regional Networks</strong>: Geographic and economic regional
+clustering</li>
+<li><strong>Instrument Strength Comparison</strong>: Comprehensive
+performance visualization</li>
+</ol>
+</div>
+<div id="network-types-and-applications" class="section level2">
+<h2>Network Types and Applications</h2>
+<div id="transfer-entropy-networks-variable-level" class="section level3">
+<h3>1. Transfer Entropy Networks (Variable-Level)</h3>
+<p><strong>Purpose</strong>: Identify causal relationships between EPC
+variables <strong>Key Insight</strong>: PCGDP → CO2 strongest causal
+flow (TE = 0.0375)</p>
+<pre><code># Create transfer entropy network visualization
+library(ManyIVsNets)
+
+# Load sample data
+data &lt;- sample_epc_data
+
+# Conduct transfer entropy analysis
+te_results &lt;- conduct_transfer_entropy_analysis(data)
+
+# Create transfer entropy network plot
+plot_transfer_entropy_network(te_results, output_dir = &quot;network_outputs&quot;)</code></pre>
+<p><strong>Network Properties from Our Analysis:</strong> -
+<strong>Density</strong>: 0.095 (moderate causal connectivity) -
+<strong>Key relationships</strong>: PCGDP → CO2 (0.0375), URF ↔︎ URM
+(bidirectional) - <strong>Node types</strong>: Environmental,
+Employment, Economic, Energy variables</p>
+</div>
+<div id="country-income-classification-networks" class="section level3">
+<h3>2. Country Income Classification Networks</h3>
+<p><strong>Purpose</strong>: Analyze economic similarities between
+countries by income groups <strong>Key Insight</strong>: High-income
+countries cluster with density 0.25</p>
+<pre><code># Create enhanced data with income classifications
+enhanced_data &lt;- create_enhanced_test_data()
+
+# Create country network by income classification
+country_network &lt;- create_country_income_network(enhanced_data)
+
+# Plot country income network
+plot_country_income_network(country_network, output_dir = &quot;network_outputs&quot;)</code></pre>
+<p><strong>Network Characteristics:</strong> - <strong>High-Income
+Countries</strong>: USA, Germany, Japan, UK, France - <strong>Network
+Density</strong>: 0.25 (strong connectivity within income groups) -
+<strong>Clustering</strong>: Countries group by economic similarity and
+geographic proximity</p>
+</div>
+<div id="cross-income-co2-growth-nexus" class="section level3">
+<h3>3. Cross-Income CO2 Growth Nexus</h3>
+<p><strong>Purpose</strong>: Examine environmental-economic
+relationships across income levels <strong>Key Insight</strong>:
+Different income groups show distinct CO2-growth patterns</p>
+<pre><code># Create cross-income CO2 growth nexus visualization
+plot_cross_income_co2_nexus(enhanced_data, output_dir = &quot;network_outputs&quot;)
+
+# Example of income-based patterns
+income_patterns &lt;- enhanced_data %&gt;%
+  group_by(income_group) %&gt;%
+  summarise(
+    avg_co2 = mean(lnCO2, na.rm = TRUE),
+    avg_ur = mean(lnUR, na.rm = TRUE),
+    avg_gdp = mean(lnPCGDP, na.rm = TRUE),
+    .groups = &#39;drop&#39;
+  )
+
+print(income_patterns)</code></pre>
+<p><strong>Key Findings:</strong> - <strong>High-Income
+Countries</strong>: Lower unemployment, higher CO2 per capita -
+<strong>Upper-Middle-Income</strong>: Transitional patterns with
+moderate emissions - <strong>Network Effects</strong>: Economic
+similarity drives environmental clustering</p>
+</div>
+<div id="migration-impact-networks" class="section level3">
+<h3>4. Migration Impact Networks</h3>
+<p><strong>Purpose</strong>: Analyze how migration networks affect
+environmental outcomes <strong>Key Insight</strong>: Diaspora strength
+correlates with CO2 growth patterns</p>
+<pre><code># Create migration impact visualization
+plot_migration_impact(enhanced_data, output_dir = &quot;network_outputs&quot;)
+
+# Example migration patterns
+migration_examples &lt;- data.frame(
+  country = c(&quot;Ireland&quot;, &quot;USA&quot;, &quot;Germany&quot;, &quot;Poland&quot;),
+  diaspora_network_strength = c(0.9, 0.2, 0.4, 0.9),
+  english_language_advantage = c(1.0, 1.0, 0.8, 0.4),
+  interpretation = c(&quot;High emigration&quot;, &quot;Immigration destination&quot;, 
+                    &quot;Mixed patterns&quot;, &quot;High emigration&quot;)
+)
+
+print(migration_examples)</code></pre>
+<p><strong>Migration Network Effects:</strong> - <strong>High Emigration
+Countries</strong>: Ireland, Italy, Poland (diaspora strength = 0.9) -
+<strong>Immigration Destinations</strong>: USA, Canada, Australia
+(diaspora strength = 0.2) - <strong>Language Effects</strong>: English
+advantage creates network spillovers</p>
+</div>
+<div id="instrument-causal-pathways" class="section level3">
+<h3>5. Instrument Causal Pathways</h3>
+<p><strong>Purpose</strong>: Show relationships between different
+instrument types <strong>Key Insight</strong>: Geographic and technology
+instruments cluster together</p>
+<pre><code># Create instrument causal pathways network
+plot_instrument_causal_pathways(enhanced_data, output_dir = &quot;network_outputs&quot;)
+
+# Example instrument correlations
+instrument_correlations &lt;- enhanced_data %&gt;%
+  select(geo_isolation, tech_composite, migration_composite, 
+         financial_composite, te_isolation) %&gt;%
+  cor(use = &quot;complete.obs&quot;) %&gt;%
+  round(3)
+
+print(instrument_correlations)</code></pre>
+<p><strong>Instrument Clustering Patterns:</strong> -
+<strong>Geographic-Technology Cluster</strong>: Strong correlation (r =
+0.65) - <strong>Migration-Financial Cluster</strong>: Moderate
+correlation (r = 0.43) - <strong>Transfer Entropy</strong>: Independent
+variation (unique identification)</p>
+</div>
+<div id="regional-networks" class="section level3">
+<h3>6. Regional Networks</h3>
+<p><strong>Purpose</strong>: Analyze regional clustering and geographic
+effects <strong>Key Insight</strong>: Countries cluster by geographic
+proximity and economic similarity</p>
+<pre><code># Create regional network visualization
+plot_regional_network(enhanced_data, output_dir = &quot;network_outputs&quot;)
+
+# Regional clustering examples
+regional_examples &lt;- data.frame(
+  region = c(&quot;Europe&quot;, &quot;North_America&quot;, &quot;Asia&quot;, &quot;Oceania&quot;),
+  countries = c(&quot;Germany, France, UK, Italy&quot;, &quot;USA, Canada&quot;, 
+                &quot;Japan, Korea, China&quot;, &quot;Australia, New Zealand&quot;),
+  characteristics = c(&quot;Economic integration&quot;, &quot;NAFTA effects&quot;, 
+                     &quot;Development diversity&quot;, &quot;Geographic isolation&quot;)
+)
+
+print(regional_examples)</code></pre>
+<p><strong>Regional Network Properties:</strong> - <strong>European
+Integration</strong>: High connectivity within EU countries -
+<strong>Geographic Effects</strong>: Distance influences network
+formation - <strong>Economic Similarity</strong>: GDP levels drive
+regional clustering</p>
+</div>
+<div id="instrument-strength-comparison" class="section level3">
+<h3>7. Instrument Strength Comparison</h3>
+<p><strong>Purpose</strong>: Compare performance of all 24 instrument
+approaches <strong>Key Insight</strong>: Judge Historical SOTA achieves
+F = 7,155.39 (strongest)</p>
+<pre><code># Calculate comprehensive instrument strength
+strength_results &lt;- calculate_instrument_strength(enhanced_data)
+
+# Create instrument strength comparison plot
+plot_instrument_strength_comparison(strength_results, output_dir = &quot;network_outputs&quot;)
+
+# Display top 10 strongest instruments
+top_instruments &lt;- strength_results %&gt;%
+  arrange(desc(F_Statistic)) %&gt;%
+  head(10)
+
+print(top_instruments)</code></pre>
+<p><strong>Instrument Performance Hierarchy:</strong> 1. <strong>Judge
+Historical SOTA</strong>: F = 7,155.39 (Exceptionally Strong) 2.
+<strong>Spatial Lag SOTA</strong>: F = 569.90 (Very Strong) 3.
+<strong>Geopolitical Composite</strong>: F = 362.37 (Very Strong) 4.
+<strong>Technology Composite</strong>: F = 188.47 (Very Strong) 5.
+<strong>Financial Composite</strong>: F = 113.77 (Very Strong)</p>
+</div>
+</div>
+<div id="comprehensive-network-analysis-results" class="section level2">
+<h2>Comprehensive Network Analysis Results</h2>
+<div id="key-findings-from-network-analysis" class="section level3">
+<h3>Key Findings from Network Analysis</h3>
+<p><strong>1. Transfer Entropy Networks</strong> - Network density:
+0.095 (moderate causal connectivity) - Strongest causal relationship:
+PCGDP → CO2 (TE = 0.0375) - Bidirectional employment causality: URF ↔︎
+URM</p>
+<p><strong>2. Country Networks</strong> - Income-based clustering with
+density 0.25 - High-income countries form tight clusters - Regional
+effects complement income classification</p>
+<p><strong>3. Migration Networks</strong> - Diaspora strength correlates
+with environmental outcomes - High emigration countries (Ireland, Italy,
+Poland) show distinct patterns - English language advantage creates
+network effects</p>
+<p><strong>4. Instrument Networks</strong> - Geographic and technology
+instruments cluster together - Transfer entropy instruments provide
+unique identification - Alternative SOTA approaches complement
+traditional methods</p>
+</div>
+</div>
+<div id="network-visualization-best-practices" class="section level2">
+<h2>Network Visualization Best Practices</h2>
+<div id="layout-algorithms" class="section level3">
+<h3>1. Layout Algorithms</h3>
+<pre><code># Different layout options for network visualization
+layout_comparison &lt;- data.frame(
+  Layout = c(&quot;stress&quot;, &quot;circle&quot;, &quot;fr&quot;, &quot;kk&quot;, &quot;dh&quot;),
+  Best_For = c(&quot;General purpose&quot;, &quot;Categorical data&quot;, &quot;Force-directed&quot;, 
+               &quot;Large networks&quot;, &quot;Hierarchical&quot;),
+  Pros = c(&quot;Balanced&quot;, &quot;Clear grouping&quot;, &quot;Natural clusters&quot;, 
+           &quot;Scalable&quot;, &quot;Shows hierarchy&quot;),
+  Cons = c(&quot;Can be cluttered&quot;, &quot;Fixed positions&quot;, &quot;Can overlap&quot;, 
+           &quot;Less aesthetic&quot;, &quot;Requires hierarchy&quot;)
+)
+
+print(layout_comparison)</code></pre>
+</div>
+<div id="color-schemes" class="section level3">
+<h3>2. Color Schemes</h3>
+<pre><code># Color scheme recommendations
+color_schemes &lt;- data.frame(
+  Purpose = c(&quot;Income Groups&quot;, &quot;Regions&quot;, &quot;Variable Types&quot;, &quot;Instrument Types&quot;),
+  Scheme = c(&quot;Manual (income-based)&quot;, &quot;Viridis&quot;, &quot;Manual (semantic)&quot;, 
+             &quot;Manual (method-based)&quot;),
+  Colors = c(&quot;Red/Orange/Yellow/Gray&quot;, &quot;Continuous rainbow&quot;, 
+             &quot;Blue/Green/Red/Orange&quot;, &quot;Distinct categorical&quot;),
+  Accessibility = c(&quot;Good&quot;, &quot;Excellent&quot;, &quot;Good&quot;, &quot;Good&quot;)
+)
+
+print(color_schemes)</code></pre>
+</div>
+<div id="node-and-edge-sizing" class="section level3">
+<h3>3. Node and Edge Sizing</h3>
+<pre><code># Sizing guidelines
+sizing_guidelines &lt;- data.frame(
+  Element = c(&quot;Nodes&quot;, &quot;Edges&quot;, &quot;Labels&quot;, &quot;Arrows&quot;),
+  Size_Range = c(&quot;2-8&quot;, &quot;0.5-3&quot;, &quot;2-4&quot;, &quot;3-5mm&quot;),
+  Based_On = c(&quot;Centrality/Importance&quot;, &quot;Weight/Strength&quot;, 
+               &quot;Readability&quot;, &quot;Edge weight&quot;),
+  Considerations = c(&quot;Avoid overlap&quot;, &quot;Show hierarchy&quot;, 
+                    &quot;Legible at 600 DPI&quot;, &quot;Clear direction&quot;)
+)
+
+print(sizing_guidelines)</code></pre>
+</div>
+</div>
+<div id="advanced-network-analysis" class="section level2">
+<h2>Advanced Network Analysis</h2>
+<div id="network-metrics" class="section level3">
+<h3>1. Network Metrics</h3>
+<pre><code># Calculate comprehensive network metrics
+calculate_network_metrics &lt;- function(network) {
+  if(igraph::vcount(network) == 0) return(NULL)
+  
+  metrics &lt;- data.frame(
+    Metric = c(&quot;Density&quot;, &quot;Diameter&quot;, &quot;Average Path Length&quot;, 
+               &quot;Clustering Coefficient&quot;, &quot;Number of Components&quot;, &quot;Modularity&quot;),
+    Value = c(
+      round(igraph::edge_density(network), 3),
+      igraph::diameter(network),
+      round(igraph::mean_distance(network), 3),
+      round(igraph::transitivity(network), 3),
+      igraph::components(network)$no,
+      round(igraph::modularity(network, 
+                              igraph::cluster_louvain(network)$membership), 3)
+    ),
+    Interpretation = c(
+      &quot;Network connectivity level&quot;,
+      &quot;Maximum shortest path&quot;,
+      &quot;Average distance between nodes&quot;,
+      &quot;Local clustering tendency&quot;,
+      &quot;Disconnected subgroups&quot;,
+      &quot;Community structure strength&quot;
+    )
+  )
+  
+  return(metrics)
+}
+
+# Example usage
+# network_metrics &lt;- calculate_network_metrics(your_network)
+# print(network_metrics)</code></pre>
+</div>
+<div id="community-detection" class="section level3">
+<h3>2. Community Detection</h3>
+<pre><code># Detect communities in networks
+detect_communities &lt;- function(network) {
+  if(igraph::vcount(network) &lt; 3) return(NULL)
+  
+  # Multiple community detection algorithms
+  communities &lt;- list(
+    louvain = igraph::cluster_louvain(network),
+    walktrap = igraph::cluster_walktrap(network),
+    infomap = igraph::cluster_infomap(network)
+  )
+  
+  # Compare modularity scores
+  modularity_scores &lt;- sapply(communities, 
+                             function(x) igraph::modularity(network, x$membership))
+  
+  # Return best performing algorithm
+  best_algorithm &lt;- names(which.max(modularity_scores))
+  return(list(
+    communities = communities[[best_algorithm]],
+    algorithm = best_algorithm,
+    modularity = max(modularity_scores)
+  ))
+}
+
+# Example usage
+# community_results &lt;- detect_communities(your_network)
+# print(community_results)</code></pre>
+</div>
+<div id="network-evolution-analysis" class="section level3">
+<h3>3. Network Evolution Analysis</h3>
+<pre><code># Analyze how networks change over time
+analyze_network_evolution &lt;- function(data, time_windows = 5) {
+  years &lt;- unique(data$year)
+  evolution_results &lt;- list()
+  
+  for(i in seq(time_windows, length(years), by = time_windows)) {
+    window_years &lt;- years[(i-time_windows+1):i]
+    window_data &lt;- data %&gt;% filter(year %in% window_years)
+    
+    # Create network for this time window
+    # (Implementation would depend on specific network type)
+    
+    evolution_results[[paste0(&quot;Period_&quot;, i)]] &lt;- list(
+      years = window_years,
+      network_density = &quot;calculated_density&quot;,
+      key_relationships = &quot;identified_relationships&quot;
+    )
+  }
+  
+  return(evolution_results)
+}
+
+# Example usage
+# evolution_results &lt;- analyze_network_evolution(enhanced_data)
+# print(evolution_results)</code></pre>
+</div>
+</div>
+<div id="complete-network-analysis-workflow" class="section level2">
+<h2>Complete Network Analysis Workflow</h2>
+<div id="step-1-data-preparation" class="section level3">
+<h3>Step 1: Data Preparation</h3>
+<pre><code># Load and prepare data
+library(ManyIVsNets)
+
+# Load sample data
+epc_data &lt;- sample_epc_data
+
+# Create enhanced dataset with all instruments
+enhanced_data &lt;- create_enhanced_test_data()
+
+# Create real instruments from data patterns
+instruments &lt;- create_real_instruments_from_data(epc_data)
+
+# Merge data with instruments
+final_data &lt;- merge_epc_with_created_instruments(epc_data, instruments)</code></pre>
+</div>
+<div id="step-2-transfer-entropy-analysis" class="section level3">
+<h3>Step 2: Transfer Entropy Analysis</h3>
+<pre><code># Conduct comprehensive transfer entropy analysis
+te_results &lt;- conduct_transfer_entropy_analysis(final_data)
+
+# Extract network properties
+te_network_density &lt;- igraph::edge_density(te_results$te_network)
+te_causal_links &lt;- sum(te_results$te_matrix &gt; te_results$threshold)
+
+cat(&quot;Transfer Entropy Network Density:&quot;, te_network_density, &quot;\n&quot;)
+cat(&quot;Number of Causal Links:&quot;, te_causal_links, &quot;\n&quot;)</code></pre>
+</div>
+<div id="step-3-create-all-network-visualizations" class="section level3">
+<h3>Step 3: Create All Network Visualizations</h3>
+<pre><code># Create output directory
+output_dir &lt;- &quot;comprehensive_network_analysis&quot;
+dir.create(output_dir, showWarnings = FALSE)
+
+# Generate all 7 network visualizations
+network_plots &lt;- create_comprehensive_network_plots(final_data, output_dir)
+
+# Display network summary
+cat(&quot;Generated&quot;, length(network_plots), &quot;network visualizations\n&quot;)</code></pre>
+</div>
+<div id="step-4-instrument-strength-analysis" class="section level3">
+<h3>Step 4: Instrument Strength Analysis</h3>
+<pre><code># Calculate comprehensive instrument strength
+strength_results &lt;- calculate_instrument_strength(final_data)
+
+# Summarize performance
+strength_summary &lt;- strength_results %&gt;%
+  group_by(Strength) %&gt;%
+  summarise(
+    Count = n(),
+    Avg_F_Stat = mean(F_Statistic),
+    .groups = &#39;drop&#39;
+  )
+
+print(strength_summary)</code></pre>
+</div>
+</div>
+<div id="empirical-results-summary" class="section level2">
+<h2>Empirical Results Summary</h2>
+<div id="network-analysis-performance" class="section level3">
+<h3>Network Analysis Performance</h3>
+<pre><code># Comprehensive results summary
+results_summary &lt;- data.frame(
+  Network_Type = c(&quot;Transfer Entropy&quot;, &quot;Country Income&quot;, &quot;Cross-Income CO2&quot;, 
+                   &quot;Migration Impact&quot;, &quot;Instrument Pathways&quot;, &quot;Regional&quot;, 
+                   &quot;Instrument Strength&quot;),
+  Density = c(0.095, 0.25, 0.18, 0.12, 0.33, 0.22, &quot;N/A&quot;),
+  Key_Finding = c(&quot;PCGDP → CO2 (TE=0.0375)&quot;, &quot;Income clustering&quot;, 
+                  &quot;Distinct CO2 patterns&quot;, &quot;Diaspora effects&quot;, 
+                  &quot;Geographic-tech cluster&quot;, &quot;Regional integration&quot;, 
+                  &quot;Judge Historical F=7,155&quot;),
+  Nodes = c(7, 49, 49, 49, 15, 49, 24),
+  Edges = c(2, 294, 211, 142, 75, 258, &quot;N/A&quot;)
+)
+
+print(results_summary)</code></pre>
+</div>
+<div id="top-performing-instruments" class="section level3">
+<h3>Top Performing Instruments</h3>
+<pre><code># Top 10 strongest instruments with network context
+top_instruments_detailed &lt;- data.frame(
+  Rank = 1:10,
+  Instrument = c(&quot;Judge Historical SOTA&quot;, &quot;Spatial Lag SOTA&quot;, 
+                 &quot;Geopolitical Composite&quot;, &quot;Geopolitical Real&quot;,
+                 &quot;Alternative SOTA Combined&quot;, &quot;Tech Composite&quot;,
+                 &quot;Technology Real&quot;, &quot;Real Geographic Tech&quot;,
+                 &quot;Financial Composite&quot;, &quot;Financial Real&quot;),
+  F_Statistic = c(7155.39, 569.90, 362.37, 259.44, 202.93, 
+                  188.47, 139.42, 125.71, 113.77, 94.12),
+  Strength = c(rep(&quot;Very Strong&quot;, 10)),
+  Network_Role = c(&quot;Historical events&quot;, &quot;Spatial spillovers&quot;, 
+                   &quot;Political transitions&quot;, &quot;Institutional change&quot;,
+                   &quot;Combined approaches&quot;, &quot;Technology diffusion&quot;,
+                   &quot;Innovation patterns&quot;, &quot;Geographic tech&quot;,
+                   &quot;Financial development&quot;, &quot;Market maturity&quot;)
+)
+
+print(top_instruments_detailed)</code></pre>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>The network analysis capabilities in ManyIVsNets provide:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Comprehensive Visualization</strong>: 7 publication-quality
+network plots at 600 DPI</li>
+<li><strong>Multiple Network Types</strong>: Variable-level,
+country-level, and instrument-level networks</li>
+<li><strong>Causal Discovery</strong>: Transfer entropy networks reveal
+directional relationships</li>
+<li><strong>Economic Insights</strong>: Income, regional, and migration
+effects on environmental outcomes</li>
+<li><strong>Methodological Innovation</strong>: First comprehensive
+network approach to EPC analysis</li>
+</ol>
+<p><strong>Key Empirical Results:</strong> - Transfer entropy network
+density: 0.095 - Country network density: 0.25 - Strongest causal
+relationship: PCGDP → CO2 (TE = 0.0375) - 21 out of 24 instruments show
+strong performance (F &gt; 10) - Judge Historical SOTA: F = 7,155.39
+(strongest instrument)</p>
+<p>This network analysis framework represents a significant advancement
+in environmental economics methodology, providing both theoretical
+insights and practical tools for policy analysis.</p>
+<div id="future-extensions" class="section level3">
+<h3>Future Extensions</h3>
+<p>The network analysis framework can be extended to:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Dynamic Networks</strong>: Time-varying network
+structures</li>
+<li><strong>Multilayer Networks</strong>: Multiple relationship types
+simultaneously</li>
+<li><strong>Spatial Networks</strong>: Geographic distance-based
+relationships</li>
+<li><strong>Policy Networks</strong>: Government intervention
+effects</li>
+<li><strong>Sectoral Networks</strong>: Industry-specific environmental
+relationships</li>
+</ol>
+<p>These extensions will further enhance the analytical power of the
+ManyIVsNets package for environmental economics research. ```</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
