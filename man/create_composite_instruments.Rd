@@ -15,10 +15,3 @@ Enhanced data frame with composite instruments
 \description{
 Create Composite Instruments using Factor Analysis
 }
-\examples{
-# Use built-in sample data
-data(sample_epc_data)
-instruments <- create_real_instruments_from_data(sample_epc_data)
-composite_instruments <- create_composite_instruments(instruments)
-head(composite_instruments)
-}

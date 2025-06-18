@@ -17,14 +17,3 @@ ggplot object
 \description{
 Create Instrument Strength Comparison Visualization
 }
-\examples{
-\donttest{
-# Create sample strength results for demonstration
-strength_results <- data.frame(
-  Instrument = c("Geographic", "Technology", "Migration"),
-  F_Statistic = c(15.2, 8.7, 12.3),
-  Strength = c("Strong", "Moderate", "Strong")
-)
-plot_instrument_strength_comparison(strength_results)
-}
-}

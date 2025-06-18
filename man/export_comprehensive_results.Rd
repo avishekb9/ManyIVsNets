@@ -29,9 +29,6 @@ export_comprehensive_results(
 
 \item{output_dir}{Directory to save files}
 }
-\value{
-No return value, called for side effects. The function creates multiple CSV files in the specified output directory containing model results, diagnostics, instrument strengths, transfer entropy results, instruments data, and network centralities.
-}
 \description{
 Export Comprehensive Results to CSV
 }

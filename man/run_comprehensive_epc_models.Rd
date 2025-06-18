@@ -10,14 +10,7 @@ run_comprehensive_epc_models(data)
 \item{data}{Enhanced EPC data with all instruments}
 }
 \value{
-A named list containing fitted econometric models for Environmental Phillips Curve analysis:
-\describe{
-  \item{ols_baseline}{An lm object containing the baseline OLS regression results}
-  \item{iv_*}{Multiple ivreg objects (from AER package) representing instrumental variable regressions using different instrument sets}
-  \item{model_names}{Character vector of model identifiers for reference}
-  \item{convergence_status}{Logical vector indicating which models converged successfully}
-}
-Each model object contains standard econometric output including coefficients, standard errors, R-squared values, and diagnostic statistics. The IV models use different combinations of geographic, technological, migration, geopolitical, financial, and natural risk instruments to identify causal effects of unemployment on CO2 emissions per capita.
+List of fitted models
 }
 \description{
 Run Comprehensive EPC Models

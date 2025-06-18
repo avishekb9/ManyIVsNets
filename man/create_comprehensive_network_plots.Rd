@@ -24,17 +24,7 @@ create_comprehensive_network_plots(
 \item{output_dir}{Directory to save plots (optional)}
 }
 \value{
-A named list containing ggplot objects for network visualization:
-\describe{
-  \item{te_network_plot}{ggplot object showing transfer entropy relationships between variables with directed edges and node sizes representing variable importance}
-  \item{country_network_plot}{ggplot object displaying country income classification network with color-coded income groups}
-  \item{cross_income_nexus_plot}{ggplot object illustrating cross-income CO2-growth relationships}
-  \item{migration_impact_plot}{ggplot object showing migration impact on CO2 emissions}
-  \item{causal_pathways_plot}{ggplot object displaying instrument causal pathways}
-  \item{regional_network_plot}{ggplot object showing regional country networks with geographic groupings}
-  \item{strength_comparison_plot}{ggplot object comparing instrument strength across different categories}
-}
-Each plot object can be displayed using print() or further customized with additional ggplot2 layers. When output_dir is specified, plots are automatically saved as PNG files with standardized naming convention.
+List of plot objects
 }
 \description{
 Create Comprehensive Network Plots

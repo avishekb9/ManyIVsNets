@@ -10,27 +10,15 @@ conduct_transfer_entropy_analysis(data)
 \item{data}{Enhanced EPC data with instruments}
 }
 \value{
-A list object of class "transfer_entropy_results" containing:
-\describe{
-  \item{te_matrix}{Numeric matrix of transfer entropy values between variables, with row names and column names indicating variable relationships}
-  \item{te_network}{An igraph object representing the causal network, where vertices are variables and edges represent significant causal relationships}
-  \item{te_threshold}{Numeric scalar indicating the threshold used to determine significant transfer entropy relationships}
-  \item{variables}{Character vector of variable names included in the analysis}
-  \item{n_observations}{Integer indicating the number of complete observations used}
-  \item{metadata}{List containing analysis parameters including embedding dimensions and time lags}
-}
-The transfer entropy matrix quantifies directional information flow between variables, with higher values indicating stronger causal influence. The network object can be used for visualization and centrality analysis.
+List containing transfer entropy matrix, network, and metadata
 }
 \description{
 Conduct Transfer Entropy Analysis for Causal Discovery
 }
 \examples{
 \donttest{
-# This example requires enhanced data and may take some time
+# Transfer entropy analysis (computationally intensive)
 data(sample_epc_data)
-instruments <- create_real_instruments_from_data(sample_epc_data)
-enhanced_data <- merge_epc_with_created_instruments(sample_epc_data, instruments)
-te_results <- conduct_transfer_entropy_analysis(enhanced_data)
-print(te_results$te_threshold)
+te_results <- conduct_transfer_entropy_analysis(sample_epc_data)
 }
 }

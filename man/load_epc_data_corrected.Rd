@@ -10,30 +10,23 @@ load_epc_data_corrected(file_path = "epc_data_new_ar5_indicators.csv")
 \item{file_path}{Path to the EPC data CSV file}
 }
 \value{
-A cleaned data frame containing Environmental Phillips Curve variables with the following structure:
-\describe{
-  \item{country}{Character vector of country names}
-  \item{year}{Integer vector of observation years}
-  \item{CO2_per_capita}{Numeric vector of CO2 emissions per capita (metric tons)}
-  \item{UR}{Numeric vector of total unemployment rates (percentage)}
-  \item{URF}{Numeric vector of female unemployment rates (percentage)}
-  \item{URM}{Numeric vector of male unemployment rates (percentage)}
-  \item{PCGDP}{Numeric vector of per capita GDP (current USD)}
-  \item{Trade}{Numeric vector of trade openness measures}
-  \item{RES}{Numeric vector of renewable energy shares (percentage)}
-}
-All variables are cleaned for missing values and outliers. The data frame is ready for instrumental variable analysis and contains the core variables needed for Environmental Phillips Curve estimation.
+Cleaned EPC data frame
 }
 \description{
 Load and Clean EPC Data
 }
 \examples{
-\donttest{
-# Example with a hypothetical CSV file
-# epc_data <- load_epc_data_corrected("your_epc_data.csv")
+# Load sample EPC data from package
+sample_file <- system.file("extdata", "sample_epc_data.csv", package = "ManyIVsNets")
+if (file.exists(sample_file)) {
+  epc_data <- load_epc_data_corrected(sample_file)
+  head(epc_data)
+}
 
-# For demonstration, use built-in sample data instead
-data(sample_epc_data)
-head(sample_epc_data)
+\donttest{
+# Example with external file (only runs if file exists)
+if (file.exists("your_epc_data.csv")) {
+  epc_data <- load_epc_data_corrected("your_epc_data.csv")
+}
 }
 }

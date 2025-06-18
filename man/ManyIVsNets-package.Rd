@@ -6,7 +6,7 @@
 \alias{ManyIVsNets-package}
 \title{ManyIVsNets: Environmental Phillips Curve Analysis with Multiple Instrumental Variables and Networks}
 \description{
-Comprehensive toolkit for Environmental Phillips Curve (EPC) analysis featuring multidimensional instrumental variable creation, transfer entropy causal discovery, network analysis, and state-of-the-art econometric methods. Implements geographic, technological, migration, geopolitical, financial, and natural risk instruments with robust diagnostics and visualization. Provides 24 different instrumental variable approaches with empirical validation.
+Comprehensive toolkit for Environmental Phillips Curve (EPC) analysis featuring multidimensional instrumental variable creation, transfer entropy causal discovery, network analysis, and state-of-the-art econometric methods. Implements geographic, technological, migration, geopolitical, financial, and natural risk instruments with robust diagnostics and visualization. Provides 24 different instrumental variable approaches with empirical validation. Methods based on Phillips (1958) \doi{10.1111/j.1468-0335.1958.tb00003.x}, Schreiber (2000) \doi{10.1103/PhysRevLett.85.461}, and Stock & Yogo (2005) \doi{10.1017/CBO9780511614491.006}.
 }
 \seealso{
 Useful links:

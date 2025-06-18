@@ -4,10 +4,7 @@
 \alias{run_complete_epc_analysis}
 \title{Run Complete EPC Analysis Pipeline}
 \usage{
-run_complete_epc_analysis(
-  data_file = NULL,
-  output_dir = tempdir()
-)
+run_complete_epc_analysis(data_file = NULL, output_dir = tempdir())
 }
 \arguments{
 \item{data_file}{Path to EPC data file (optional)}
@@ -15,21 +12,7 @@ run_complete_epc_analysis(
 \item{output_dir}{Directory for outputs}
 }
 \value{
-A comprehensive list object containing all analysis results with the following structure:
-\describe{
-  \item{data}{Data frame of loaded and enhanced EPC data with all instruments}
-  \item{instruments}{Data frame of created instrumental variables across all categories}
-  \item{te_results}{List containing transfer entropy analysis results (matrix, network, metadata)}
-  \item{te_instruments}{Data frame of transfer entropy-based instruments}
-  \item{sota_instruments}{Data frame of state-of-the-art alternative instruments}
-  \item{models}{Named list of fitted econometric models (OLS and IV regressions)}
-  \item{diagnostics}{Data frame of diagnostic test results for instrument validity}
-  \item{strength_results}{Data frame of instrument strength analysis (F-statistics)}
-  \item{plots}{Named list of ggplot objects for network visualization}
-  \item{summary_table}{Data frame summarizing key results across all models}
-  \item{output_paths}{Character vector of file paths where results were saved}
-}
-This represents the complete pipeline output for Environmental Phillips Curve analysis with multiple instrumental variables and network analysis. All components are ready for further analysis or publication.
+List with all analysis results
 }
 \description{
 Run Complete EPC Analysis Pipeline

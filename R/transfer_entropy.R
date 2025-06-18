@@ -4,8 +4,10 @@
 #' @return List containing transfer entropy matrix, network, and metadata
 #' @export
 #' @examples
-#' \dontrun{
-#' te_results <- conduct_transfer_entropy_analysis(enhanced_data)
+#' \donttest{
+#' # Transfer entropy analysis (computationally intensive)
+#' data(sample_epc_data)
+#' te_results <- conduct_transfer_entropy_analysis(sample_epc_data)
 #' }
 conduct_transfer_entropy_analysis <- function(data) {
   message("Conducting Transfer Entropy analysis...")

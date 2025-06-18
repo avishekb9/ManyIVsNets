@@ -10,28 +10,8 @@ calculate_instrument_strength(data)
 \item{data}{Enhanced EPC data}
 }
 \value{
-A data frame containing instrument strength diagnostics with the following structure:
-\describe{
-  \item{instrument_set}{Character vector identifying the instrument category (e.g., "Geographic", "Technology", "Migration")}
-  \item{f_statistic}{Numeric vector of F-statistics from first-stage regressions testing instrument relevance}
-  \item{p_value}{Numeric vector of p-values for the F-statistics}
-  \item{n_instruments}{Integer vector indicating the number of instruments in each set}
-  \item{n_observations}{Integer vector of observations used in each first-stage regression}
-  \item{r_squared}{Numeric vector of R-squared values from first-stage regressions}
-  \item{weak_instrument_test}{Logical vector indicating whether instruments pass the weak instrument test (F > 10)}
-}
-F-statistics above 10 indicate strong instruments according to Stock-Yogo criteria. Higher values suggest greater instrument relevance for identifying causal effects.
+Data frame with instrument strength results
 }
 \description{
 Calculate Instrument Strength
-}
-\examples{
-\donttest{
-# This example requires enhanced data with instruments
-data(sample_epc_data)
-instruments <- create_real_instruments_from_data(sample_epc_data)
-enhanced_data <- merge_epc_with_created_instruments(sample_epc_data, instruments)
-strength_results <- calculate_instrument_strength(enhanced_data)
-head(strength_results)
-}
 }

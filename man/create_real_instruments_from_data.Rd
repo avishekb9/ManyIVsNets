@@ -10,24 +10,13 @@ create_real_instruments_from_data(epc_data)
 \item{epc_data}{Data frame containing EPC data with country and year columns}
 }
 \value{
-A data frame with instrumental variables for econometric analysis. Contains one row per country with the following structure:
-\describe{
-  \item{country}{Character vector of country names}
-  \item{iso3c}{Character vector of ISO 3-letter country codes}
-  \item{geo_isolation}{Numeric vector of geographic isolation indices (0-1 scale)}
-  \item{tech_*}{Numeric vectors of technology-based instruments including internet adoption lags and telecom development}
-  \item{migration_*}{Numeric vectors of migration-based instruments including diaspora networks and migration costs}
-  \item{geopolitical_*}{Numeric vectors of geopolitical instruments including NATO membership and EU accession years}
-  \item{natural_risk_*}{Numeric vectors of natural risk instruments including seismic and climate risks}
-  \item{financial_*}{Numeric vectors of financial development instruments from 1990 baseline}
-}
-Each instrument represents an exogenous source of variation for identifying causal effects in Environmental Phillips Curve models.
+Data frame with created instruments
 }
 \description{
 Create Real Multidimensional Instruments from Economic Data
 }
 \examples{
-# Use built-in sample data
+# Create instruments using built-in sample data
 data(sample_epc_data)
 instruments <- create_real_instruments_from_data(sample_epc_data)
 head(instruments)

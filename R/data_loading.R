@@ -4,8 +4,18 @@
 #' @return Cleaned EPC data frame
 #' @export
 #' @examples
-#' \dontrun{
-#' epc_data <- load_epc_data_corrected("epc_data_new_ar5_indicators.csv")
+#' # Load sample EPC data from package
+#' sample_file <- system.file("extdata", "sample_epc_data.csv", package = "ManyIVsNets")
+#' if (file.exists(sample_file)) {
+#'   epc_data <- load_epc_data_corrected(sample_file)
+#'   head(epc_data)
+#' }
+#' 
+#' \donttest{
+#' # Example with external file (only runs if file exists)
+#' if (file.exists("your_epc_data.csv")) {
+#'   epc_data <- load_epc_data_corrected("your_epc_data.csv")
+#' }
 #' }
 load_epc_data_corrected <- function(file_path = "epc_data_new_ar5_indicators.csv") {
   if(file.exists(file_path)) {

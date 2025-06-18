@@ -4,9 +4,10 @@
 #' @return Data frame with created instruments
 #' @export
 #' @examples
-#' \dontrun{
-#' instruments <- create_real_instruments_from_data(epc_data)
-#' }
+#' # Create instruments using built-in sample data
+#' data(sample_epc_data)
+#' instruments <- create_real_instruments_from_data(sample_epc_data)
+#' head(instruments)
 create_real_instruments_from_data <- function(epc_data) {
   message("Creating real multidimensional instruments from EPC data patterns...")
   

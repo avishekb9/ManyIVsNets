@@ -10,19 +10,7 @@ create_alternative_sota_instruments(data)
 \item{data}{Enhanced EPC data}
 }
 \value{
-A data frame containing state-of-the-art alternative instrumental variables with the following structure:
-\describe{
-  \item{country}{Character vector of country names}
-  \item{year}{Integer vector of observation years}
-  \item{spatial_lag_ur}{Numeric vector of spatially lagged unemployment rates}
-  \item{bartik_employment}{Numeric vector of Bartik-style employment shift-share instruments}
-  \item{migration_network_ur}{Numeric vector of migration network-weighted unemployment instruments}
-  \item{judge_historical_*}{Numeric vectors of historical policy instruments based on institutional changes}
-  \item{network_clustering_*}{Numeric vectors of network-based clustering instruments}
-  \item{shift_share_tech}{Numeric vector of technology shift-share instruments}
-  \item{gravity_trade_*}{Numeric vectors of gravity-model based trade instruments}
-}
-These instruments follow recent advances in econometric identification and provide alternative sources of exogenous variation for robustness testing in Environmental Phillips Curve models.
+Data frame with alternative SOTA instruments
 }
 \description{
 Create Alternative State-of-the-Art Instruments
